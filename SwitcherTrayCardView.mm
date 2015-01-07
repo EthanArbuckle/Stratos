@@ -100,6 +100,12 @@
 	//get location of touch in switcher tray
 	CGPoint point = [pan locationInView:_superSwitcher];
 
+	if ([pan state] == UIGestureRecognizerStateBegan) {
+
+		//disable scrolling of tray so gestures dont get mixed up
+		[[(SwitcherTrayView *)_superSwitcher trayScrollView].panGestureRecognizer setEnabled:NO];
+	}
+
 	if ([pan state] == UIGestureRecognizerStateChanged) {
 		
 		//make sure we arent just trying to scroll
@@ -112,6 +118,9 @@
 	}
 
 	if ([pan state] == UIGestureRecognizerStateEnded) {
+
+		//reenable switchers pan gesture
+		[[(SwitcherTrayView *)_superSwitcher trayScrollView].panGestureRecognizer setEnabled:YES];
 
 		//decide if card is pushed up enough to close
 		if (point.y <= 30.0f) {
@@ -150,6 +159,11 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer {
+
+	//card isnt as y0, assume its being swiped
+	if ([self frame].origin.y != 0) {
+		return NO;
+	}
 
 	if ([panGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
 		CGPoint velocity = [panGestureRecognizer velocityInView:_superSwitcher];
