@@ -233,7 +233,7 @@ NSLog(@"reloading");
 		//remove everthing in the scrollview
 		for (UIView *subview in [_trayScrollView subviews]) {
 
-//remove only the app cards (which respond to that method)
+			//remove only the app cards (which respond to that method)
 			if ([subview respondsToSelector:@selector(initWithIdentifier:)]) {
 
 				[subview removeFromSuperview];
@@ -255,19 +255,8 @@ NSLog(@"reloading");
 		//cycle through each identifier of all the current running apps. idents are taken from the app switcher class
 		for (NSString *identifier in _localIdentifiers) {
 
-			//create the switcher card for the app
-			SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:identifier];
 
-			//add that card view to the array of cards
-			[_switcherCards addObject:currentApp];
-
-			//pass instance of this view (switchertrayview) to each card so they can call the 'closeTray' method
-			[currentApp setSuperSwitcher:self];
-
-			//add the card view to the scroll view, after adjusting the views frame
-			[currentApp setFrame:CGRectMake(xOrigin, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
-			
-			[_trayScrollView addSubview:currentApp];
+			[self createCardForIdentifier:identifier atXOrigin:xOrigin];
 
 			//step up the x origin to provide a gap between cards
 			xOrigin += kSwitcherCardSpacing + kSwitcherCardWidth;
@@ -297,6 +286,24 @@ NSLog(@"reloading");
 		//if no apps are running, default to the quicklaunch page
 		[_trayScrollView setContentOffset:CGPointMake(0, 0) animated:NO];
 	}
+}
+
+- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin {
+
+	//create the switcher card for the app
+	SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:ident];
+
+	//add that card view to the array of cards
+	[_switcherCards addObject:currentApp];
+
+	//pass instance of this view (switchertrayview) to each card so they can call the 'closeTray' method
+	[currentApp setSuperSwitcher:self];
+
+	//add the card view to the scroll view, after adjusting the views frame
+	[currentApp setFrame:CGRectMake(xOrigin, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
+			
+	[_trayScrollView addSubview:currentApp];
+
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
