@@ -1,0 +1,17 @@
+GO_EASY_ON_ME = 1
+ARCHS = armv7 arm64
+TARGET = iphone:clang:latest:7.0
+
+BUNDLE_NAME = StratosPrefs
+StratosPrefs_CFLAGS = -fobjc-arc
+StratosPrefs_FILES = StratosPrefsController.mm
+StratosPrefs_INSTALL_PATH = /Library/PreferenceBundles
+StratosPrefs_FRAMEWORKS = UIKit CoreGraphics
+StratosPrefs_PRIVATE_FRAMEWORKS = Preferences
+
+include theos/makefiles/common.mk
+include $(THEOS_MAKE_PATH)/bundle.mk
+
+internal-stage::
+	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)
+	$(ECHO_NOTHING)cp entry.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/StratosPrefs.plist$(ECHO_END)

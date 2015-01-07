@@ -1,0 +1,9 @@
+Package: com.cortexdevteam.internal.nighthawk
+Name: nighthawke
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: CortexDevTeam
+Author: CortexDevTeam
+Section: Tweaks

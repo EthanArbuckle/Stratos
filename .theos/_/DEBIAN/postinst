@@ -1,0 +1,5 @@
+#! /bin/sh
+
+echo "## [Stratos] Deleting old prefs..."
+find /private/var/mobile/Library/Preferences/ -name 'com.cortexdevteam.stratos.plist' -exec rm {} \;
+echo "## Done."

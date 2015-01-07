@@ -1,0 +1,10 @@
+{
+    entry = {
+		bundle = StratosPrefs;
+		cell = PSLinkCell;
+		detail = StratosPrefsController;
+		icon = Icon.png;
+		isController = 1;
+		label = nighthawke;
+    };
+}

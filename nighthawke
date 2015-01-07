@@ -1,0 +1,32 @@
+On branch nighthawke
+
+Initial commit
+
+Untracked files:
+	.theos/
+	DebugLog.h
+	Hooks.xm
+	IdentifierDaemon.h
+	IdentifierDaemon.mm
+	Makefile
+	MultitaskView.h
+	MultitaskView.mm
+	MultitaskViewCard.h
+	MultitaskViewCard.mm
+	Packages/
+	Prefs/
+	Stratos.h
+	SwitcherTrayCardView.h
+	SwitcherTrayCardView.mm
+	SwitcherTrayView.h
+	SwitcherTrayView.mm
+	TouchHighjacker.h
+	TouchHighjacker.mm
+	clean.sh
+	control
+	layout/
+	nighthawke
+	nighthawke.plist
+	theos
+
+nothing added to commit but untracked files present

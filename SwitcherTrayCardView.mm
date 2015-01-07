@@ -1,0 +1,146 @@
+#import "SwitcherTrayCardView.h"
+
+@implementation SwitcherTrayCardView
+
+- (id)initWithIdentifier:(NSString *)identifier {
+
+	if (self = [super init]) {
+
+		_identifier = identifier;
+
+		//create the imageview that will hold the preview image of the app
+		UIImageView *snapshotHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
+		[snapshotHolder setContentMode:UIViewContentModeScaleAspectFit];
+		[self addSubview:snapshotHolder];
+
+		//get the image from our ident daemon
+		[snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+
+		//create imageview that will hold the apps icon
+		UIImageView *iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 38, 40, 40)];
+		
+		//get instance of the application
+		_application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:identifier];
+
+		//create an icon for the application
+		SBApplicationIcon *icon = [[NSClassFromString(@"SBApplicationIcon") alloc] initWithApplication:_application];
+
+		//set iconholders image to the image from the sbapplicationicon class
+		[iconHolder setImage:[icon generateIconImage:2]];
+
+		//add shadow to the view
+		[[iconHolder layer] setShadowColor:[UIColor blackColor].CGColor];
+		[[iconHolder layer] setShadowOffset:CGSizeMake(0, 2)];
+		[[iconHolder layer] setShadowOpacity:1];
+		[[iconHolder layer] setShadowRadius:4.0];
+		[[iconHolder layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:iconHolder.bounds cornerRadius:4.0] CGPath]];
+		[iconHolder setClipsToBounds:NO];
+
+		//let touches pass through to the card
+		[iconHolder setUserInteractionEnabled:NO];
+
+		//add it to the card
+		[self addSubview:iconHolder];
+
+		//create the label that displays the name of the app
+		UILabel *appName = [[UILabel alloc] initWithFrame:CGRectMake(0, kSwitcherCardHeight, kSwitcherCardWidth, 20)];
+		[appName setText:[(SBApplication *)_application displayName]];
+		[appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
+		[appName setTextColor:[UIColor whiteColor]];
+		[appName setTextAlignment:NSTextAlignmentCenter];
+		[self addSubview:appName];
+
+		//add tap recognizer so we can open the app when this card is touched
+		UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openApp)];
+		[tapGes setCancelsTouchesInView:YES];
+		[self addGestureRecognizer:tapGes];
+
+		//create pangesture recognizer so the cards can be flicked up
+		UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panning:)];
+		[self addGestureRecognizer:panGes];
+		[panGes setDelegate:self];
+
+	}
+
+	return self;
+
+}
+
+- (void)openApp {
+
+	//close the switcher
+	if (_superSwitcher) {
+
+		[(SwitcherTrayView *)_superSwitcher closeTray];
+		
+	}
+
+	//open the app
+	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier]];
+}
+
+- (void)panning:(UIPanGestureRecognizer *)pan {
+
+	//get location of touch in switcher tray
+	CGPoint point = [pan locationInView:_superSwitcher];
+
+	if ([pan state] == UIGestureRecognizerStateChanged) {
+		
+		//make sure we arent just trying to scroll
+		CGPoint velocity = [pan velocityInView:_superSwitcher];
+		if (velocity.y > 20 || velocity.y < -20) {
+
+			//move this card with the touches. Using center point makes it flow with the finger better
+			[self setCenter:CGPointMake([self center].x, point.y)];
+		}
+	}
+
+	if ([pan state] == UIGestureRecognizerStateEnded) {
+
+		//decide if card is pushed up enough to close
+		if (point.y <= 30.0f) {
+
+			[UIView animateWithDuration:1.0f animations:^{
+
+				//animate this card out
+				CGRect frame = [self frame];
+				frame.origin.y = -500;
+				[self setFrame:frame];
+
+			}];
+
+			//tell the switcher to close this app
+			[(SwitcherTrayView *)_superSwitcher cardRequestingToClose:self];
+		}
+		else {
+
+			//animate this card back to the normal spot
+			[UIView animateWithDuration:.08f animations:^{
+
+				//animate this card out
+				CGRect frame = [self frame];
+				frame.origin.y = 0;
+				[self setFrame:frame];
+
+			}];
+
+		}
+	}
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    
+	return YES;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer {
+
+	if ([panGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+		CGPoint velocity = [panGestureRecognizer velocityInView:_superSwitcher];
+		return (fabs(velocity.y) > fabs(velocity.x) || [[panGestureRecognizer view] isKindOfClass:[UIScrollView class]]);
+	}
+
+	return YES;
+}
+
+@end
