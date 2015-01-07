@@ -15,7 +15,7 @@
 - (void)addSettingControls;
 - (void)killAllApps;
 - (void)reloadIfNecessary;
-- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin;
+- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading;
 - (void)handlePan:(UIPanGestureRecognizer *)pan;
 - (void)closeTray;
 - (void)openTray;

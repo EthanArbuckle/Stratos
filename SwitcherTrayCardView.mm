@@ -11,10 +11,13 @@
 		//create the imageview that will hold the preview image of the app
 		UIImageView *snapshotHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
 		[snapshotHolder setContentMode:UIViewContentModeScaleAspectFit];
-		[self addSubview:snapshotHolder];
 
-		//get the image from our ident daemon
-		[snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self addSubview:snapshotHolder];
+
+			//get the image from our ident daemon
+			[snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+		});
 
 		//create imageview that will hold the apps icon
 		UIImageView *iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 38, 40, 40)];
@@ -23,10 +26,12 @@
 		_application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:identifier];
 
 		//create an icon for the application
-		SBApplicationIcon *icon = [[NSClassFromString(@"SBApplicationIcon") alloc] initWithApplication:_application];
+		__block SBApplicationIcon *icon;
 
-		//set iconholders image to the image from the sbapplicationicon class
-		[iconHolder setImage:[icon generateIconImage:2]];
+		//lets not deadlock if created on gcd thread
+		dispatch_async(dispatch_get_main_queue(), ^{
+			icon = [[NSClassFromString(@"SBApplicationIcon") alloc] initWithApplication:_application];
+		});
 
 		//add shadow to the view
 		[[iconHolder layer] setShadowColor:[UIColor blackColor].CGColor];
@@ -40,15 +45,26 @@
 		[iconHolder setUserInteractionEnabled:NO];
 
 		//add it to the card
-		[self addSubview:iconHolder];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self addSubview:iconHolder];
+
+			//set iconholders image to the image from the sbapplicationicon class
+			[iconHolder setImage:[icon generateIconImage:2]];
+
+		});
 
 		//create the label that displays the name of the app
 		UILabel *appName = [[UILabel alloc] initWithFrame:CGRectMake(0, kSwitcherCardHeight, kSwitcherCardWidth, 20)];
-		[appName setText:[(SBApplication *)_application displayName]];
-		[appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
-		[appName setTextColor:[UIColor whiteColor]];
-		[appName setTextAlignment:NSTextAlignmentCenter];
-		[self addSubview:appName];
+
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[appName setText:[(SBApplication *)_application displayName]];
+			[appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
+			[appName setTextColor:[UIColor whiteColor]];
+			[appName setTextAlignment:NSTextAlignmentCenter];
+			[self addSubview:appName];
+
+		});
 
 		//add tap recognizer so we can open the app when this card is touched
 		UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openApp)];

@@ -255,8 +255,21 @@ NSLog(@"reloading");
 		//cycle through each identifier of all the current running apps. idents are taken from the app switcher class
 		for (NSString *identifier in _localIdentifiers) {
 
+			//only create first page of cards on main thread
+			if ([_localIdentifiers indexOfObject:identifier] <= 3) {
 
-			[self createCardForIdentifier:identifier atXOrigin:xOrigin];
+				[self createCardForIdentifier:identifier atXOrigin:xOrigin onGCDThread:NO];
+			}
+			else {
+
+				//not first page, lets outsource it to a different thread
+				dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+
+					[self createCardForIdentifier:identifier atXOrigin:xOrigin onGCDThread:YES];
+
+				});
+			}
+
 
 			//step up the x origin to provide a gap between cards
 			xOrigin += kSwitcherCardSpacing + kSwitcherCardWidth;
@@ -288,7 +301,7 @@ NSLog(@"reloading");
 	}
 }
 
-- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin {
+- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading {
 
 	//create the switcher card for the app
 	SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:ident];
@@ -301,8 +314,20 @@ NSLog(@"reloading");
 
 	//add the card view to the scroll view, after adjusting the views frame
 	[currentApp setFrame:CGRectMake(xOrigin, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
-			
-	[_trayScrollView addSubview:currentApp];
+	
+	//if card is being created on gcd thread, switch to main thread before adding card
+	if (threading) {
+
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			[_trayScrollView addSubview:currentApp];
+		});
+	}
+
+	else {
+
+		//do it like normal
+		[_trayScrollView addSubview:currentApp];
+	}
 
 }
 
