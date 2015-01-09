@@ -40,7 +40,9 @@
 static NSString *const kCDTSPreferencesDomain = @"com.cortexdevteam.stratos";
 static NSString *const kCDTSPreferencesEnabledKey = @"isEnabled";
 static NSString *const kCDTSPreferencesTrayBackgroundStyle = @"switcherBackgroundStyle";
-
+static NSString *const kCDTSPreferencesShowGrabber = @"showGrabber";
+static NSString *const kCDTSPreferencesInvokeControlCenter = @"shouldInvokeCC";
+static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
 
 // private interfaces
 @interface SBUIController : NSObject
@@ -58,6 +60,7 @@ static NSString *const kCDTSPreferencesTrayBackgroundStyle = @"switcherBackgroun
 - (void)stopRestoringIconList;
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
+- (NSUserDefaults *)stratosUserDefaults;
 @end
 
 

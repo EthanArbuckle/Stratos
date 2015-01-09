@@ -118,7 +118,7 @@ AVAudioPlayer *audioPlayer;
         
         
         showCCSwitchFooter = [PSSpecifier emptyGroupSpecifier];
-        [showCCSwitchFooter setProperty:@"Invoke the Control Center after swping up beyond the Stratos switcher" forKey:@"footerText"];
+        [showCCSwitchFooter setProperty:@"Invoke the Control Center after swiping up beyond the Stratos switcher" forKey:@"footerText"];
         
         
         //Enable control center being pulled up

@@ -6,6 +6,9 @@
 @property (nonatomic, retain) UIScrollView *trayScrollView;
 @property (nonatomic, retain) NSMutableArray *switcherCards;
 @property (nonatomic, retain) NSArray *localIdentifiers;
+@property (nonatomic, retain) UIView *gestureView;
+@property (nonatomic, retain) UIView *grabber;
+@property (nonatomic, retain) NSUserDefaults *stratosUserDefaults;
 @property (nonatomic) BOOL isOpen;
 
 + (id)sharedInstance;
@@ -22,5 +25,6 @@
 - (void)animateObject:(id)view toFrame:(CGRect)frame;
 - (void)cardRequestingToClose:(UIView *)card;
 - (void)reloadBlurView;
+- (void)refreshGrabber;
 
 @end

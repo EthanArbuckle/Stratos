@@ -54,6 +54,10 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 	//redraw background in case settings were changed
 	[switcher reloadBlurView];
+
+	//update grabber
+	[switcher refreshGrabber];
+
 }
 
 
@@ -230,7 +234,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		[switcher setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
 	}
 
-	else if (location.y <= kSwitcherHeight + 100) {
+	else if (location.y <= kSwitcherHeight + 100 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
 
 		//hide switcher
 		[switcher closeTray];
@@ -426,6 +430,13 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		[[IdentifierDaemon sharedInstance] reloadApps];
 	}
 }
+
+%new
++ (NSUserDefaults *)stratosUserDefaults {
+
+	return stratosUserDefaults;
+}
+
 %end
 
 

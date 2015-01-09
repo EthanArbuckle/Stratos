@@ -110,13 +110,35 @@
 	//get SBAppSwitcherModel instance
 	SBAppSwitcherModel *appSwitcherModel = (SBAppSwitcherModel *)[NSClassFromString(@"SBAppSwitcherModel") sharedInstance];
 	
+	NSArray *identifiers;
+
 	//iOS 7
 	if ([appSwitcherModel respondsToSelector:@selector(identifiers)]) {
-		return [appSwitcherModel identifiers];
+		identifiers = [appSwitcherModel identifiers];
+	}
+	else {
+		//iOS 8
+		identifiers = [appSwitcherModel snapshotOfFlattenedArrayOfAppIdentifiersWhichIsOnlyTemporary];
 	}
 
-	//iOS 8
-	return [appSwitcherModel snapshotOfFlattenedArrayOfAppIdentifiersWhichIsOnlyTemporary];
+	//if we need to remove the topmost app
+	if (![[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesShowRunningApp]) {
+
+		//if an app is open
+		if ([(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
+
+			NSMutableArray *newIdentifiers = [[NSMutableArray alloc] initWithArray:identifiers copyItems:YES];
+
+			//remove first identifier (running app)
+			[newIdentifiers removeObjectAtIndex:0];
+
+			//return nonmutable array
+			return [newIdentifiers copy];
+
+		}
+	}
+
+	return identifiers;
 }
 
 @end
