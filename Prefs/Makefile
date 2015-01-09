@@ -6,7 +6,7 @@ BUNDLE_NAME = StratosPrefs
 StratosPrefs_CFLAGS = -fobjc-arc
 StratosPrefs_FILES = StratosPrefsController.mm
 StratosPrefs_INSTALL_PATH = /Library/PreferenceBundles
-StratosPrefs_FRAMEWORKS = UIKit CoreGraphics
+StratosPrefs_FRAMEWORKS = UIKit CoreGraphics Social AVFoundation
 StratosPrefs_PRIVATE_FRAMEWORKS = Preferences
 
 include theos/makefiles/common.mk

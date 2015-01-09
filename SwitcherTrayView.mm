@@ -98,6 +98,7 @@ NSUserDefaults *stratosUserDefaults;
 
 	//get number of pages the cards will take up
 	int numberOfPagesForCards = ceil(runningAppsCount / 4);
+	NSLog(@"running apps: %f\nnumber of pages: %d", runningAppsCount, numberOfPagesForCards);
 
 	//the number of "pages" in the tray
 	int numberOfPagesNotCards = 2;
