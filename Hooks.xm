@@ -393,6 +393,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 // dismiss the switcher when they are pressed
 //
 %hook SBUIController
+
 - (BOOL)clickedMenuButton {
 	DebugLog0;
 	
@@ -403,16 +404,26 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	}
 	return %orig;
 }
+
 - (BOOL)handleMenuDoubleTap {
 	DebugLog0;
 	
-	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
+	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey] && [[SwitcherTrayView sharedInstance] isOpen]) {
 		//home button double tapped, dismiss the tray
 		DebugLog(@"closing switcher tray");
 		[[SwitcherTrayView sharedInstance] closeTray];
 	}
+
+	else if ([stratosUserDefaults boolForKey:kCDTSPreferencesActivateByDoubleHome] && ![[SwitcherTrayView sharedInstance] isOpen]) {
+
+		[[SwitcherTrayView sharedInstance] openTray];
+
+		return NO;
+	}
+
 	return %orig;
 }
+
 - (void)_deviceLockStateChanged:(id)changed {
 	DebugLog0;
 	
@@ -421,8 +432,10 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		DebugLog(@"closing switcher tray");
 		[[SwitcherTrayView sharedInstance] closeTray];
 	}
+
 	%orig;
 }
+
 - (void)_applicationActivationStateDidChange:(id)_applicationActivationState {
 	%orig;
 	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {

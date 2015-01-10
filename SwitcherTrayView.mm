@@ -9,7 +9,7 @@ MPUSystemMediaControlsViewController *mediaView;
 
 //this is subject to change
 _UIBackdropView *blurView;
-NSUserDefaults *stratosUserDefaults;
+NSUserDefaults *_stratosUserDefaults;
 
 @implementation SwitcherTrayView
 
@@ -38,12 +38,12 @@ NSUserDefaults *stratosUserDefaults;
 		[self setUserInteractionEnabled:YES];
 
 		//create settings
-		stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+		_stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
 
 		//create the blur view
 	//    if ([[UIScreen mainScreen] bounds].size.height > 568) {
 
-			blurView = [[_UIBackdropView alloc] initWithStyle:[[stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+			blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
 			[blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
 			[self addSubview:blurView];
 
@@ -55,17 +55,17 @@ NSUserDefaults *stratosUserDefaults;
 	  //  }
 
 		//create small view that will hold the pan gesture recognizer. This is placed at the top of the tray
-		UIView *gestureView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
+		_gestureView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
 		UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-		[gestureView addGestureRecognizer:panGes];
+		[_gestureView addGestureRecognizer:panGes];
 		UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeTray)];
-		[gestureView addGestureRecognizer:tapGes];
-		[self addSubview:gestureView];
+		[_gestureView addGestureRecognizer:tapGes];
+		[self addSubview:_gestureView];
 
-		//create grabber view 
-		SBControlCenterGrabberView *grabber = [[NSClassFromString(@"SBControlCenterGrabberView") alloc] initWithFrame:CGRectMake((kScreenWidth / 2) - 25, 0, 50, 20)];
-		[grabber setUserInteractionEnabled:NO]; //let touches pass through to the gestureview
-		[gestureView addSubview:grabber];
+		//create grabber view
+		_grabber = [[NSClassFromString(@"SBControlCenterGrabberView") alloc] initWithFrame:CGRectMake((kScreenWidth / 2) - 25, 0, 50, 20)];
+		[_grabber setUserInteractionEnabled:NO]; //let touches pass through to the gestureview
+		[self refreshGrabber];
 
 		//instantiate switcher cards array
 		_switcherCards = [[NSMutableArray alloc] init];
@@ -98,7 +98,6 @@ NSUserDefaults *stratosUserDefaults;
 
 	//get number of pages the cards will take up
 	int numberOfPagesForCards = ceil(runningAppsCount / 4);
-	NSLog(@"running apps: %f\nnumber of pages: %d", runningAppsCount, numberOfPagesForCards);
 
 	//the number of "pages" in the tray
 	int numberOfPagesNotCards = 2;
@@ -384,6 +383,9 @@ NSLog(@"reloading");
 
 - (void)openTray {
 
+	//init all the window stuff by faking a gesture starting
+	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(0, 0)];
+
 	[self animateObject:self toFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, kSwitcherHeight)];
 	_isOpen = YES;
 }
@@ -458,9 +460,19 @@ NSLog(@"reloading");
 
 - (void)reloadBlurView {
 	[blurView removeFromSuperview];
-	blurView = [[_UIBackdropView alloc] initWithStyle:[[stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+	blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
 	[blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
 	[self insertSubview:blurView atIndex:0];
+}
+
+- (void)refreshGrabber {
+	
+	[_grabber removeFromSuperview];
+
+	if ([_stratosUserDefaults boolForKey:kCDTSPreferencesShowGrabber]) {
+		[_gestureView addSubview:_grabber];
+	}
+
 }
 
 @end

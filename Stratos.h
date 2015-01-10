@@ -43,6 +43,7 @@ static NSString *const kCDTSPreferencesTrayBackgroundStyle = @"switcherBackgroun
 static NSString *const kCDTSPreferencesShowGrabber = @"showGrabber";
 static NSString *const kCDTSPreferencesInvokeControlCenter = @"shouldInvokeCC";
 static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
+static NSString *const kCDTSPreferencesActivateByDoubleHome = @"activateViaHome";
 
 // private interfaces
 @interface SBUIController : NSObject
@@ -57,6 +58,8 @@ static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
 - (void)notifyAppResignActive:(id)active;
 - (void)restoreContentAndUnscatterIconsAnimated:(BOOL)animated;
 - (void)_clearInstalledSystemGestureViewForKey:(id<NSCopying>)key;
+- (void)_showControlCenterGestureBeganWithLocation:(CGPoint)location;
+- (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity;
 - (void)stopRestoringIconList;
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
