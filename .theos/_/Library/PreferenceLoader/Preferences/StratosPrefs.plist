@@ -5,6 +5,6 @@
 		detail = StratosPrefsController;
 		icon = Icon.png;
 		isController = 1;
-		label = nighthawke;
+		label = Stratos;
     };
 }

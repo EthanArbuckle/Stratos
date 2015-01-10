@@ -118,7 +118,7 @@ AVAudioPlayer *audioPlayer;
         
         
         showCCSwitchFooter = [PSSpecifier emptyGroupSpecifier];
-        [showCCSwitchFooter setProperty:@"Invoke the Control Center after swiping up beyond the Stratos switcher" forKey:@"footerText"];
+        [showCCSwitchFooter setProperty:@"Invoke the Control Center after swping up beyond the Stratos switcher" forKey:@"footerText"];
         
         
         //Enable control center being pulled up
@@ -249,7 +249,7 @@ AVAudioPlayer *audioPlayer;
             [self addSpecifiersFromArray:hiddenSpecs
                                 animated:YES];
         }
-        [self performSelector:@selector(reloadSpecifiers) withObject:nil afterDelay:0.2f];
+        //[self performSelector:@selector(reloadSpecifiers) withObject:nil afterDelay:0.2f];
     }
 }
 
@@ -270,7 +270,9 @@ AVAudioPlayer *audioPlayer;
     UIBarButtonItem *tweetButton = [[UIBarButtonItem alloc] initWithCustomView:someButton];
     self.navigationItem.rightBarButtonItem = tweetButton;
     
+    
 }
+
 /*
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:(BOOL)animated];
@@ -278,6 +280,19 @@ AVAudioPlayer *audioPlayer;
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:cortexLogo];
 }
 */
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    UIImage *backImage = [[UIImage alloc] initWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/Header-back.png"];
+    _backImageView = [[UIImageView alloc] initWithImage:backImage];
+    [[self table] addSubview:_backImageView];
+    UIImage* iconImage = [[UIImage alloc] initWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/Header-icon.png"];
+    _iconImageView = [[UIImageView alloc] initWithImage:iconImage];
+    _iconImageView.contentMode = UIViewContentModeCenter;
+    _iconImageView.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width/2, iconImage.size.height/2, 0, 0);
+    [[self table] addSubview:_iconImageView];
+}
+
 -(void)setTitle:(id)title {
     [super setTitle:nil];
 }
@@ -401,7 +416,7 @@ canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell" specifier:specifier];
     if (self) {
         DebugLog0;
-        
+        /*
         //		self.backgroundColor = STRATOS_COLOR;
         
         // TODO: replace with a graphic
@@ -420,6 +435,7 @@ canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
         _iconImageView.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width/2, iconImage.size.height/2, 0, 0);
         [self addSubview:_iconImageView];
         //}
+         */
     }
     
     return self;
@@ -431,5 +447,14 @@ canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 
 @end
 
+@implementation StratosCreditsListController
 
+-(id)specifiers {
+    if (_specifiers==nil) {
+        
+    }
+    return _specifiers;
+}
+
+@end
 

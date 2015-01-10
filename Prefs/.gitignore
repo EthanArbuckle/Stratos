@@ -1,0 +1,7 @@
+theos/
+.theos/
+*.deb
+obj/
+_/
+
+*.xcworkspace
