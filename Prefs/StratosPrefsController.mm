@@ -263,6 +263,17 @@ AVAudioPlayer *audioPlayer;
             }
         }
         
+        [specifiers addObject:[PSSpecifier emptyGroupSpecifier]];
+        PSSpecifier *moreButton = [PSSpecifier preferenceSpecifierNamed:@"More"
+                                                                 target:self
+                                                                    set:NULL
+                                                                    get:NULL
+                                                                 detail:objc_getClass("StratosCreditsListController")
+                                                                   cell:PSLinkCell
+                                                                   edit:Nil];
+        [moreButton setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [specifiers addObject:moreButton];
+        
         _specifiers = [specifiers copy];
         DebugLogC(@"_specifiers: %@", _specifiers);
 	}
@@ -497,9 +508,28 @@ canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 
 -(id)specifiers {
     if (_specifiers==nil) {
-        
+        _specifiers = _specifiers = [self loadSpecifiersFromPlistName:@"credits" target:self];
     }
     return _specifiers;
+}
+
+-(void)openTwitter:(PSSpecifier *)specifier {
+    NSString *screenName = [specifier.properties[@"handle"] substringFromIndex:1];
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tweetbot:"]])
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tweetbot:///user_profile/%@", screenName]]];
+    else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitterrific:"]])
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"twitterrific:///profile?screen_name=%@", screenName]]];
+    else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tweetings:"]])
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tweetings:///user?screen_name=%@", screenName]]];
+    else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter:"]])
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"twitter://user?screen_name=%@", screenName]]];
+    else
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://mobile.twitter.com/%@", screenName]]];
+}
+
+-(void)openReddit:(PSSpecifier *)specifier {
+    NSString *screenName = specifier.properties[@"handle"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://www.reddit.com" stringByAppendingString:screenName]]];
 }
 
 @end
@@ -609,6 +639,63 @@ canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     settingsView.tintColor = nil;
+}
+
+@end
+
+@implementation StratosDevCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
+    if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier])){
+        NSDictionary *properties = specifier.properties;
+        DebugLogC(@"Properties: %@", properties);
+        UIImage *bkIm = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"/Library/PreferenceBundles/StratosPrefs.bundle/%@.png", properties[@"imageName"]]];
+        _background = [[UIImageView alloc] initWithImage:bkIm];
+        _background.frame = CGRectMake(10, 15, 70, 70);
+        [self addSubview:_background];
+        
+        CGRect frame = [self frame];
+        
+        devName = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 10, frame.size.width, frame.size.height)];
+        [devName setText:properties[@"devName"]];
+        [devName setBackgroundColor:[UIColor clearColor]];
+        [devName setTextColor:[UIColor blackColor]];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            [devName setFont:[UIFont fontWithName:@"Helvetica Light" size:30]];
+        else
+            [devName setFont:[UIFont fontWithName:@"Helvetica Light" size:23]];
+        
+        [self addSubview:devName];
+        
+        devRealName = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 30, frame.size.width, frame.size.height)];
+        [devRealName setText:properties[@"jobTitle"]];
+        [devRealName setTextColor:[UIColor grayColor]];
+        [devRealName setBackgroundColor:[UIColor clearColor]];
+        [devRealName setFont:[UIFont fontWithName:@"Helvetica Light" size:15]];
+        
+        [self addSubview:devRealName];
+        
+        jobSubtitle = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 50, frame.size.width, frame.size.height)];
+        [jobSubtitle setText:properties[@"subtitle"]];
+        [jobSubtitle setTextColor:[UIColor grayColor]];
+        [jobSubtitle setBackgroundColor:[UIColor clearColor]];
+        [jobSubtitle setFont:[UIFont fontWithName:@"Helvetica Light" size:15]];
+        
+        [self addSubview:jobSubtitle];
+    }
+    return self;
+}
+
+@end
+
+@implementation StratosSocialCell
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+    //NSDictionary *properties = self.specifier.properties;
+    self.textLabel.textColor = kDarkerTintColor;
+    self.detailTextLabel.text = self.specifier.properties[@"handle"];
+    self.detailTextLabel.textColor = [UIColor colorWithRed:151.0f/255.0f green:151.0f/255.0f blue:163.0f/255.0f alpha:1.0];
 }
 
 @end

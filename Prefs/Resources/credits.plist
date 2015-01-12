@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>The Developers</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Cortex Dev Team</string>
+			<key>jobTitle</key>
+			<string>The Team</string>
+			<key>subtitle</key>
+			<string>Think of something to put here</string>
+			<key>imageName</key>
+			<string>cortex</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Twitter</string>
+			<key>action</key>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@CortexDevTeam</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Reddit</string>
+			<key>action</key>
+			<string>openReddit:</string>
+			<key>handle</key>
+			<string>/u/CortexDevTeam</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Ethan Arbuckle</string>
+			<key>jobTitle</key>
+			<string>Head Developer</string>
+			<key>subtitle</key>
+			<string>Also sings</string>
+			<key>imageName</key>
+			<string>ethan</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Twitter</string>
+			<key>action</key>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@its_not_herpes</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Reddit</string>
+			<key>action</key>
+			<string>openReddit:</string>
+			<key>handle</key>
+			<string>/u/its_not_herpes</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Milo Darling</string>
+			<key>jobTitle</key>
+			<string>Co-developer</string>
+			<key>subtitle</key>
+			<string>I'll think of something</string>
+			<key>imageName</key>
+			<string>milo</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Twitter</string>
+			<key>action</key>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@JamesIscNeutron</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Reddit</string>
+			<key>action</key>
+			<string>openReddit:</string>
+			<key>handle</key>
+			<string>/u/James-Isaac-Neutron</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<!--
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Reddit Screens is open source!</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Source code on GitHub</string>
+			<key>action</key>
+			<string>openGitHub</string>
+			<key>icon</key>
+			<string>github.png</string>
+			<key>cellClass</key>
+			<string>SSTintedCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Thanks</string>
+			<key>footerText</key>
+			<string>DailyPaper's code was used to implement the wallpaper saving</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSStaticTextCell</string>
+			<key>label</key>
+			<string>HASHBANG for DailyPaper</string>
+			<key>icon</key>
+			<string>hbang.png</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>The code for Faces' preference bundle was used to make this preference bundle.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSStaticTextCell</string>
+			<key>label</key>
+			<string>Ben Rosen &amp; CPDD for Faces</string>
+			<key>icon</key>
+			<string>faces.png</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Alex was a very special and OP beta tester.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSStaticTextCell</string>
+			<key>label</key>
+			<string>Alex Scott for beta testing</string>
+			<key>icon</key>
+			<string>alex.png</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Make the preference bundle header Comic Sans. Just for you, DomT4 &lt;3</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.milodarling.snooscreens</string>
+			<key>key</key>
+			<string>comicsans</string>
+			<key>label</key>
+			<string>Comic Sans</string>
+		</dict>
+		-->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>&#169; 2014-2015 Cortex Dev Team. Mix tape coming February</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>Credits</string>
+</dict>
+</plist>

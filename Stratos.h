@@ -53,7 +53,8 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesShowRunningApp      : @NO,
                                                         @"defaultPage"                      : @1,
                                                         kCDTSPreferencesActivateByDoubleHome: @NO,
-                                                        @"pageOrder"                        : @[ @"Control Center", @"Media Controls", @"Switcher Cards" ] //in order from left to right
+                                                        @"pageOrder"                        : @[ @"Control Center", @"Media Controls", @"Switcher Cards" ], //in order from left to right
+                                                        @"numberOfPages"                    : @6 //number of pages for multitasking card view
                                                         };
 
 // private interfaces
