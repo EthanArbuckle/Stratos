@@ -139,6 +139,21 @@
 		}
 		else {
 
+			if (point.y >= 180.0) {
+
+				//open velox view! WOOT WOOT 
+
+				//actually lets check if its installed first
+				if ([[NSFileManager defaultManager] fileExistsAtPath:@"Library/Application Support/Velox/" isDirectory:nil]) {
+
+					DebugLog(@"Activating Velox view");
+
+					//FUCK YEAH! WOOT WOOT BITCH
+					[[NSClassFromString(@"VeloxNotficationController") sharedController] displayStratosViewForBundleIdentifier:_identifier withFrame:[[(SwitcherTrayView *)_superSwitcher parentWindow] frame]];
+
+				}
+			}
+
 			//animate this card back to the normal spot
 			[UIView animateWithDuration:.08f animations:^{
 
