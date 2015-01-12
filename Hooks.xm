@@ -33,10 +33,7 @@ static inline void loadPrefs() {
 	stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
 
 	//set default values
-	[stratosUserDefaults registerDefaults:@{
-		kCDTSPreferencesEnabledKey: @"YES",
-		kCDTSPreferencesTrayBackgroundStyle : @1
-	}];
+	[stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
 
 	[stratosUserDefaults synchronize];
 

@@ -44,6 +44,17 @@ static NSString *const kCDTSPreferencesShowGrabber = @"showGrabber";
 static NSString *const kCDTSPreferencesInvokeControlCenter = @"shouldInvokeCC";
 static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
 static NSString *const kCDTSPreferencesActivateByDoubleHome = @"activateViaHome";
+static NSDictionary *const kCDTSPreferencesDefaults = @{
+                                                        kCDTSPreferencesEnabledKey          : @NO,
+                                                        kCDTSPreferencesTrayBackgroundStyle : @1,
+                                                        @"switcherHeight"                   : @50,
+                                                        kCDTSPreferencesShowGrabber         : @YES,
+                                                        kCDTSPreferencesInvokeControlCenter : @YES,
+                                                        kCDTSPreferencesShowRunningApp      : @NO,
+                                                        @"defaultPage"                      : @1,
+                                                        kCDTSPreferencesActivateByDoubleHome: @NO,
+                                                        @"pageOrder"                        : @[ @"Control Center", @"Media Controls", @"Switcher Cards" ] //in order from left to right
+                                                        };
 
 // private interfaces
 @interface SBUIController : NSObject

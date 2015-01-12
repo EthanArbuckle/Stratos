@@ -39,6 +39,8 @@ NSUserDefaults *_stratosUserDefaults;
 
 		//create settings
 		_stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+        
+        [_stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
 
 		//create the blur view
 	//    if ([[UIScreen mainScreen] bounds].size.height > 568) {
