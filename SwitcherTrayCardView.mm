@@ -146,12 +146,13 @@
 				//actually lets check if its installed first
 				if ([[NSFileManager defaultManager] fileExistsAtPath:@"Library/Application Support/Velox/" isDirectory:nil]) {
 
-					DebugLog(@"Activating Velox view");
+					DebugLog(@"Activating Velox view with frame %@", NSStringFromCGRect([(SwitcherTrayView *)_superSwitcher frame]));
 
 					//FUCK YEAH! WOOT WOOT BITCH
-					[[NSClassFromString(@"VeloxNotficationController") sharedController] displayStratosViewForBundleIdentifier:_identifier withFrame:[[(SwitcherTrayView *)_superSwitcher parentWindow] frame]];
+					[[NSClassFromString(@"VeloxNotficationController") sharedController] displayStratosViewForBundleIdentifier:_identifier withFrame:[(SwitcherTrayView *)_superSwitcher frame]];
 
 				}
+				
 			}
 
 			//animate this card back to the normal spot

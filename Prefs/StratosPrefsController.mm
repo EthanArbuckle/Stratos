@@ -5,6 +5,8 @@
 //
 //
 #import "StratosPrefs.h"
+#import <Preferences/PSListController.h>
+#import <Preferences/PSTableCellType.h>
 
 StratosPrefsController *rootPrefsController;
 AVAudioPlayer *audioPlayer;
@@ -320,8 +322,9 @@ AVAudioPlayer *audioPlayer;
             [self removeContiguousSpecifiers:hiddenSpecs
                                     animated:YES];
         } else {
-            [self addSpecifiersFromArray:hiddenSpecs
-                                animated:YES];
+            [self insertContiguousSpecifiers:hiddenSpecs
+                                     atIndex:3
+                                    animated:YES];
         }
         //[self performSelector:@selector(reloadSpecifiers) withObject:nil afterDelay:0.2f];
     }
