@@ -4,7 +4,7 @@ TARGET = iphone:clang:latest:7.0
 
 BUNDLE_NAME = StratosPrefs
 StratosPrefs_CFLAGS = -fobjc-arc
-StratosPrefs_FILES = StratosPrefsController.mm
+StratosPrefs_FILES = $(wildcard *.mm)
 StratosPrefs_INSTALL_PATH = /Library/PreferenceBundles
 StratosPrefs_FRAMEWORKS = UIKit CoreGraphics Social AVFoundation
 StratosPrefs_PRIVATE_FRAMEWORKS = Preferences

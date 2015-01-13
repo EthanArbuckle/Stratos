@@ -7,9 +7,42 @@
 #import "StratosPrefs.h"
 #import <Preferences/PSListController.h>
 #import <Preferences/PSTableCellType.h>
+#import <Social/SLComposeViewController.h>
+#import <Social/SLServiceTypes.h>
+#import <AVFoundation/AVFoundation.h>
+#import "buttons.h"
 
-StratosPrefsController *rootPrefsController;
 AVAudioPlayer *audioPlayer;
+
+@interface StratosPrefsController : PSListController {
+    UIView *stratosHeightView;
+    UIWindow *settingsView;
+    UIBarButtonItem *composeTweet;
+    NSUserDefaults *stratosUserDefaults;
+    PSSpecifier *stratosHeader;
+    PSSpecifier *enabledFooter;
+    PSSpecifier *enabledSwitch;
+    PSSpecifier *backgroundStyleFooter;
+    PSSpecifier *backgroundStyleCell;
+    PSSpecifier *heightSliderGroup;
+    PSSpecifier *heightSlider;
+    PSSpecifier *grabberSwitchFooter;
+    PSSpecifier *grabberSwitch;
+    PSSpecifier *showCCSwitchFooter;
+    PSSpecifier *showCCSwitch;
+    PSSpecifier *showRunningAppFooter;
+    PSSpecifier *showRunningApp;
+    PSSpecifier *defaultPageCellFooter;
+    PSSpecifier *defaultPageCell;
+    PSSpecifier *pageOrderCell;
+    PSSpecifier *doublePressHomeFooter;
+    PSSpecifier *doublePressHome;
+    PSSpecifier *numberOfPagesCell;
+    NSArray *hiddenSpecs;
+}
+@property (nonatomic, strong) UIImageView *backImageView;
+@property (nonatomic, strong) UIImageView *iconImageView;
+@end
 
 // Main Controller -------------------------------------------------------------
 
@@ -19,7 +52,6 @@ AVAudioPlayer *audioPlayer;
 
 -(id)init {
     if (self = [super init]) {
-        rootPrefsController = self;
         //initialize NSUserDefaults
         stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
         [stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
@@ -404,301 +436,6 @@ AVAudioPlayer *audioPlayer;
         [audioPlayer prepareToPlay];
         [audioPlayer play];
     }
-}
-
-@end
-
-@implementation StratosListItemsController
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    settingsView = [[UIApplication sharedApplication] keyWindow];
-    settingsView.tintColor = kDarkerTintColor;
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    settingsView.tintColor = nil;
-}
-
-@end
-/*
-@implementation StratosMovableListItemsController
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    settingsView = [[UIApplication sharedApplication] keyWindow];
-    settingsView.tintColor = kDarkerTintColor;
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    settingsView.tintColor = nil;
-}
-
-- (BOOL)tableView:(UITableView *)tableView
-canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-@end
-*/
-//Tinted Cells ------------------------------------------------------------------
-@implementation StratosTintedSwitchCell
-
--(id)initWithStyle:(long long)arg1 reuseIdentifier:(id)arg2 specifier:(id)arg3 {
-    self = [super initWithStyle:arg1 reuseIdentifier:arg2 specifier:arg3];
-    if (self) {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Eclipse.dylib"] && [(id)CFBridgingRelease(CFPreferencesCopyAppValue(CFSTR("enabled"), CFSTR("com.gmoran.eclipse"))) boolValue]) //Eclipse Compatibility
-            [((UISwitch *)[self control]) setTintColor:kTintColor];
-        [((UISwitch *)[self control]) setOnTintColor:kTintColor]; //change the switch color
-    }
-    return self;
-}
-
--(void)layoutSubviews {
-    [super layoutSubviews];
-    self.textLabel.textColor = kDarkerTintColor;
-}
-
-@end
-
-@implementation StratosTintedSliderCell
-
--(id)initWithStyle:(long long)arg1 reuseIdentifier:(id)arg2 specifier:(id)arg3 {
-    self = [super initWithStyle:arg1 reuseIdentifier:arg2 specifier:arg3];
-    if (self) {
-        UISlider *slider = (UISlider *)[self control];
-        [slider setMinimumTrackTintColor:kDarkerTintColor]; //change the slider color
-        [slider setMaximumTrackTintColor:[UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:228.0f/255.0f alpha:1.0]]; //change the right side color to something lighter so they contrast better
-    }
-    return self;
-}
-
-@end
-
-@implementation StratosTintedCell
-
--(void)layoutSubviews {
-    [super layoutSubviews];
-    self.textLabel.textColor = kDarkerTintColor;
-    self.detailTextLabel.textColor = [UIColor colorWithRed:151.0f/255.0f green:151.0f/255.0f blue:163.0f/255.0f alpha:1.0];
-}
-
-@end
-
-// Header Cell -----------------------------------------------------------------
-
-@implementation StratosHeaderCell
-
-
-- (id)initWithSpecifier:(id)specifier {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell" specifier:specifier];
-    if (self) {
-        DebugLog0;
-    }
-    
-    return self;
-}
-
-- (CGFloat)preferredHeightForWidth:(CGFloat)width {
-    return HEADER_HEIGHT;
-}
-
-@end
-
-@implementation StratosCreditsListController
-
--(id)specifiers {
-    if (_specifiers==nil) {
-        _specifiers = _specifiers = [self loadSpecifiersFromPlistName:@"credits" target:self];
-    }
-    return _specifiers;
-}
-
--(void)openTwitter:(PSSpecifier *)specifier {
-    NSString *screenName = [specifier.properties[@"handle"] substringFromIndex:1];
-    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tweetbot:"]])
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tweetbot:///user_profile/%@", screenName]]];
-    else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitterrific:"]])
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"twitterrific:///profile?screen_name=%@", screenName]]];
-    else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tweetings:"]])
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tweetings:///user?screen_name=%@", screenName]]];
-    else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter:"]])
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"twitter://user?screen_name=%@", screenName]]];
-    else
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://mobile.twitter.com/%@", screenName]]];
-}
-
--(void)openReddit:(PSSpecifier *)specifier {
-    NSString *screenName = specifier.properties[@"handle"];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://www.reddit.com" stringByAppendingString:screenName]]];
-}
-
-@end
-
-@implementation StratosMovableItemsController
-
-- (id)initForContentSize:(CGSize)size
-{
-    self = [super init];
-    if (self)
-    {
-        stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-        [stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
-        [stratosUserDefaults synchronize];
-        
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height) style:UITableViewStyleGrouped];
-        
-        [self.tableView setDelegate:self];
-        [self.tableView setDataSource:self];
-        [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        [self.tableView setEditing:YES];
-        [self.tableView setAllowsSelection:NO];
-        
-        [self setView:self.tableView];
-        
-        [self setTitle:@"Page Order"];
-    }
-    
-    return self;
-}
-
--(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Page order";
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return @"Top to bottom represents left to right";
-}
-
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
-    }
-    NSInteger index = indexPath.row;
-    DebugLogC(@"Cell Index: %ld", (long)index);
-    NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
-    
-    cell.textLabel.text = pageOrder[index];
-    //cell.imageView.image = iconForDescription(desc);
-    
-    return cell;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSMutableArray *pageOrder = [[stratosUserDefaults stringArrayForKey:@"pageOrder"] mutableCopy];
-    NSInteger sourceIndex = sourceIndexPath.row;
-    NSInteger destIndex = destinationIndexPath.row;
-    if (sourceIndex>destIndex) {
-        NSString *cellToMove = [pageOrder objectAtIndex:sourceIndex];
-        for (int i=sourceIndex; i>destIndex; i--) {
-            [pageOrder replaceObjectAtIndex:i withObject:pageOrder[i-1]];
-        }
-        [pageOrder replaceObjectAtIndex:destIndex withObject:cellToMove];
-    } else if (sourceIndex<destIndex) {
-        NSString *cellToMove = [pageOrder objectAtIndex:sourceIndex];
-        for (int i=sourceIndex; i<destIndex; i++) {
-            [pageOrder replaceObjectAtIndex:i withObject:pageOrder[i+1]];
-        }
-        [pageOrder replaceObjectAtIndex:destIndex withObject:cellToMove];
-    }
-    
-    [stratosUserDefaults setObject:pageOrder forKey:@"pageOrder"];
-    [stratosUserDefaults synchronize];
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.cortexdevteam.stratos.prefs-changed"), NULL, NULL, YES);
-    //[tableView reloadData];
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView*)tableView editingStyleForRowAtIndexPath:(NSIndexPath*)indexPath {
-    return UITableViewCellEditingStyleNone;
-}
-
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    settingsView = [[UIApplication sharedApplication] keyWindow];
-    settingsView.tintColor = kDarkerTintColor;
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    settingsView.tintColor = nil;
-}
-
-@end
-
-@implementation StratosDevCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
-    if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier])){
-        NSDictionary *properties = specifier.properties;
-        DebugLogC(@"Properties: %@", properties);
-        UIImage *bkIm = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"/Library/PreferenceBundles/StratosPrefs.bundle/%@.png", properties[@"imageName"]]];
-        _background = [[UIImageView alloc] initWithImage:bkIm];
-        _background.frame = CGRectMake(10, 15, 70, 70);
-        [self addSubview:_background];
-        
-        CGRect frame = [self frame];
-        
-        devName = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 10, frame.size.width, frame.size.height)];
-        [devName setText:properties[@"devName"]];
-        [devName setBackgroundColor:[UIColor clearColor]];
-        [devName setTextColor:[UIColor blackColor]];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-            [devName setFont:[UIFont fontWithName:@"Helvetica Light" size:30]];
-        else
-            [devName setFont:[UIFont fontWithName:@"Helvetica Light" size:23]];
-        
-        [self addSubview:devName];
-        
-        devRealName = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 30, frame.size.width, frame.size.height)];
-        [devRealName setText:properties[@"jobTitle"]];
-        [devRealName setTextColor:[UIColor grayColor]];
-        [devRealName setBackgroundColor:[UIColor clearColor]];
-        [devRealName setFont:[UIFont fontWithName:@"Helvetica Light" size:15]];
-        
-        [self addSubview:devRealName];
-        
-        jobSubtitle = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 50, frame.size.width, frame.size.height)];
-        [jobSubtitle setText:properties[@"subtitle"]];
-        [jobSubtitle setTextColor:[UIColor grayColor]];
-        [jobSubtitle setBackgroundColor:[UIColor clearColor]];
-        [jobSubtitle setFont:[UIFont fontWithName:@"Helvetica Light" size:15]];
-        
-        [self addSubview:jobSubtitle];
-    }
-    return self;
-}
-
-@end
-
-@implementation StratosSocialCell
-
--(void)layoutSubviews {
-    [super layoutSubviews];
-    //NSDictionary *properties = self.specifier.properties;
-    self.textLabel.textColor = kDarkerTintColor;
-    self.detailTextLabel.text = self.specifier.properties[@"handle"];
-    self.detailTextLabel.textColor = [UIColor colorWithRed:151.0f/255.0f green:151.0f/255.0f blue:163.0f/255.0f alpha:1.0];
 }
 
 @end
