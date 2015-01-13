@@ -197,6 +197,31 @@ NSUserDefaults *_stratosUserDefaults;
 
 }
 
+//this is called right before the tray is presented
+- (void)prepareToOpen {
+
+	//get default page we need to open to
+	int defaultPage = [[_stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
+
+	//i think 1->Cards 2->Settings 3->Media
+	if (defaultPage == 1) {
+
+		//open to cards
+		[_trayScrollView setContentOffset:CGPointMake(kScreenWidth * 2, 0) animated:NO];
+	}
+	else if (defaultPage == 2) {
+
+		//open to quicklaunch
+		[_trayScrollView setContentOffset:CGPointMake(0, 0) animated:NO];
+	}
+	else {
+
+		//open to media controls
+		[_trayScrollView setContentOffset:CGPointMake(kScreenWidth, 0) animated:NO];
+	}
+
+}
+
 - (void)reloadIfNecessary {
 
 	//if our cached idents arent equal to th current running ones, we need to reload everything

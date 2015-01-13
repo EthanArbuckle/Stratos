@@ -44,6 +44,7 @@ static NSString *const kCDTSPreferencesShowGrabber = @"showGrabber";
 static NSString *const kCDTSPreferencesInvokeControlCenter = @"shouldInvokeCC";
 static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
 static NSString *const kCDTSPreferencesActivateByDoubleHome = @"activateViaHome";
+static NSString *const kCDTSPreferencesDefaultPage = @"defaultPage";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesEnabledKey          : @NO,
                                                         kCDTSPreferencesTrayBackgroundStyle : @1,

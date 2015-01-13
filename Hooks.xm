@@ -184,6 +184,9 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
         [[NSClassFromString(@"SBUIController") sharedInstance] restoreContentAndUnscatterIconsAnimated:NO];
 	}
 
+	//let the tray know its funna get opened
+	[[SwitcherTrayView sharedInstance] prepareToOpen];
+
 	//dont actually show the controlcenter
 	[self _suspendGestureBegan];
 

@@ -1,3 +1,4 @@
+#import <UIKit/UIKit.h>
 #import <Preferences/PSTableCell.h>
 
 @interface StratosHeaderCell : PSTableCell { }

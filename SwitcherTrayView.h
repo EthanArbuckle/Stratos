@@ -17,6 +17,7 @@
 - (void)mediaTapped;
 - (void)addSettingControls;
 - (void)killAllApps;
+- (void)prepareToOpen;
 - (void)reloadIfNecessary;
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading;
 - (void)handlePan:(UIPanGestureRecognizer *)pan;
