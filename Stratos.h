@@ -279,6 +279,6 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 @interface VeloxNotficationController
 
 + (VeloxNotficationController *)sharedController;
-- (void)displayStratosViewForBundleIdentifier:(NSString *)identifier withFrame:(CGRect)frame;
+- (BOOL)displayStratosViewForBundleIdentifier:(NSString *)identifier withFrame:(CGRect)frame;
 
 @end
