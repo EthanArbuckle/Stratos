@@ -6,3 +6,5 @@ Packages/
 _/
 
 *.xcworkspace
+
+Packages/Prefs/.theos/obj/arm64/StratosPrefs.bundle/StratosPrefs

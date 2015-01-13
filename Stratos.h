@@ -29,8 +29,8 @@
 #define kSwitcherHeight 		kScreenHeight / 3.3 //172
 #define kSwitcherMaxY 			kScreenHeight - kSwitcherHeight
 #define kSwitcherCardWidth 		kScreenWidth / 4.5714 //70
-#define kSwitcherCardHeight 	kScreenHeight / 4.36 //130
-#define kSwitcherCardSpacing	ceil((kScreenWidth - (kSwitcherCardWidth * 4)) / 5) //8
+#define kSwitcherCardHeight 	        kScreenHeight / 4.36 //130
+#define kSwitcherCardSpacing	        ceil((kScreenWidth - (kSwitcherCardWidth * 4)) / 5) //8
 
 #define kMultiViewCardWidth 	80
 #define kMultiViewCardHeight 	150
