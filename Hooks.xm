@@ -254,8 +254,6 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
 
-	DebugLog(@"swipe gesture ended");
-
 	//if tweak is disabled, run original method
 	if (![stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
 
@@ -355,10 +353,12 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	}
 
 	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
-	if (location.y > 445.0f) {
-		[self animateObject:switcher toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
-		[trayWindow setUserInteractionEnabled:NO];
-		[touchView removeFromSuperview];
+	if (location.y <= kScreenHeight - (kSwitcherHeight / 2)) { //opening switcher
+		
+
+		[self animateObject:switcher toFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, kSwitcherHeight)];
+		[switcher setIsOpen:YES];
+
 	}
 	else if (location.y <= kSwitcherHeight + 100) {
 
@@ -368,8 +368,9 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 	else {
 
-		[self animateObject:switcher toFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, kSwitcherHeight)];
-		[switcher setIsOpen:YES];
+		[self animateObject:switcher toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
+		[trayWindow setUserInteractionEnabled:NO];
+		[touchView removeFromSuperview];
 	}
 }
 
