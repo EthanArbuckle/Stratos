@@ -1,0 +1,109 @@
+﻿/*
+ Translated to Maltese (mt) by gertab
+Cydia id is 465077255*/
+
+
+"ENABLED" = "Ippermetti";
+
+"ENABLED_FOOTER" = "A esperjenza multi-tasking ġdida li tista tuża"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+
+"APPEARANCE_HEADER" = "Apparenza";
+
+"BACKGROUND_STYLE" = "Stil tal-isfond";
+
+
+"DARK_BACKGROUND" = "Skur";
+
+"COMMON_BLUR_BACKGROUND" = "Ċċajpar normali";
+
+"CC_STYLE_BACKGROUND" = "Stil tal-CC"; //Control Center Style
+
+"LIGHT_BACKGROUND" = "Ċar";
+
+
+"SHOW_GRABBER" = "Uri l-manku";
+
+"HEIGHT_SLIDER_FOOTER" = "Agħżel it-tul ta' kemm l-iswitcher jestendi";
+
+
+"FUNCTIONALITY_HEADER" = "Funzjonalita";
+
+"SHOW_RUNNING_APP" = "Uri l-app li qed tintuża ġol-iSwitcher";
+
+"ACTIVATE_VIA_HOME" = "Attiva mill-Buttuna tal-Home";
+
+"INVOKE_CC" = "Uri l-Control Center";
+
+"INVOKE_CC_FOOTER" = "Uri l-Control Center wara li tiswipeja 'l fuq mis-switcher tal-iStratos";
+
+
+"PAGING_HEADER" = "Pagni";
+
+"DEFAULT_PAGE" = "Pagna li tuża";
+
+
+"SWITCHER_CARDS" = "Karti tal-iswitcher";
+
+"CONTROL_CENTER" = "Control Center";
+
+"MEDIA_CONTROLS" = "Controlli tal-Media";
+
+
+"PAGE_ORDER" = "Ordni tal-pagni";
+
+"NUMBER_OF_SWITCHER_PAGES" = "Numri tal-pagni tal-iswitcher";
+
+"TOP_TO_BOTTOM" = "'L fuq għal isfel jirrapreżenta ix-xellug għal lemin";
+
+"SWITCHER_PAGES_NUMBER_FOOTER" = "In-numru ta 'paġni li juru għall-karti Swticher. Użati meta jkollok paġna oħra (jiġifieri l-Control Center jew Kontrolli Media) għad-dritt tal-karti tal-iswticher";
+
+
+"ALL" = "Kollox";
+
+
+"MORE" = "Aktar";
+
+/*More Page*/
+
+"CREDITS" = "Kreditu";
+
+"THE_DEVELOPERS" = "L-Iżviluppaturi";
+
+"THE_TEAM" = "It-Tim";
+
+"TEAM_SUBTITLE" = "It-Tim ta' Stratos";
+
+
+"ETHAN_TITLE" = "Il-Prim Żviluppatur";
+
+"ETHAN_SUBTITLE" = "Dak li ħolom u ġab Stratos";
+
+
+"MILO_TITLE" = "Ko-Żviluppatur";
+
+"MILO_SUBTITLE" = "Iddisinja u ħalaq il-preferenzi";
+
+
+"PHILLIP_TITLE" = "Ko-Żviluppatur";
+
+"PHILLIP_SUBTITLE" = "Għamel żewġ kommetti _vera_ importanti";
+
+
+"CYRIL_TITLE" = "Disinjatur";
+
+"CYRIL_SUBTITLE" = "Magħruf ukoll bħala Cereal";
+
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape ġej fi Frar";
+
+
+"CHECK_IT_OUT" = "Iċċekjaha!";
+
+"VELOX" = "Velox hija t-tweak il-ġdida tal-Cortex Dev Team, magħmula minn Phillip Tennen.";
+
+
+
+
+
+
+

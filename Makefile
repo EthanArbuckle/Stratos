@@ -18,5 +18,5 @@ after-stage::
 	find $(FW_STAGING_DIR) -iname '*.plist' -or -iname '*.strings' -exec plutil -convert binary1 {} \;
 	find $(FW_STAGING_DIR) -iname '*.png' -exec pincrush-osx -i {} \;
 
-#after-install::
-#	install.exec "killall -HUP SpringBoard"
+after-install::
+	install.exec "killall -HUP SpringBoard"

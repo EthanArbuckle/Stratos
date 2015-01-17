@@ -57,8 +57,8 @@ AVAudioPlayer *audioPlayer;
         //backgroundStyleFooter = [PSSpecifier emptyGroupSpecifier];
         //[backgroundStyleFooter setProperty:@"Choose the blur for your Stratos switcher tray" forKey:@"footerText"];
         
-        
-        heightSliderGroup = [PSSpecifier groupSpecifierWithHeader:localized(@"APPEARANCE_HEADER", @"Appearance") footer:localized(@"HEIGHT_SLIDER_FOOTER", @"Choose the height to which your switcher extends")];
+        heightSliderGroup = [PSSpecifier groupSpecifierWithName:localized(@"APPEARANCE_HEADER", @"Appearance")];
+        [heightSliderGroup setProperty:localized(@"HEIGHT_SLIDER_FOOTER", @"Choose the height to which your switcher extends") forKey:@"footerText"];
         
         //Background Style Picker
         backgroundStyleCell = [PSSpecifier preferenceSpecifierNamed:localized(@"BACKGROUND_STYLE", @"Background Style")
@@ -122,8 +122,8 @@ AVAudioPlayer *audioPlayer;
         //showRunningAppFooter = [PSSpecifier emptyGroupSpecifier];
         //[showRunningAppFooter setProperty:@"Show the application that you are currently using in the Stratos switcher" forKey:@"footerText"];
         
-        showCCSwitchFooter = [PSSpecifier groupSpecifierWithHeader:localized(@"FUNCTIONALITY_HEADER", @"Functionality")
-                                                            footer:localized(@"INVOKE_CC_FOOTER", @"Invoke the Control Center after swiping up beyond the Stratos switcher")];
+        showCCSwitchFooter = [PSSpecifier groupSpecifierWithName:localized(@"FUNCTIONALITY_HEADER", @"Functionality")];
+        [showCCSwitch setProperty:localized(@"INVOKE_CC_FOOTER", @"Invoke the Control Center after swiping up beyond the Stratos switcher") forKey:@"footerText"];
         
         //Show currently running applications
         showRunningApp = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_RUNNING_APP", @"Show Running App in Switcher")
@@ -323,14 +323,13 @@ AVAudioPlayer *audioPlayer;
         if (![value boolValue]) {
             [self removeContiguousSpecifiers:hiddenSpecs
                                     animated:YES];
-            [phoneView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2f];
+            [phoneView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.1f];
         } else {
             [self insertContiguousSpecifiers:hiddenSpecs
                                      atIndex:3
                                     animated:YES];
-            [self.table addSubview:phoneView];
+            [self.table performSelector:@selector(addSubview:) withObject:phoneView afterDelay:0.15f];
         }
-        //[self performSelector:@selector(reloadSpecifiers) withObject:nil afterDelay:0.2f];
     }
     if ([key isEqualToString:@"switcherBackgroundStyle"])
         [self reloadBlurView];

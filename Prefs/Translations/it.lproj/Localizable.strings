@@ -1,0 +1,58 @@
+"ENABLED" = "Abilita";
+"ENABLED_FOOTER" = "Solo il flip di un interruttore ti separa da una nuova esperienza di multitasking";
+"APPEARANCE_HEADER" = "Aspetto";
+"BACKGROUND_STYLE" = "Tipo di Sfondo";
+
+"DARK_BACKGROUND" = "Scuro";
+"COMMON_BLUR_BACKGROUND" = "Sfumatura Tradizionale";
+"CC_STYLE_BACKGROUND" = "Stile CC"; //Control Center Style
+"LIGHT_BACKGROUND" = "Chiaro";
+
+"SHOW_GRABBER" = "Mostra Grabber";
+"HEIGHT_SLIDER_FOOTER" = "Seleziona l'altezza dello switcher";
+
+"FUNCTIONALITY_HEADER" = "Funzionalità";
+"SHOW_RUNNING_APP" = "Mostra Applicazioni in uso nello Switcher";
+"ACTIVATE_VIA_HOME" = "Attiva Tramite Bottone Home";
+"INVOKE_CC" = "Apri Centro di Controllo";
+"INVOKE_CC_FOOTER" = "Apri il Centro di Controllo effettuando uno swipe verso l'alto oltre lo switcher di Stratos";
+
+"PAGING_HEADER" = "Paginazione";
+"DEFAULT_PAGE" = "Pagina di Default";
+
+"SWITCHER_CARDS" = "Schede Switcher";
+"CONTROL_CENTER" = "Centro di Controllo";
+"MEDIA_CONTROLS" = "Controlli Multimediali";
+
+"PAGE_ORDER" = "Ordine delle Pagine";
+"NUMBER_OF_SWITCHER_PAGES" = "Numero di Pagine nello Switcher";
+"TOP_TO_BOTTOM" = "Dall'alto verso il basso rappresenta da sinistra a destra";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Numero di pagine da mostrare per le schede dello switcher. Usato quando hai un'altra pagina (ad es. il Centro di Controllo o i Controlli Multimediali) a destra delle schede dello switcher";
+
+"ALL" = "Tutto";
+
+"MORE" = "Altro";
+
+/*More Page*/
+"CREDITS" = "Crediti";
+"THE_DEVELOPERS" = "Gli Sviluppatori";
+"THE_TEAM" = "Il Team";
+"TEAM_SUBTITLE" = "Il team alle spalle di Stratos";
+
+"ETHAN_TITLE" = "Capo Sviluppatore";
+"ETHAN_SUBTITLE" = "Il cuore e l'anima di Stratos";
+
+"MILO_TITLE" = "Co-sviluppatore";
+"MILO_SUBTITLE" = "Progettatore e creatore della pagina delle impostazioni";
+
+"PHILLIP_TITLE" = "Co-sviluppatore";
+"PHILLIP_SUBTITLE" = "Autore di due _molto_ importanti contributi";
+
+"CYRIL_TITLE" = "Designer";
+"CYRIL_SUBTITLE" = "Anche conosciuto come Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape in arrivo a Febbraio";
+
+"CHECK_IT_OUT" = "Dai un'occhiata!";
+"VELOX" = "Velox è l'altro tweak del Cortex Dev Team, sviluppato da Phillip Tennen.";
+
