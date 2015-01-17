@@ -442,6 +442,9 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
 		//an app was opened, closed, or killed. tell the identifier daemon to reload.
 		[[IdentifierDaemon sharedInstance] reloadApps];
+
+		//also reload them in the switcher tray
+		[[SwitcherTrayView sharedInstance] reloadIfNecessary];
 	}
 }
 
