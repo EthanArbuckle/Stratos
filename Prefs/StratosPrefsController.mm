@@ -7,6 +7,7 @@
 
 // Main Controller -------------------------------------------------------------
 #import "StratosPrefsController.h"
+#define StratosTintedSwitchCell PSSwitchTableCell
 AVAudioPlayer *audioPlayer;
 @implementation StratosPrefsController
 @synthesize backImageView = _backImageView;
@@ -26,86 +27,93 @@ AVAudioPlayer *audioPlayer;
 {
 	if (_specifiers == nil)
     {
-        NSMutableArray *specifiers = [[NSMutableArray alloc] init];
+        NSMutableArray *specifiers = [NSMutableArray new];
+        hiddenSpecs = [NSMutableArray new];
+        PSSpecifier *spec;
         
         //Stratos Header Cell
-        stratosHeader = [PSSpecifier emptyGroupSpecifier];
-        [stratosHeader setProperty:@"StratosSpacerCell" forKey:@"headerCellClass"];
-        [stratosHeader setProperty:@160.0f forKey:@"spacerHeight"];
-        [specifiers addObject:stratosHeader];
+        spec = [PSSpecifier emptyGroupSpecifier];
+        [spec setProperty:@"StratosSpacerCell" forKey:@"headerCellClass"];
+        [spec setProperty:@160.0f forKey:@"spacerHeight"];
+        [specifiers addObject:spec];
         
         //Spacer
-        enabledFooter = [PSSpecifier emptyGroupSpecifier];
-        [enabledFooter setProperty:localized(@"ENABLED_FOOTER", @"A new multitasking experience is just the flip of a switch away") forKey:@"footerText"];
-        [specifiers addObject:enabledFooter];
+        spec = [PSSpecifier emptyGroupSpecifier];
+        [spec setProperty:localized(@"ENABLED_FOOTER", @"A new multitasking experience is just the flip of a switch away") forKey:@"footerText"];
+        [specifiers addObject:spec];
         
         //Main kill switch
-        enabledSwitch = [PSSpecifier preferenceSpecifierNamed:localized(@"ENABLED", @"Enabled")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ENABLED", @"Enabled")
                                                        target:self
                                                           set:@selector(setPreferenceValue:specifier:)
                                                           get:@selector(readPreferenceValue:)
                                                        detail:Nil
                                                          cell:PSSwitchCell
                                                          edit:Nil];
-        [enabledSwitch setProperty:@"isEnabled" forKey:@"key"];
-        [enabledSwitch setProperty:@NO forKey:@"default"];
-        [enabledSwitch setProperty:@YES forKey:@"isEnabledSpec"];
-        [enabledSwitch setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
-        [specifiers addObject:enabledSwitch];
+        [spec setProperty:@"isEnabled" forKey:@"key"];
+        [spec setProperty:@NO forKey:@"default"];
+        [spec setProperty:@YES forKey:@"isEnabledSpec"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [specifiers addObject:spec];
         
         //"Tray Settings" Spacer
         //backgroundStyleFooter = [PSSpecifier emptyGroupSpecifier];
         //[backgroundStyleFooter setProperty:@"Choose the blur for your Stratos switcher tray" forKey:@"footerText"];
         
-        heightSliderGroup = [PSSpecifier groupSpecifierWithName:localized(@"APPEARANCE_HEADER", @"Appearance")];
-        [heightSliderGroup setProperty:localized(@"HEIGHT_SLIDER_FOOTER", @"Choose the height to which your switcher extends") forKey:@"footerText"];
+        spec = [PSSpecifier groupSpecifierWithName:localized(@"APPEARANCE_HEADER", @"Appearance")];
+        [spec setProperty:localized(@"HEIGHT_SLIDER_FOOTER", @"Choose the height to which your switcher extends") forKey:@"footerText"];
+        [hiddenSpecs addObject:spec];
         
         //Background Style Picker
-        backgroundStyleCell = [PSSpecifier preferenceSpecifierNamed:localized(@"BACKGROUND_STYLE", @"Background Style")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"BACKGROUND_STYLE", @"Background Style")
                                                              target:self
                                                                 set:@selector(setPreferenceValue:specifier:)
                                                                 get:@selector(readPreferenceValue:)
                                                              detail:objc_getClass("StratosListItemsController")
                                                                cell:PSLinkListCell
                                                                edit:Nil];
-        [backgroundStyleCell setProperty:NSStringFromSelector(@selector(backgroundStyleTitles)) forKey:@"titlesDataSource"];
-        [backgroundStyleCell setProperty:NSStringFromSelector(@selector(backgroundStyleValues)) forKey:@"valuesDataSource"];
-        [backgroundStyleCell setProperty:@"switcherBackgroundStyle" forKey:@"key"];
-        [backgroundStyleCell setProperty:@1 forKey:@"default"];
-        [backgroundStyleCell setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [spec setProperty:NSStringFromSelector(@selector(backgroundStyleTitles)) forKey:@"titlesDataSource"];
+        [spec setProperty:NSStringFromSelector(@selector(backgroundStyleValues)) forKey:@"valuesDataSource"];
+        [spec setProperty:@"switcherBackgroundStyle" forKey:@"key"];
+        [spec setProperty:@1 forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
         
         //Disable Grabber
-        grabberSwitch = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_GRABBER", @"Show Grabber")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_GRABBER", @"Show Grabber")
                                                        target:self
                                                           set:@selector(setPreferenceValue:specifier:)
                                                           get:@selector(readPreferenceValue:)
                                                        detail:Nil
                                                          cell:PSSwitchCell
                                                          edit:Nil];
-        [grabberSwitch setProperty:@"showGrabber" forKey:@"key"];
-        [grabberSwitch setProperty:@YES forKey:@"default"];
-        [grabberSwitch setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [spec setProperty:@"showGrabber" forKey:@"key"];
+        [spec setProperty:@YES forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
         
         //Height of switcher slider
-        heightSlider = [PSSpecifier preferenceSpecifierNamed:@"Switcher Height"
+        spec = [PSSpecifier preferenceSpecifierNamed:@"Switcher Height"
                                                       target:self
                                                          set:@selector(setPreferenceValue:specifier:)
                                                          get:@selector(readPreferenceValue:)
                                                       detail:Nil
                                                         cell:PSSliderCell
                                                         edit:Nil];
-        [heightSlider setProperty:@50 forKey:@"default"];
-        [heightSlider setProperty:@0 forKey:@"min"];
-        [heightSlider setProperty:@100 forKey:@"max"];
-        [heightSlider setProperty:@NO forKey:@"showValue"];
-        [heightSlider setProperty:@"switcherHeight" forKey:@"key"];
-        [heightSlider setProperty:NSClassFromString(@"StratosTintedSliderCell") forKey:@"cellClass"];
+        [spec setProperty:@50 forKey:@"default"];
+        [spec setProperty:@0 forKey:@"min"];
+        [spec setProperty:@100 forKey:@"max"];
+        [spec setProperty:@NO forKey:@"showValue"];
+        [spec setProperty:@"switcherHeight" forKey:@"key"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSliderCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
 
-        previewSpecifier = [PSSpecifier emptyGroupSpecifier];
-        [previewSpecifier setProperty:@"StratosSpacerCell" forKey:@"footerCellClass"];
-        [previewSpecifier setProperty:@300.0f forKey:@"spacerHeight"];
+        for (int i=0; i<9; i++)
+            [hiddenSpecs addObject:[PSSpecifier emptyGroupSpecifier]];
+        //[previewSpecifier setProperty:@"StratosSpacerCell" forKey:@"footerCellClass"];
+        //[spec setProperty:@300.0f forKey:@"height"];
         
         
         //grabberSwitchFooter = [PSSpecifier emptyGroupSpecifier];
@@ -122,144 +130,115 @@ AVAudioPlayer *audioPlayer;
         //showRunningAppFooter = [PSSpecifier emptyGroupSpecifier];
         //[showRunningAppFooter setProperty:@"Show the application that you are currently using in the Stratos switcher" forKey:@"footerText"];
         
-        showCCSwitchFooter = [PSSpecifier groupSpecifierWithName:localized(@"FUNCTIONALITY_HEADER", @"Functionality")];
-        [showCCSwitch setProperty:localized(@"INVOKE_CC_FOOTER", @"Invoke the Control Center after swiping up beyond the Stratos switcher") forKey:@"footerText"];
+        spec = [PSSpecifier groupSpecifierWithName:localized(@"FUNCTIONALITY_HEADER", @"Functionality")];
+        [spec setProperty:localized(@"INVOKE_CC_FOOTER", @"Invoke the Control Center after swiping up beyond the Stratos switcher") forKey:@"footerText"];
+        [hiddenSpecs addObject:spec];
         
         //Show currently running applications
-        showRunningApp = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_RUNNING_APP", @"Show Running App in Switcher")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_RUNNING_APP", @"Show Running App in Switcher")
                                                       target:self
                                                          set:@selector(setPreferenceValue:specifier:)
                                                          get:@selector(readPreferenceValue:)
                                                       detail:Nil
                                                         cell:PSSwitchCell
                                                         edit:Nil];
-        [showRunningApp setProperty:@"showRunningApp" forKey:@"key"];
-        [showRunningApp setProperty:@NO forKey:@"default"];
-        [showRunningApp setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [spec setProperty:@"showRunningApp" forKey:@"key"];
+        [spec setProperty:@NO forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
-        doublePressHome = [PSSpecifier preferenceSpecifierNamed:localized(@"ACTIVATE_VIA_HOME", @"Activate via home button")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ACTIVATE_VIA_HOME", @"Activate via home button")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
                                                             get:@selector(readPreferenceValue:)
                                                          detail:Nil
                                                            cell:PSSwitchCell
                                                            edit:Nil];
-        [doublePressHome setProperty:@"activateViaHome" forKey:@"key"];
-        [doublePressHome setProperty:@NO forKey:@"default"];
-        [doublePressHome setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [spec setProperty:@"activateViaHome" forKey:@"key"];
+        [spec setProperty:@NO forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
         //Enable control center being pulled up
-        showCCSwitch = [PSSpecifier preferenceSpecifierNamed:localized(@"INVOKE_CC", @"Invoke Control Center")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"INVOKE_CC", @"Invoke Control Center")
                                                       target:self
                                                          set:@selector(setPreferenceValue:specifier:)
                                                          get:@selector(readPreferenceValue:)
                                                       detail:Nil
                                                         cell:PSSwitchCell
                                                         edit:Nil];
-        [showCCSwitch setProperty:@"shouldInvokeCC" forKey:@"key"];
-        [showCCSwitch setProperty:@YES forKey:@"default"];
-        [showCCSwitch setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [spec setProperty:@"shouldInvokeCC" forKey:@"key"];
+        [spec setProperty:@YES forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
         //defaultPageCellFooter = [PSSpecifier emptyGroupSpecifier];
         //[defaultPageCellFooter setProperty:@"The default page to show when you first invoke the Stratos switcher" forKey:@"footerText"];
         
-        defaultPageCellFooter = [PSSpecifier groupSpecifierWithName:localized(@"PAGING_HEADER", @"Paging")];
+        spec = [PSSpecifier groupSpecifierWithName:localized(@"PAGING_HEADER", @"Paging")];
+        [hiddenSpecs addObject:spec];
         
-        defaultPageCell = [PSSpecifier preferenceSpecifierNamed:localized(@"DEFAULT_PAGE", @"Default Page")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"DEFAULT_PAGE", @"Default Page")
                                                              target:self
                                                                 set:@selector(setPreferenceValue:specifier:)
                                                                 get:@selector(readPreferenceValue:)
                                                              detail:objc_getClass("StratosListItemsController")
                                                                cell:PSLinkListCell
                                                                edit:Nil];
-        [defaultPageCell setProperty:@"defaultPageTitles" forKey:@"titlesDataSource"];
-        [defaultPageCell setProperty:@"defaultPageValues" forKey:@"valuesDataSource"];
-        [defaultPageCell setProperty:@"defaultPage" forKey:@"key"];
-        [defaultPageCell setProperty:@1 forKey:@"default"];
-        [defaultPageCell setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [spec setProperty:@"defaultPageTitles" forKey:@"titlesDataSource"];
+        [spec setProperty:@"defaultPageValues" forKey:@"valuesDataSource"];
+        [spec setProperty:@"defaultPage" forKey:@"key"];
+        [spec setProperty:@1 forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
         
-        pageOrderCell = [PSSpecifier preferenceSpecifierNamed:localized(@"PAGE_ORDER", @"Page Order")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"PAGE_ORDER", @"Page Order")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
                                                             get:@selector(readPreferenceValue:)
                                                          detail:objc_getClass("StratosMovableItemsController")
                                                            cell:PSLinkListCell
                                                            edit:Nil];
-        [pageOrderCell setProperty:@"pageOrder" forKey:@"key"];
-        [pageOrderCell setProperty:@1 forKey:@"default"];
-        [pageOrderCell setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [spec setProperty:@"pageOrder" forKey:@"key"];
+        [spec setProperty:@1 forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
         
         
-        numberOfPagesCell = [PSSpecifier preferenceSpecifierNamed:localized(@"NUMBER_OF_SWITCHER_PAGES", @"Number of switcer pages")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"NUMBER_OF_SWITCHER_PAGES", @"Number of switcer pages")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
                                                             get:@selector(readPreferenceValue:)
                                                          detail:objc_getClass("StratosListItemsController")
                                                            cell:PSLinkListCell
                                                            edit:Nil];
-        [numberOfPagesCell setProperty:@"numberOfPagesTitles" forKey:@"titlesDataSource"];
-        [numberOfPagesCell setProperty:@"numberOfPagesValues" forKey:@"valuesDataSource"];
-        [numberOfPagesCell setProperty:@"numberOfPages" forKey:@"key"];
-        [numberOfPagesCell setProperty:@6 forKey:@"default"];
-        [numberOfPagesCell setProperty:localized(@"SWITCHER_PAGES_NUMBER_FOOTER", @"The number of pages to show for the switcher cards. Used when you have another page (i.e. the Control Center or Media Controls) to the right of the switcher cards") forKey:@"staticTextMessage"];
-        [numberOfPagesCell setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [spec setProperty:@"numberOfPagesTitles" forKey:@"titlesDataSource"];
+        [spec setProperty:@"numberOfPagesValues" forKey:@"valuesDataSource"];
+        [spec setProperty:@"numberOfPages" forKey:@"key"];
+        [spec setProperty:@6 forKey:@"default"];
+        [spec setProperty:localized(@"SWITCHER_PAGES_NUMBER_FOOTER", @"The number of pages to show for the switcher cards. Used when you have another page (i.e. the Control Center or Media Controls) to the right of the switcher cards") forKey:@"staticTextMessage"];
+        [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
 
         
         //doublePressHomeFooter = [PSSpecifier emptyGroupSpecifier];
         //[doublePressHomeFooter setProperty:@"Allow the activation of Stratos via a double press of the home button" forKey:@"footerText"];
         
-        PSSpecifier *removeAllPrefsButtonSpacer = [PSSpecifier emptyGroupSpecifier];
+        spec = [PSSpecifier emptyGroupSpecifier];
+        [hiddenSpecs addObject:spec];
         
-        PSSpecifier *removeAllPrefsButton = [PSSpecifier preferenceSpecifierNamed:@"Reset All Prefs"
-                                                                           target:self
-                                                                              set:NULL
-                                                                              get:NULL
-                                                                           detail:Nil
-                                                                             cell:PSButtonCell
-                                                                             edit:Nil];
-        removeAllPrefsButton->action = @selector(resetPreferences);
-        /*
-        hiddenSpecs = @[ backgroundStyleFooter,
-                         backgroundStyleCell,
-                         heightSliderGroup,
-                         heightSlider,
-                         grabberSwitchFooter,
-                         grabberSwitch,
-                         showCCSwitchFooter,
-                         showCCSwitch,
-                         showRunningAppFooter,
-                         showRunningApp,
-                         defaultPageCellFooter,
-                         defaultPageCell,
-                         pageOrderCell,
-                         doublePressHomeFooter,
-                         doublePressHome,
-                         removeAllPrefsButtonSpacer,
-                         removeAllPrefsButton
-                         ];
-         */
-        hiddenSpecs = @[ heightSliderGroup,
-                         backgroundStyleCell,
-                         grabberSwitch,
-                         heightSlider,
-                         previewSpecifier,
-                         //grabberSwitchFooter,
-                         
-                         showCCSwitchFooter,
-                         
-                         //showRunningAppFooter,
-                         showRunningApp,
-                         doublePressHome,
-                         showCCSwitch,
-                         defaultPageCellFooter,
-                         defaultPageCell,
-                         pageOrderCell,
-                         //doublePressHomeFooter,
-                         numberOfPagesCell,
-                         removeAllPrefsButtonSpacer,
-                         removeAllPrefsButton
-                         ];
+        spec = [PSSpecifier preferenceSpecifierNamed:@"Reset All Prefs"
+                                              target:self
+                                                 set:NULL
+                                                 get:NULL
+                                              detail:Nil
+                                                cell:PSButtonCell
+                                                edit:Nil];
+        spec->action = @selector(resetPreferences);
+        [hiddenSpecs addObject:spec];
+
+
         if ([self.stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
             for (PSSpecifier *spec in hiddenSpecs) {
                 [specifiers addObject:spec];
@@ -331,6 +310,7 @@ AVAudioPlayer *audioPlayer;
             [self.table performSelector:@selector(addSubview:) withObject:phoneView afterDelay:0.15f];
         }
     }
+    
     if ([key isEqualToString:@"switcherBackgroundStyle"])
         [self reloadBlurView];
     if ([key isEqualToString:@"showGrabber"]) {
@@ -339,7 +319,7 @@ AVAudioPlayer *audioPlayer;
         else
             [grabberView removeFromSuperview];
     }
-
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -371,6 +351,7 @@ AVAudioPlayer *audioPlayer;
     _iconImageView.contentMode = UIViewContentModeCenter;
     [_iconImageView setCenter:CGPointMake( [[UIScreen mainScreen] bounds].size.width/2, headerImage.size.height/2 )];
     [[self table] addSubview:_iconImageView];
+
     int width = [[UIScreen mainScreen] bounds].size.width;
     
     UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone.png"];

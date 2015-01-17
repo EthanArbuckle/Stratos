@@ -17,6 +17,7 @@ include $(THEOS_MAKE_PATH)/aggregate.mk
 after-stage::
 	find $(FW_STAGING_DIR) -iname '*.plist' -or -iname '*.strings' -exec plutil -convert binary1 {} \;
 	find $(FW_STAGING_DIR) -iname '*.png' -exec pincrush-osx -i {} \;
+	find $(FW_STAGING_DIR) -name '.DS_Store' -exec rm {} \;
 
 after-install::
 	install.exec "killall -HUP SpringBoard"
