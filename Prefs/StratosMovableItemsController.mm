@@ -1,16 +1,6 @@
-#import <UIKit/UIKit.h>
-#import "../Stratos.h"
-#import <Preferences/PSViewController.h>
-#import "StratosPrefs.h"
-
-@interface StratosMovableItemsController : PSViewController <UITableViewDataSource, UITableViewDelegate> {
-    NSUserDefaults *stratosUserDefaults;
-    UIWindow *settingsView;
-}
-@property (nonatomic, strong) UITableView *tableView;
-@end
-
+#import "StratosMovableItemsController.h"
 @implementation StratosMovableItemsController
+@synthesize tableView;
 
 - (id)initForContentSize:(CGSize)size
 {
@@ -20,6 +10,12 @@
         stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
         [stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
         [stratosUserDefaults synchronize];
+
+        names = @{
+            @"controlCenter" : localized(@"CONTROL_CENTER", @"Control Center"),
+            @"mediaControls" : localized(@"MEDIA_CONTROLS", @"Media Controls"),
+            @"switcherCards" : localized(@"SWITCHER_CARDS", @"Switcher Cards")
+        };
         
         self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height) style:UITableViewStyleGrouped];
         
@@ -31,18 +27,18 @@
         
         [self setView:self.tableView];
         
-        [self setTitle:@"Page Order"];
+        [self setTitle:localized(@"PAGE_ORDER", @"Page order")];
     }
     
     return self;
 }
 
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Page order";
+    return localized(@"PAGE_ORDER", @"Page order");
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return @"Top to bottom represents left to right";
+    return localized(@"TOP_TO_BOTTOM", @"Top to bottom represents left to right");
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -56,7 +52,7 @@
     DebugLogC(@"Cell Index: %ld", (long)index);
     NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
     
-    cell.textLabel.text = pageOrder[index];
+    cell.textLabel.text = [names objectForKey:pageOrder[index]];
     //cell.imageView.image = iconForDescription(desc);
     
     return cell;

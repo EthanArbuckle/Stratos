@@ -1,9 +1,4 @@
-#import <UIKit/UIKit.h>
-#import <Preferences/PSSwitchTableCell.h>
-#import "StratosPrefs.h"
-
-@interface StratosTintedSwitchCell : PSSwitchTableCell { }
-@end
+#import "StratosTintedSwitchCell.h"
 
 @implementation StratosTintedSwitchCell
 

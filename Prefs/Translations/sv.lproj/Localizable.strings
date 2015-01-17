@@ -1,0 +1,65 @@
+/*
+ SWEDISH
+ Translated by: andreas_henriksson@icloud.com
+ Social Media: /u/andreashenriksson
+ Name: Andreas Henriksson
+ Cydia ID: 465214390
+*/
+
+"ENABLED" = "Aktiverad";
+"ENABLED_FOOTER" = "En ny multitasking-upplevelse är bara en knapptryckning bort"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Utseende";
+"BACKGROUND_STYLE" = "Bakgrundsstil";
+
+"DARK_BACKGROUND" = "Mörk";
+"COMMON_BLUR_BACKGROUND" = "Vanligt suddighet";
+"CC_STYLE_BACKGROUND" = "CC-Stil"; //Control Center Style
+"LIGHT_BACKGROUND" = "Ljus";
+
+"SHOW_GRABBER" = "Visa Hantag";
+"HEIGHT_SLIDER_FOOTER" = "Välj höjden som switchern ska utvidga sig till";
+
+"FUNCTIONALITY_HEADER" = "Funktionalitet";
+"SHOW_RUNNING_APP" = "Visa nuvarande körande app i switchern";
+"ACTIVATE_VIA_HOME" = "Aktivera via hemknappen";
+"INVOKE_CC" = "Utvidga Control Center";
+"INVOKE_CC_FOOTER" = "Utvidga Control Center efter att ha dragit upp bakom Stratos switcher";
+
+"PAGING_HEADER" = "Sidor";
+"DEFAULT_PAGE" = "Standardsida";
+
+"SWITCHER_CARDS" = "App-kort";
+"CONTROL_CENTER" = "Control Center";
+"MEDIA_CONTROLS" = "Mediakontroller";
+
+"PAGE_ORDER" = "Sidordning";
+"NUMBER_OF_SWITCHER_PAGES" = "Nummer av sidor i switchern";
+"TOP_TO_BOTTOM" = "Från toppen till botten representerar vänster till höger";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Antal sidor att visa för app-kort. Används när du har en annan sida (t ex Control Center eller Mediakontroller) till höger om app-korten";
+
+"ALL" = "Alla";
+
+"MORE" = "Mer";
+
+/*More Page*/
+"CREDITS" = "Medverkande";
+"THE_DEVELOPERS" = "Utvecklarna";
+"THE_TEAM" = "Teamet";
+"TEAM_SUBTITLE" = "Teamet bakom Stratos";
+
+"ETHAN_TITLE" = "Huvudutvecklare";
+"ETHAN_SUBTITLE" = "Stratos hjärta och själ";
+
+"MILO_TITLE" = "Medutvecklare";
+"MILO_SUBTITLE" = "Designade och skapade inställningarna för Stratos";
+
+"PHILLIP_TITLE" = "Medutvecklare";
+"PHILLIP_SUBTITLE" = "Gjorde två _mycket_ viktiga insatser";
+
+"CYRIL_TITLE" = "Designer";
+"CYRIL_SUBTITLE" = "Också känd som Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape kommer i February";
+
+"CHECK_IT_OUT" = "Kolla in det här!";
+"VELOX" = "Velox är Cortex Dev Teamets nästa nya tweak och är skapat av Phillip Tennen.";

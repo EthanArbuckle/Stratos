@@ -1,12 +1,4 @@
-#import <UIKit/UIKit.h>
-#import <Preferences/PSListItemsController.h>
-#import "StratosPrefs.h"
-
-@interface StratosListItemsController : PSListItemsController {
-    UIWindow *settingsView;
-}
-@end
-
+#import "StratosListItemsController.h"
 @implementation StratosListItemsController
 
 -(void)viewWillAppear:(BOOL)animated {

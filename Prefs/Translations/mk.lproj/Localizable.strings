@@ -1,0 +1,81 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+/*
+ Translated by: Zarko
+ Twitter: @nicifor0vic
+ Cydia ID: 464120969
+*/
+
+"ENABLED" = "Овозможено";
+"ENABLED_FOOTER" = "Новото мултитаскинг искуство за пренасочување"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Изглед";
+"BACKGROUND_STYLE" = "Стил на Позадина";
+
+"DARK_BACKGROUND" = "Темно";
+"COMMON_BLUR_BACKGROUND" = "Обичен Блур";
+"CC_STYLE_BACKGROUND" = "CC Стил"; //Control Center Style
+"LIGHT_BACKGROUND" = "Светло";
+
+"SHOW_GRABBER" = "Прикажи Влекач";
+"HEIGHT_SLIDER_FOOTER" = "Изберете висина до каде менувачот ќе се протега";
+
+"FUNCTIONALITY_HEADER" = "Функционалност";
+"SHOW_RUNNING_APP" = "Прикажи Активни Апликации во Менувачот";
+"ACTIVATE_VIA_HOME" = "Активирај Преку Дома Копчето";
+"INVOKE_CC" = "Повикај Контролен Центар";
+"INVOKE_CC_FOOTER" = "Повикај го Контролниот Центар после влечење нагоре на Stratos Манувачот";
+
+"PAGING_HEADER" = "Страничење";
+"DEFAULT_PAGE" = "Вообичаена Страна";
+
+"SWITCHER_CARDS" = "Менувач на Карти";
+"CONTROL_CENTER" = "Контролен Центар";
+"MEDIA_CONTROLS" = "Медиа Контроли";
+
+"PAGE_ORDER" = "Редослед на Страници";
+"NUMBER_OF_SWITCHER_PAGES" = "Број на Страници во Менувачот";
+"TOP_TO_BOTTOM" = "Врвот до дното претставува лево кон десно";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Број на страници да се прикажат за карти во менувачот. Користи кога имате друга страница(i.e. Контролниот Центар или Медиа Контролите) на десно од картите во менувачот";
+
+"ALL" = "СИТЕ";
+
+"MORE" = "Уште";
+
+/*More Page*/
+"CREDITS" = "Заслуги";
+"THE_DEVELOPERS" = "Програмерите";
+"THE_TEAM" = "Тимот";
+"TEAM_SUBTITLE" = "Тимот зад Stratos";
+
+"ETHAN_TITLE" = "Водечки Програмер";
+"ETHAN_SUBTITLE" = "Срцето и душата на Stratos";
+
+"MILO_TITLE" = "Ко-Програмер";
+"MILO_SUBTITLE" = "Дизајнер и креатор на подесувачките пакети";
+
+"PHILLIP_TITLE" = "Ко-Програмер";
+"PHILLIP_SUBTITLE" = "Направи две _многу_ важни примени";
+
+"CYRIL_TITLE" = "Дизајнер";
+"CYRIL_SUBTITLE" = "Истотака познат како Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Микс трака пристигнува во Февруари";
+
+"CHECK_IT_OUT" = "Проверете го!";
+"VELOX" = "Velox е на Cortex Dev Team's друг нов tweak, направен од Phillip Tennen.";
+
+
+
+
+
+
+

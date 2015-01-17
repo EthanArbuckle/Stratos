@@ -1,0 +1,83 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+ The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+/*
+ GERMAN
+ Translated by: /u/thapublicMAN
+ Name: thapublicMan
+ Social Media: @delia_stefan
+ Cydia ID: 465670039
+*/
+
+"ENABLED" = "Aktivieren";
+"ENABLED_FOOTER" = "Eine neue Multitasking Erfahrung - nur ein Switch weit entfernt" ; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Aussehen";
+"BACKGROUND_STYLE" = "Hintergrund";
+
+"DARK_BACKGROUND" = "Dunkel";
+"COMMON_BLUR_BACKGROUND" = "Verschwommen";
+"CC_STYLE_BACKGROUND" = "Kontrollzentrum"; //Control Center Style
+"LIGHT_BACKGROUND" = "Hell";
+
+"SHOW_GRABBER" = "Greifer zeigen";
+"HEIGHT_SLIDER_FOOTER" = "Höheneinstellung für Switcher";
+
+"FUNCTIONALITY_HEADER" = "Funktionalität";
+"SHOW_RUNNING_APP" = "Laufende Apps im Switcher anzeigen";
+"ACTIVATE_VIA_HOME" = "Aktiviere über Home-Taste";
+"INVOKE_CC" = "Kontrollzentrum öffnen";
+"INVOKE_CC_FOOTER" = "Kontrollzentrum öffnen nachdem über den Stratos-Schalter aufwärts gestrichen wird";
+
+"PAGING_HEADER" = "Seitenüberlagerung";
+"DEFAULT_PAGE" = "Standardseite";
+
+"SWITCHER_CARDS" = "Schalter-Karten";
+"CONTROL_CENTER" = "Kontrollzentrum";
+"MEDIA_CONTROLS" = "Mediensteuerung";
+
+"PAGE_ORDER" = "Reihenfolge der Seiten";
+"NUMBER_OF_SWITCHER_PAGES" = "Anzahl der Schalter-Seiten";
+"TOP_TO_BOTTOM" = "Von oben nach unten repräsentiert von links nach rechts";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Anzahl der Seiten, um Schalter-Karten zu zeigen. Wird verwendet, wenn Sie eine andere Seite (dh das Kontrollzentrum oder die Mediensteuerung) auf der rechten Seite der Schalter-Karten haben";
+
+"ALL" = "Alles";
+
+"MORE" = "Über";
+
+/*More Page*/
+"CREDITS" = "Namensnennung";
+"THE_DEVELOPERS" = "Die Entwickler";
+"THE_TEAM" = "Das Team";
+"TEAM_SUBTITLE" = "Das Team hinter Stratos";
+
+"ETHAN_TITLE" = "Entwickler";
+"ETHAN_SUBTITLE" = "Das Herz und die Seele von Stratos";
+
+"MILO_TITLE" = "Ko-Entwickle";
+"MILO_SUBTITLE" = "Entwarf und entwickelte die Einstellungen";
+
+"PHILLIP_TITLE" = "Ko-Entwickler";
+"PHILLIP_SUBTITLE" = "Machte zwei -sehr- wichtige Eingriffe";
+
+"CYRIL_TITLE" = "Designer";
+"CYRIL_SUBTITLE" = "Auch bekannt unter den Namen Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mixtape im Februar erscheinend";
+
+"CHECK_IT_OUT" = "Probier’s aus";
+"VELOX" = "Velox ist ein anderes neues Tweak von Cortex Dev Team, erschaffen von Phillip Tennen.";
+
+
+
+
+
+
+

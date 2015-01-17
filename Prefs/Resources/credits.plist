@@ -8,6 +8,8 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
+			<string>THE_DEVELOPERS</string>
+			<key>labelEnglish</key>
 			<string>The Developers</string>
 		</dict>
 		<dict>
@@ -20,9 +22,13 @@
 			<key>devName</key>
 			<string>Cortex Dev Team</string>
 			<key>jobTitle</key>
+			<string>THE_TEAM</string>
+			<key>jobTitleEnglish</key>
 			<string>The Team</string>
+			<key>subtitleEnglish</key>
+			<string>Help</string>
 			<key>subtitle</key>
-			<string>Think of something to put here</string>
+			<string>TEAM_SUBTITLE</string>
 			<key>imageName</key>
 			<string>cortex</string>
 		</dict>
@@ -64,9 +70,13 @@
 			<key>devName</key>
 			<string>Ethan Arbuckle</string>
 			<key>jobTitle</key>
-			<string>Head Developer</string>
+			<string>ETHAN_TITLE</string>
 			<key>subtitle</key>
-			<string>Also sings</string>
+			<string>ETHAN_SUBTITLE</string>
+			<key>jobTitleEnglish</key>
+			<string>Head Developer</string>
+			<key>subtitleEnglish</key>
+			<string>The heart and soul of Stratos</string>
 			<key>imageName</key>
 			<string>ethan</string>
 		</dict>
@@ -108,9 +118,13 @@
 			<key>devName</key>
 			<string>Milo Darling</string>
 			<key>jobTitle</key>
-			<string>Co-developer</string>
+			<string>MILO_TITLE</string>
 			<key>subtitle</key>
-			<string>I'll think of something</string>
+			<string>MILO_SUBTITLE</string>
+			<key>jobTitleEnglish</key>
+			<string>Co-developer</string>
+			<key>subtitleEnglish</key>
+			<string>Designed and created the preference bundle</string>
 			<key>imageName</key>
 			<string>milo</string>
 		</dict>
@@ -138,93 +152,109 @@
 			<key>cellClass</key>
 			<string>StratosSocialCell</string>
 		</dict>
-		<!--
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Reddit Screens is open source!</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Phillip Tennen</string>
+			<key>jobTitle</key>
+			<string>PHILLIP_TITLE</string>
+			<key>subtitle</key>
+			<string>PHILLIP_SUBTITLE</string>
+			<key>jobTitleEnglish</key>
+			<string>Co-developer</string>
+			<key>subtitleEnglish</key>
+			<string>Made two _very_ important commits</string>
+			<key>imageName</key>
+			<string>phillip</string>
 		</dict>
 		<dict>
 			<key>cell</key>
  			<string>PSButtonCell</string>
 			<key>label</key>
-			<string>Source code on GitHub</string>
+			<string>Twitter</string>
 			<key>action</key>
-			<string>openGitHub</string>
-			<key>icon</key>
-			<string>github.png</string>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@phillipten</string>
 			<key>cellClass</key>
-			<string>SSTintedCell</string>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Reddit</string>
+			<key>action</key>
+			<string>openReddit:</string>
+			<key>handle</key>
+			<string>/u/Codyd51</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Thanks</string>
-			<key>footerText</key>
-			<string>DailyPaper's code was used to implement the wallpaper saving</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSStaticTextCell</string>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Cyril Zakka</string>
+			<key>jobTitle</key>
+			<string>CYRIL_TITLE</string>
+			<key>subtitle</key>
+			<string>CYRIL_SUBTITLE</string>
+			<key>jobTitleEnglish</key>
+			<string>Designer</string>
+			<key>subtitleEnglish</key>
+			<string>Also known as Cereal</string>
+			<key>imageName</key>
+			<string>cyril</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
 			<key>label</key>
-			<string>HASHBANG for DailyPaper</string>
-			<key>icon</key>
-			<string>hbang.png</string>
+			<string>Twitter</string>
+			<key>action</key>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@4urum</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Reddit</string>
+			<key>action</key>
+			<string>openReddit:</string>
+			<key>handle</key>
+			<string>/u/Does-Aurum-Have-Reddit?</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>The code for Faces' preference bundle was used to make this preference bundle.</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSStaticTextCell</string>
-			<key>label</key>
-			<string>Ben Rosen &amp; CPDD for Faces</string>
-			<key>icon</key>
-			<string>faces.png</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>Alex was a very special and OP beta tester.</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSStaticTextCell</string>
-			<key>label</key>
-			<string>Alex Scott for beta testing</string>
-			<key>icon</key>
-			<string>alex.png</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>Make the preference bundle header Comic Sans. Just for you, DomT4 &lt;3</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.milodarling.snooscreens</string>
-			<key>key</key>
-			<string>comicsans</string>
-			<key>label</key>
-			<string>Comic Sans</string>
-		</dict>
-		-->
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>&#169; 2014-2015 Cortex Dev Team. Mix tape coming February</string>
+			<string>MIX_TAPE_FOOTER</string>
+			<key>footerTextEnglish</key>
+			<string>© 2014-2015 Cortex Dev Team. Mix tape coming February</string>
 		</dict>
 	</array>
 	<key>title</key>

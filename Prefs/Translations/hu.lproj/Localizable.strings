@@ -1,0 +1,82 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+/*
+ HUNGARIAN
+ Translated by: /u/costee
+ Social Media: @costee
+ Cydia ID: 1217033
+*/
+
+"ENABLED" = "Engedélyezés";
+"ENABLED_FOOTER" = "Egy újszerű multitasking élményhez csak egy kapcsolót kell átbillentened"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Megjelenés";
+"BACKGROUND_STYLE" = "Háttér stílusa";
+
+"DARK_BACKGROUND" = "Sötét";
+"COMMON_BLUR_BACKGROUND" = "Elmosott";
+"CC_STYLE_BACKGROUND" = "Vezérlőközpont stílus"; //Control Center Style
+"LIGHT_BACKGROUND" = "Világos";
+
+"SHOW_GRABBER" = "Fül megjelenítése";
+"HEIGHT_SLIDER_FOOTER" = "Válaszd meg az alkalmazásváltó magasságát";
+
+"FUNCTIONALITY_HEADER" = "Funkcionalitás";
+"SHOW_RUNNING_APP" = "Mutasd a futó alkalmazásokat";
+"ACTIVATE_VIA_HOME" = "Home gomb aktiválás";
+"INVOKE_CC" = "Vezérlőközpont megjelenítése";
+"INVOKE_CC_FOOTER" = "A Stratos megjelenítése után még egy húzással hozhatod be a Vezérlőközpontot";
+
+"PAGING_HEADER" = "Oldalakra osztás";
+"DEFAULT_PAGE" = "Alapértelmezett oldal";
+
+"SWITCHER_CARDS" = "Alkalmazásváltó";
+"CONTROL_CENTER" = "Vezérlőközpont";
+"MEDIA_CONTROLS" = "Média vezérlők";
+
+"PAGE_ORDER" = "Oldalak sorrendje";
+"NUMBER_OF_SWITCHER_PAGES" = "Alkalmazásváltó oldalainak száma";
+"TOP_TO_BOTTOM" = "A fentről lefele balról jobbrát jelent";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Itt választhatod meg, hogy hány oldalnyi alkalmazásod legyen, mielőtt a többi speciális oldal megjelenik.";
+
+"ALL" = "Mind";
+
+"MORE" = "Több";
+
+/*More Page*/
+"CREDITS" = "Készítők";
+"THE_DEVELOPERS" = "A fejlesztők";
+"THE_TEAM" = "A csapat";
+"TEAM_SUBTITLE" = "A Stratos mögött álló csapat";
+
+"ETHAN_TITLE" = "A fejlesztők feje";
+"ETHAN_SUBTITLE" = "A Statos szíve és lelke tőle ered.";
+
+"MILO_TITLE" = "Segédfejlesztő";
+"MILO_SUBTITLE" = "A beállítási altábla tervezője.";
+
+"PHILLIP_TITLE" = "Segédfejlesztő";
+"PHILLIP_SUBTITLE" = "Hozzá köthető két igen fontos módosítás.";
+
+"CYRIL_TITLE" = "Dizájner";
+"CYRIL_SUBTITLE" = "Őt Cerealként (Gabonapehelyként) is ismerheted.";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. A válogatáslemezre februárig várni kell.";
+
+"CHECK_IT_OUT" = "Nézd meg ezt is!";
+"VELOX" = "Velox a Cortex Dev Team másik alkalmazása, amit Phillip Tennen készített.";
+
+
+
+
+
+
+

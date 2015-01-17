@@ -1,5 +1,4 @@
 #import "../Stratos.h"
-
 #import "../DebugLog.h"
 
 static UIColor *const kTintColor = [UIColor colorWithRed:96.0f/255.0f green:96.0f/255.0f blue:105.0f/255.0f alpha:1.0];

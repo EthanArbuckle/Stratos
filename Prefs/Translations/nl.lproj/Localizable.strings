@@ -1,0 +1,46 @@
+/*
+ Cydia Account: #1964731
+ Name: mrkssntr
+*/
+
+"ACTIVATE_VIA_HOME" = "Activeer met Thuisknop";
+"ALL" = "Alles";
+"APPEARANCE_HEADER" = "Uiterlijk";
+"BACKGROUND_STYLE" = "Achtergrond Stijl";
+"CC_STYLE_BACKGROUND" = "Bedieningspaneel Stijl";
+"CHECK_IT_OUT" = "Kijk snel!";
+"COMMON_BLUR_BACKGROUND" = "Standaard Vervagen";
+"CONTROL_CENTER" = "Bedieningspaneel";
+"CREDITS" = "Credits";
+"CYRIL_SUBTITLE" = "Beter bekent als Cereal";
+"CYRIL_TITLE" = "Ontwerper";
+"DARK_BACKGROUND" = "Donker";
+"DEFAULT_PAGE" = "Standaard Pagina";
+"ENABLED" = "Ingeschakeld";
+"ENABLED_FOOTER" = "Een nieuwe Multitask ervaring, zo makkelijk als het omzetten van een knop!";
+"ETHAN_SUBTITLE" = "Het hart en ziel van Stratos";
+"ETHAN_TITLE" = "Hoofd ontwikkelaar";
+"FUNCTIONALITY_HEADER" = "Functionaliteit";
+"HEIGHT_SLIDER_FOOTER" = "Kies de hoogte waarop je Appkiezer uitstrekt";
+"INVOKE_CC" = "Betrek bedieningspaneel";
+"INVOKE_CC_FOOTER" = "Open het bedieningspaneel, Na het omhoog swipen van de Stratos Appkiezer";
+"LIGHT_BACKGROUND" = "Licht";
+"MEDIA_CONTROLS" = "Media Bediening";
+"MILO_SUBTITLE" = "Verantwoordelijk voor het bedenken en ontwerpen van de preference bundle";
+"MILO_TITLE" = "Co-ontwikkelaar";
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape komt in februari";
+"MORE" = "Meer";
+"NUMBER_OF_SWITCHER_PAGES" = "Aantal Appkiezer pagina's";
+"PAGE_ORDER" = "Pagina Opmaak";
+"PAGING_HEADER" = "Opmaak";
+"PHILLIP_SUBTITLE" = "Made two _very_ important commits";
+"PHILLIP_TITLE" = "Co-ontwikkelaar";
+"SHOW_GRABBER" = "Laat grijper zien";
+"SHOW_RUNNING_APP" = "Laat op achtergrond draaiende apps zien in bedieningspaneel";
+"SWITCHER_CARDS" = "Kaarten Bedieningspaneel";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Het aantal weer te geven pagina's in de Appkiezer, te gebruiken wanneer je nog een pagina gebruikt bijvoorbeeld: het Bedieningspaneel of Media Bediening) aan de rechterkant van het Bedieningspaneel";
+"TEAM_SUBTITLE" = "Het team achter Stratos";
+"THE_DEVELOPERS" = "De Ontwikkelaars";
+"THE_TEAM" = "Het Team";
+"TOP_TO_BOTTOM" = "Van boven naar beneden vertegenwoordigt links naar rechts";
+"VELOX" = "Velox is een andere tweak van het Cortex Dev Team, gemaakt door Phillip Tennen.";

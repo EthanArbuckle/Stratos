@@ -1,0 +1,57 @@
+"ENABLED" = "有効にする";
+"ENABLED_FOOTER" = "ストラトスは新しいマルチタスク応用です。";
+"APPEARANCE_HEADER" = "外観";
+"BACKGROUND_STYLE" = "背景のスタイル";
+
+"DARK_BACKGROUND" = "暗い";
+"COMMON_BLUR_BACKGROUND" = "ぼかし";
+"CC_STYLE_BACKGROUND" = "コントロールセンタのスタイル";
+"LIGHT_BACKGROUND" = "光";
+
+"SHOW_GRABBER" = "ショーハンドル";
+"HEIGHT_SLIDER_FOOTER" = "高さを選択してください";
+
+"FUNCTIONALITY_HEADER" = "機能性";
+"SHOW_RUNNING_APP" = "表示実行中のアプリケーション";
+"ACTIVATE_VIA_HOME" = "ホームボタンをアクティブにします";
+"INVOKE_CC" = "陳列コントロールセンタ";
+"INVOKE_CC_FOOTER" = "陳列は後に身振りの上向き";
+
+"PAGING_HEADER" = "ページ";
+"DEFAULT_PAGE" = "既定のページ";
+　
+"SWITCHER_CARDS" = "スイッチャーのとらんぷ";
+"CONTROL_CENTER" = "コントロールセンタ";
+"MEDIA_CONTROLS" = "媒体の管理";
+
+"PAGE_ORDER" = "ページの順序";
+"NUMBER_OF_SWITCHER_PAGES" = "頁数";
+"TOP_TO_BOTTOM" = "トップとボトムは左と右です";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "頁数はとらんぷです 複数のページで使用される （コントロールセンタまたはメディアのコントロール）彼らはとらんぷの右側です";
+
+"ALL" = "すべて";
+
+"MORE" = "もっと";
+
+/*More Page*/
+"CREDITS" = "クレジット";
+"THE_DEVELOPERS" = "開発者";
+"THE_TEAM" = "チーム";
+"TEAM_SUBTITLE" = "チームの作るはストラトスです";
+
+"ETHAN_TITLE" = "開発者";
+"ETHAN_SUBTITLE" = "作り手のストラトス";
+
+"MILO_TITLE" = "共同開発者";
+"MILO_SUBTITLE" = "好みバンドルは作成です";
+
+"PHILLIP_TITLE" = "共同開発者";
+"PHILLIP_SUBTITLE" = "作成した2つのアップデート";
+
+"CYRIL_TITLE" = "設計者";
+"CYRIL_SUBTITLE" = "設計者は穀物です";
+
+"MIX_TAPE_FOOTER" = "©平成26年-平成27年 皮質は開発チームです";
+
+"CHECK_IT_OUT" = "これを見て";
+"VELOX" = "ベロックスは改変ですフィリップテンネンは創案者です";

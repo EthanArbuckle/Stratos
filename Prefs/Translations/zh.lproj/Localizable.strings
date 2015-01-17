@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!--Translated by /u/iOS-LoveU, 464359525, @you_0816-->
+<dict>
+	<key>ACTIVATE_VIA_HOME</key>
+	<string>通过主页按钮激活</string>
+	<key>ALL</key>
+	<string>全部</string>
+	<key>APPEARANCE_HEADER</key>
+	<string>外观</string>
+	<key>BACKGROUND_STYLE</key>
+	<string>背景风格</string>
+	<key>CC_STYLE_BACKGROUND</key>
+	<string>控制中心风格</string>
+	<key>CHECK_IT_OUT</key>
+	<string>体验一下！</string>
+	<key>COMMON_BLUR_BACKGROUND</key>
+	<string>常规的模糊风格</string>
+	<key>CONTROL_CENTER</key>
+	<string>控制中心</string>
+	<key>CREDITS</key>
+	<string>Credits</string>
+	<key>CYRIL_SUBTITLE</key>
+	<string>也可以称为 Cereal</string>
+	<key>CYRIL_TITLE</key>
+	<string>设计者</string>
+	<key>DARK_BACKGROUND</key>
+	<string>暗色主题</string>
+	<key>DEFAULT_PAGE</key>
+	<string>默认页面</string>
+	<key>ENABLED</key>
+	<string>开启</string>
+	<key>ENABLED_FOOTER</key>
+	<string>只需要切换下按钮就可以有全新的多任务体验</string>
+	<key>ETHAN_SUBTITLE</key>
+	<string>Stratos的主体</string>
+	<key>ETHAN_TITLE</key>
+	<string>首席开发者</string>
+	<key>FUNCTIONALITY_HEADER</key>
+	<string>功能</string>
+	<key>HEIGHT_SLIDER_FOOTER</key>
+	<string>选择激活后的显示高度</string>
+	<key>INVOKE_CC</key>
+	<string>调用控制中心</string>
+	<key>INVOKE_CC_FOOTER</key>
+	<string>调用后上滑动作会优先触发控制中心于Stratos</string>
+	<key>LIGHT_BACKGROUND</key>
+	<string>亮色主题</string>
+	<key>MEDIA_CONTROLS</key>
+	<string>媒体中心</string>
+	<key>MILO_SUBTITLE</key>
+	<string>设计并创建Preference Bundle</string>
+	<key>MILO_TITLE</key>
+	<string>联合开发者</string>
+	<key>MIX_TAPE_FOOTER</key>
+	<string>版权所有© 2014-2015 Cortex Dev Team. Mix tape coming February</string>
+	<key>MORE</key>
+	<string>More</string>
+	<key>NUMBER_OF_SWITCHER_PAGES</key>
+	<string>切换页数</string>
+	<key>PAGE_ORDER</key>
+	<string>页面顺序</string>
+	<key>PAGING_HEADER</key>
+	<string>分页</string>
+	<key>PHILLIP_SUBTITLE</key>
+	<string>Made two _very_ important commits</string>
+	<key>PHILLIP_TITLE</key>
+	<string>联合开发者</string>
+	<key>SHOW_GRABBER</key>
+	<string>显示拉取标记</string>
+	<key>SHOW_RUNNING_APP</key>
+	<string>在切换界面显示正在运行的程序</string>
+	<key>SWITCHER_CARDS</key>
+	<string>切换界面</string>
+	<key>SWITCHER_PAGES_NUMBER_FOOTER</key>
+	<string>切换界面的显示数量. 使用后向右滑动会有其它界面（比如控制中心和媒体中心）</string>
+	<key>TEAM_SUBTITLE</key>
+	<string>Stratos的开发团队</string>
+	<key>THE_DEVELOPERS</key>
+	<string>开发者</string>
+	<key>THE_TEAM</key>
+	<string>团队</string>
+	<key>TOP_TO_BOTTOM</key>
+	<string>从上到下也是从左到右</string>
+	<key>VELOX</key>
+	<string>Velox 是由Phillip Tennen开发的，Cortex 开发团队的另一个全新插件.</string>
+</dict>
+</plist>

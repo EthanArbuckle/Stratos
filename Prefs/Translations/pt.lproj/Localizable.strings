@@ -1,0 +1,81 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+/*
+ Translated by /u/iMaNi_aC
+ Name: Bruno Silva
+ Twitter: @iMaNi_aC
+ Cydia ID: 3062129
+*/
+
+"ENABLED" = "Activo";
+"ENABLED_FOOTER" = "Uma nova experiência de multitarefa encontra-se á distância de apenas um botão"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Aparência";
+"BACKGROUND_STYLE" = "Estilo de Fundo";
+
+"DARK_BACKGROUND" = "Escuro";
+"COMMON_BLUR_BACKGROUND" = "Desfoque Comum";
+"CC_STYLE_BACKGROUND" = "Estilo do CC"; //Control Center Style
+"LIGHT_BACKGROUND" = "Claro";
+
+"SHOW_GRABBER" = "Mostrar Indicador";
+"HEIGHT_SLIDER_FOOTER" = "Escolha a altura até á qual o alternador se estende";
+
+"FUNCTIONALITY_HEADER" = "Funcionalidades";
+"SHOW_RUNNING_APP" = "Mostrar Aplicação a Correr no Alternador";
+"ACTIVATE_VIA_HOME" = "Ativar via Botão Principal";
+"INVOKE_CC" = "Invocar Centro de Controlo";
+"INVOKE_CC_FOOTER" = "Invocar o Centro de Controlo depois de deslizar para cima além do alternador do Stratos";
+
+"PAGING_HEADER" = "Paginação";
+"DEFAULT_PAGE" = "Página por Defeito";
+
+"SWITCHER_CARDS" = "Cartões do Alternador";
+"CONTROL_CENTER" = "Centro de Controlo";
+"MEDIA_CONTROLS" = "Controlos de Média";
+
+"PAGE_ORDER" = "Ordem das Páginas";
+"NUMBER_OF_SWITCHER_PAGES" = "Número de Páginas do Alternador";
+"TOP_TO_BOTTOM" = "De cima para baixo representa da esquerda para a direita";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Número de páginas a mostrar para os cartões do alternador. Usa-se quando tem outra página(p.e. Centro de Controlo ou Controlos de Média) á direita dos cartões do alternador";
+
+"ALL" = "Todos";
+
+"MORE" = "Mais";
+
+/*More Page*/
+"CREDITS" = "Créditos";
+"THE_DEVELOPERS" = "Os Criadores";
+"THE_TEAM" = "A Equipa";
+"TEAM_SUBTITLE" = "A Equipa por trás do Stratos";
+
+"ETHAN_TITLE" = "Criador Principal";
+"ETHAN_SUBTITLE" = "O coração e a alma do Stratos";
+
+"MILO_TITLE" = "Co-Criador";
+"MILO_SUBTITLE" = "Desenhou e criou o pacote de preferências";
+
+"PHILLIP_TITLE" = "Co-Criador";
+"PHILLIP_SUBTITLE" = "Criou duas alocações muito importantes";
+
+"CYRIL_TITLE" = "Designer";
+"CYRIL_SUBTITLE" = "Também conhecido por Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape coming February";
+
+"CHECK_IT_OUT" = "Consulte!";
+"VELOX" = "Velox é outro novo tweak da Cortex Dev Team's, feito por Phillip Tennen.";
+
+
+
+
+
+
+

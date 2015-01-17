@@ -1,0 +1,69 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+"ENABLED" = "Enabled mate";
+"ENABLED_FOOTER" = "A crikey new multitasking experience is just the flip of a switch away"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Appearance mate";
+"BACKGROUND_STYLE" = "Background Style mate";
+
+"DARK_BACKGROUND" = "Dark mate";
+"COMMON_BLUR_BACKGROUND" = "Common Blur mate";
+"CC_STYLE_BACKGROUND" = "CC Style mate"; //Control Center Style
+"LIGHT_BACKGROUND" = "Light mate";
+
+"SHOW_GRABBER" = "Show Grabber mate";
+"HEIGHT_SLIDER_FOOTER" = "Choose the height to which your switcher extends mate";
+
+"FUNCTIONALITY_HEADER" = "Functionality mate";
+"SHOW_RUNNING_APP" = "Show Running App in Switcher mate";
+"ACTIVATE_VIA_HOME" = "Activate Via Home Button mate";
+"INVOKE_CC" = "Invoke Control Center mate";
+"INVOKE_CC_FOOTER" = "Invoke the Control Center after swiping up beyond the Stratos switcher mate";
+
+"PAGING_HEADER" = "Paging mate";
+"DEFAULT_PAGE" = "Default Page mate";
+
+"SWITCHER_CARDS" = "Switcher Cards mate";
+"CONTROL_CENTER" = "Control Center mate";
+"MEDIA_CONTROLS" = "Media Controls mate";
+
+"PAGE_ORDER" = "Page Order mate";
+"NUMBER_OF_SWITCHER_PAGES" = "Number of Switcher Pages mate";
+"TOP_TO_BOTTOM" = "Top to bottom represents left to right mate";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "The number of pages to show for the switcher cards. Used when you have another page (i.e. the Control Center or Media Controls) to the right of the switcher cards mate";
+
+"ALL" = "All mate";
+
+"MORE" = "More mate";
+
+/*More Page*/
+"CREDITS" = "Credits mate";
+"THE_DEVELOPERS" = "The Developers mate";
+"THE_TEAM" = "The Team, mate";
+"TEAM_SUBTITLE" = "The team behind Stratos mate";
+
+"ETHAN_TITLE" = "Head Developer mate";
+"ETHAN_SUBTITLE" = "The heart and soul of Stratos mate";
+
+"MILO_TITLE" = "Co-developer mate";
+"MILO_SUBTITLE" = "Designed and created the preference bundle mate";
+
+"PHILLIP_TITLE" = "Co-developer mate";
+"PHILLIP_SUBTITLE" = "Made two _very_ important commits mate";
+
+"CYRIL_TITLE" = "Designer mate";
+"CYRIL_SUBTITLE" = "Also known as Cereal mate";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape coming February mate. Throw a shrimp on the barby!";
+
+"CHECK_IT_OUT" = "Check it out!";
+"VELOX" = "Velox is the Cortex Dev Team's other new crikey tweak, made by Phillip Tennen mate.";
+

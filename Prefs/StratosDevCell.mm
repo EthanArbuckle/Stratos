@@ -1,15 +1,4 @@
-#import "StratosPrefs.h"
-#import <UIKit/UIKit.h>
-#import <Preferences/PSTableCell.h>
-#import <Preferences/PSSpecifier.h>
-
-@interface StratosDevCell : PSTableCell {
-    UIImageView *_background;
-    UILabel *devName;
-    UILabel *devRealName;
-    UILabel *jobSubtitle;
-}
-@end
+#import "StratosDevCell.h"
 
 @implementation StratosDevCell
 
@@ -36,7 +25,7 @@
         [self addSubview:devName];
         
         devRealName = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 30, frame.size.width, frame.size.height)];
-        [devRealName setText:properties[@"jobTitle"]];
+        [devRealName setText:localized(properties[@"jobTitle"], properties[@"jobTitleEnglish"])];
         [devRealName setTextColor:[UIColor grayColor]];
         [devRealName setBackgroundColor:[UIColor clearColor]];
         [devRealName setFont:[UIFont fontWithName:@"Helvetica Light" size:15]];
@@ -44,7 +33,7 @@
         [self addSubview:devRealName];
         
         jobSubtitle = [[UILabel alloc] initWithFrame:CGRectMake(frame.origin.x + 95, frame.origin.y + 50, frame.size.width, frame.size.height)];
-        [jobSubtitle setText:properties[@"subtitle"]];
+        [jobSubtitle setText:localized(properties[@"subtitle"], properties[@"subtitleEnglish"])];
         [jobSubtitle setTextColor:[UIColor grayColor]];
         [jobSubtitle setBackgroundColor:[UIColor clearColor]];
         [jobSubtitle setFont:[UIFont fontWithName:@"Helvetica Light" size:15]];

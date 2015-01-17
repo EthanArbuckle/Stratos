@@ -1,0 +1,80 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+/*
+ Translated by: Florent Le Moël
+ Social Media Account: /u/phlooo
+ Cydia ID: 88006
+*/
+
+"ENABLED" = "Activé";
+"ENABLED_FOOTER" = "Une toute nouvelle expérience multitâche est à portée d'un bouton"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Apparence";
+"BACKGROUND_STYLE" = "Style de l'arrière-plan";
+
+"DARK_BACKGROUND" = "Sombre";
+"COMMON_BLUR_BACKGROUND" = "Flou commun";
+"CC_STYLE_BACKGROUND" = "Style CC"; //Control Center Style
+"LIGHT_BACKGROUND" = "Clair";
+
+"SHOW_GRABBER" = "Afficher le bouton";
+"HEIGHT_SLIDER_FOOTER" = "Choisissez jusqu'à quelle hauteur Stratos s'étendra";
+
+"FUNCTIONALITY_HEADER" = "Fonctionnalités";
+"SHOW_RUNNING_APP" = "Afficher l'App en cours dans le multitâche";
+"ACTIVATE_VIA_HOME" = "Activation par Bouton Home";
+"INVOKE_CC" = "Ouvrir le Centre de Contrôle";
+"INVOKE_CC_FOOTER" = "Ouvre le Centre de Contrôle en glissant vers le haut au delà du multitâche Stratos";
+
+"PAGING_HEADER" = "Pagination";
+"DEFAULT_PAGE" = "Page par défaut";
+
+"SWITCHER_CARDS" = "Cartes multitâche";
+"CONTROL_CENTER" = "Centre de Contrôle";
+"MEDIA_CONTROLS" = "Commandes Multimédia";
+
+"PAGE_ORDER" = "Ordre des pages";
+"NUMBER_OF_SWITCHER_PAGES" = "Nombre de pages du multitâche";
+"TOP_TO_BOTTOM" = "De haut en bas, représente de gauche à droite";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Le nombre de pages à afficher pour les cartes du multitâche. Utilisé si vous avez une autre page (par exemple le Centre de Contrôle, ou les Commandes Multimédia) à la droite de vos cartes multitâche";
+
+"ALL" = "Tout";
+
+"MORE" = "Plus";
+
+/*More Page*/
+"CREDITS" = "Crédits";
+"THE_DEVELOPERS" = "Les Développeurs";
+"THE_TEAM" = "L'équipe";
+"TEAM_SUBTITLE" = "L'équipe derrière Stratos";
+
+"ETHAN_TITLE" = "Développeur principal";
+"ETHAN_SUBTITLE" = "Le coeur et l'âme de Stratos";
+
+"MILO_TITLE" = "Développeur associé";
+"MILO_SUBTITLE" = "A designé et créé le menu des Réglages";
+
+"PHILLIP_TITLE" = "Développeur associé";
+"PHILLIP_SUBTITLE" = "A réalisé deux _très_ importantes contributions";
+
+"CYRIL_TITLE" = "Graphiste";
+"CYRIL_SUBTITLE" = "Également connu comme Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape courant Février";
+
+"CHECK_IT_OUT" = "Allez voir !";
+"VELOX" = "Velox est l'autre tout nouveau tweak de la Cortex Dev Team, réalisé par Phillip Tennen.";
+
+
+
+
+
+
+

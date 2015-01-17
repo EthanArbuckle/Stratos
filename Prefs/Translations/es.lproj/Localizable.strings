@@ -1,0 +1,81 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+/*
+ Translated by /u/carlos_ortiz
+ Cydia ID: 464533744
+ Name: Carlos Israel Ortiz Garza
+ Reddit: /u/carlos_ortiz
+*/
+"ENABLED" = "Activado";
+"ENABLED_FOOTER" = "Una nueva experiencia multitarea está a un botón de distancia"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Apariencia";
+"BACKGROUND_STYLE" = "Estilo del fondo";
+
+"DARK_BACKGROUND" = "Oscuro";
+"COMMON_BLUR_BACKGROUND" = "Difuminado Común";
+"CC_STYLE_BACKGROUND" = "Estilo del CC"; //Control Center Style
+"LIGHT_BACKGROUND" = "Claro";
+
+"SHOW_GRABBER" = "Mostrar Agarrador";
+"HEIGHT_SLIDER_FOOTER" = "Escoja la altura a la que se extiende su switcher";
+
+"FUNCTIONALITY_HEADER" = "Funcionalidad";
+"SHOW_RUNNING_APP" = "Mostrar las Aplicaciones activas en el Switcher";
+"ACTIVATE_VIA_HOME" = "Activar usando el Botón Home";
+"INVOKE_CC" = "Invocar el Centro de Control";
+"INVOKE_CC_FOOTER" = "Invocar el Centro de Control despúes de deslizar el dedo mas allá del switcher de Stratos";
+
+"PAGING_HEADER" = "Paginado";
+"DEFAULT_PAGE" = "Página de defecto";
+
+"SWITCHER_CARDS" = "Tarjetas del Switcher";
+"CONTROL_CENTER" = "Centro de Control";
+"MEDIA_CONTROLS" = "Controles del sonido";
+
+"PAGE_ORDER" = "Orden de página";
+"NUMBER_OF_SWITCHER_PAGES" = "Número de páginas del Switcher";
+"TOP_TO_BOTTOM" = "De arriba a abajo representa de izquierda a derecha";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "El número de páginas para mostrar en las tarjetas del switcher. Se usa cuando se tiene otra página (ej. el Centro de Control y los Controles de Música) a la derecha de las tarjetas del switcher";
+
+"ALL" = "Todo";
+
+"MORE" = "Más";
+
+/*More Page*/
+"CREDITS" = "Créditos";
+"THE_DEVELOPERS" = "Los Desarrolladores";
+"THE_TEAM" = "El Equipo";
+"TEAM_SUBTITLE" = "El equipo detrás de Stratos";
+
+"ETHAN_TITLE" = "Desarrollador principal";
+"ETHAN_SUBTITLE" = "El corazón y alma de Stratos";
+
+"MILO_TITLE" = "Co-desarrollador";
+"MILO_SUBTITLE" = "Diseñador y creador del panel de preferencias";
+
+"PHILLIP_TITLE" = "Co-desarrollador";
+"PHILLIP_SUBTITLE" = "Hizo dos _muy_ importantes aportaciones";
+
+"CYRIL_TITLE" = "Diseñador";
+"CYRIL_SUBTITLE" = "También conocido como Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape proxima en Febrero";
+
+"CHECK_IT_OUT" = "Chécala!";
+"VELOX" = "Velox es el otro nuevo tweak de Cortex Dev Team, hecho por Phillip Tennen.";
+
+
+
+
+
+
+

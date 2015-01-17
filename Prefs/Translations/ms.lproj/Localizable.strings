@@ -1,0 +1,79 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+/*
+ Translated by: /u/redzrex
+ Name: Muhammad Redza
+ Twitter: @redzrex
+ Cydia ID: 5987906
+*/
+
+"ENABLED" = "Membolehkan";
+"ENABLED_FOOTER" = "Pengalaman baru ‘multitasking’ dihujung jari anda dengan hanya memetik suis"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Rupa";
+"BACKGROUND_STYLE" = "Stail Belakang";
+
+"DARK_BACKGROUND" = "Gelap";
+"COMMON_BLUR_BACKGROUND" = "Kabur Umum";
+"CC_STYLE_BACKGROUND" = "Stail CC"; //Control Center Style
+"LIGHT_BACKGROUND" = "Cerah";
+
+"SHOW_GRABBER" = "Tunjuk Pemegang";
+"HEIGHT_SLIDER_FOOTER" = "Pilih ketinggian pemanjangan penukar anda";
+
+"FUNCTIONALITY_HEADER" = "Fungsi";
+"SHOW_RUNNING_APP" = "Tunjuk Aplikasi Terbuka di Penukar";
+"ACTIVATE_VIA_HOME" = "Mengaktifkan Melalui Butang Rumah";
+"INVOKE_CC" = "Membangkit Pusat Kawalan (CC)";
+"INVOKE_CC_FOOTER" = "Membangkit Pusat Kawalan (CC) selepas meleret ke atas melepasi penukar Stratos";
+
+"PAGING_HEADER" = "Permukaan";
+"DEFAULT_PAGE" = "Muka Asal";
+
+"SWITCHER_CARDS" = "Kad Penukar";
+"CONTROL_CENTER" = "Pusat Kawalan (CC)";
+"MEDIA_CONTROLS" = "Kawalan Media";
+
+"PAGE_ORDER" = "Susunan Muka";
+"NUMBER_OF_SWITCHER_PAGES" = "Bilangan Muka Penukar";
+"TOP_TO_BOTTOM" = "Atas ke bawah mewakili kiri ke kanan";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Bilangan muka untuk ditunjuk kepada kad penukar. Digunakan apabila anda ada muka yang lain (i.e. Pusat Kawalan (CC) atau Kawalan Media) terletak di kanan kad penukar";
+
+"ALL" = "Semua";
+
+"MORE" = "Lebih";
+
+/*More Page*/
+"CREDITS" = "Kredit";
+"THE_DEVELOPERS" = "Pemaju";
+"THE_TEAM" = "Pasukan";
+"TEAM_SUBTITLE" = "Pasukan Stratos";
+
+"ETHAN_TITLE" = "Ketua Pemaju";
+"ETHAN_SUBTITLE" = "Di hati dan jiwa Stratos";
+
+"MILO_TITLE" = "Pembantu Pemaju";
+"MILO_SUBTITLE" = "Pereka dan pencipta penetapan";
+
+"PHILLIP_TITLE" = "Pembantu Pemaju";
+"PHILLIP_SUBTITLE" = "Membuat dua _sangat_ penting perlakuan";
+
+"CYRIL_TITLE" = "Pereka";
+"CYRIL_SUBTITLE" = "Lebih dikenali sebagai Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Mix tape akan tiba di February";
+
+"CHECK_IT_OUT" = "Mari saksikan!";
+"VELOX" = "Velox ialah tweak baru Cortex Dev Team yang lain, dicipta oleh Phillip Tennen.";
+
+
+
+
+

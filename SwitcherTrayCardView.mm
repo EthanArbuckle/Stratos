@@ -144,7 +144,7 @@
 				//open velox view! WOOT WOOT 
 
 				//actually lets check if its installed first
-				if ([[NSFileManager defaultManager] fileExistsAtPath:@"Library/Application Support/Velox/" isDirectory:nil]) {
+				if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Application Support/Velox/" isDirectory:nil]) {
 
 					DebugLog(@"Activating Velox view with frame %@", NSStringFromCGRect([(SwitcherTrayView *)_superSwitcher frame]));
 

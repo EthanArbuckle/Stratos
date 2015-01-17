@@ -1,0 +1,82 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+/*
+ Translated by /u/applefan0924
+ Name: applefan0924
+ Social Media (Website): www.marketapp.xyz
+ Cydia ID: 
+*/
+"ENABLED" = "Activé";
+"ENABLED_FOOTER" = "Une nouvelle expérience multitâche est juste la chiquenaude d'un interrupteur de suite"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "Apparence";
+"BACKGROUND_STYLE" = "Contexte style";
+
+"DARK_BACKGROUND" = "sombre";
+"COMMON_BLUR_BACKGROUND" = "Blur commune";
+"CC_STYLE_BACKGROUND" = "le style du centre de contrôle"; //Control Center Style
+"LIGHT_BACKGROUND" = "lumière";
+
+"SHOW_GRABBER" = "spectacle grabber
+";
+"HEIGHT_SLIDER_FOOTER" = "Choisissez la hauteur à laquelle le mélangeur se étend";
+
+"FUNCTIONALITY_HEADER" = "fonctionnalité";
+"SHOW_RUNNING_APP" = "montrer application se exécutant dans switcher";
+"ACTIVATE_VIA_HOME" = "activer via le bouton d'accueil";
+"INVOKE_CC" = "Appelez le Centre de contrôle";
+"INVOKE_CC_FOOTER" = "Appelez le Centre de contrôle après avoir glissé au-delà de l'aiguilleur Stratos";
+
+"PAGING_HEADER" = "pagination";
+"DEFAULT_PAGE" = "page par défaut";
+
+"SWITCHER_CARDS" = "cartes de switcher";
+"CONTROL_CENTER" = "centre de contrôle";
+"MEDIA_CONTROLS" = "Les commandes multimédias";
+
+"PAGE_ORDER" = "Ordre";
+"NUMBER_OF_SWITCHER_PAGES" = "nombre de pages de switcher";
+"TOP_TO_BOTTOM" = "De haut en bas représente gauche à droite";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "Le nombre de pages à montrer pour les cartes de switcher. Utilisé lorsque vous avez une autre page (ce est à dire le centre de contrôle ou contrôle des médias) à droite des cartes de switcher";
+
+"ALL" = "tous";
+
+"MORE" = "plus";
+
+/*More Page*/
+"CREDITS" = "Crédits";
+"THE_DEVELOPERS" = "Les développeurs";
+"THE_TEAM" = "l'équipe";
+"TEAM_SUBTITLE" = "L'équipe derrière Stratos";
+
+"ETHAN_TITLE" = "chef développeur";
+"ETHAN_SUBTITLE" = "Le cœur et l'âme de Stratos";
+
+"MILO_TITLE" = "Co-développeur";
+"MILO_SUBTITLE" = "Conçu et créé le faisceau de préférence";
+
+"PHILLIP_TITLE" = "Co-développeur";
+"PHILLIP_SUBTITLE" = "Fait deux commits importants _very_";
+
+"CYRIL_TITLE" = "concepteur";
+"CYRIL_SUBTITLE" = "Aussi connu sous céréales";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex Dev Team. Bande venant Février Mélanger";
+
+"CHECK_IT_OUT" = "Vérifiez-le!";
+"VELOX" = "Velox est un autre nouveau tweak de la Dev Team Cortex, faite par Phillip Tennen.";
+
+
+
+
+
+
+

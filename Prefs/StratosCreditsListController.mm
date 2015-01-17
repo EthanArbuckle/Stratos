@@ -1,8 +1,4 @@
-#import <Preferences/PSListController.h>
-#import <Preferences/PSSpecifier.h>
-
-@interface StratosCreditsListController : PSListController { }
-@end
+#import "StratosCreditsListController.h"
 
 @implementation StratosCreditsListController
 
@@ -10,7 +6,23 @@
     if (_specifiers==nil) {
         _specifiers = [self loadSpecifiersFromPlistName:@"credits" target:self];
     }
+    _specifiers = [self localizeSpecifiers:_specifiers];
     return _specifiers;
+}
+
+-(NSArray *)localizeSpecifiers:(NSArray *)specifiers {
+    NSMutableArray *result = [NSMutableArray new];
+    for (PSSpecifier *spec in specifiers) {
+        if (spec.cellType == PSGroupCell) {
+            NSDictionary *properties = spec.properties;
+            if (spec.name)
+                [spec setName:localized(spec.name, properties[@"labelEnglish"])];
+            if (properties[@"footerText"])
+                [spec setProperty:localized(properties[@"footerText"], properties[@"footerTextEnglish"]) forKey:@"footerText"];
+        }
+        [result addObject:spec];
+    }
+    return result;
 }
 
 -(void)openTwitter:(PSSpecifier *)specifier {
@@ -30,6 +42,18 @@
 -(void)openReddit:(PSSpecifier *)specifier {
     NSString *screenName = specifier.properties[@"handle"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://www.reddit.com" stringByAppendingString:screenName]]];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    settingsView = [[UIApplication sharedApplication] keyWindow];
+    settingsView.tintColor = kDarkerTintColor;
+    [self setTitle:localized(@"CREDITS", @"Credits")];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    settingsView.tintColor = nil;
 }
 
 @end
