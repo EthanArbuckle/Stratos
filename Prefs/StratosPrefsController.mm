@@ -8,6 +8,7 @@
 // Main Controller -------------------------------------------------------------
 #import "StratosPrefsController.h"
 //#define StratosTintedSwitchCell StratosTintedSwitchCell
+//static double kScreenHeight = (double)[[UIScreen mainScreen] bound].size.height;
 AVAudioPlayer *audioPlayer;
 @implementation StratosPrefsController
 @synthesize backImageView = _backImageView;
@@ -102,8 +103,8 @@ AVAudioPlayer *audioPlayer;
                                                       detail:Nil
                                                         cell:PSSliderCell
                                                         edit:Nil];
-        [spec setProperty:@190 forKey:@"min"];
-        [spec setProperty:@250 forKey:@"max"];
+        [spec setProperty:[NSNumber numberWithDouble:kScreenHeight/3.5] forKey:@"min"];
+        [spec setProperty:[NSNumber numberWithDouble:kScreenHeight/2.5] forKey:@"max"];
         [spec setProperty:@NO forKey:@"showValue"];
         [spec setProperty:@"switcherHeight" forKey:@"key"];
         [spec setProperty:NSClassFromString(@"StratosTintedSliderCell") forKey:@"cellClass"];
@@ -355,7 +356,7 @@ AVAudioPlayer *audioPlayer;
     
     UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone.png"];
     phoneView = [[UIImageView alloc] initWithImage:phoneImage];
-    phoneView.frame = CGRectMake((width/2)-544/6, 510, 544/3, 965/3);
+    phoneView.frame = CGRectMake((width/2)-544/6, 510, phoneImage.size.width, phoneImage.size.height);
     //phoneView.center = CGPointMake(, 650);
 
     switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
@@ -395,7 +396,7 @@ AVAudioPlayer *audioPlayer;
 }
 
 -(void)setNewHeight:(float)height {
-    float newHeight = 50+(30*height)/100;
+    float newHeight = (height/kScreenHeight)*(219);
     float newOrigin = 258-newHeight;
     [switcherView setFrame:CGRectMake(163/6, newOrigin, 123, newHeight)];
 }
