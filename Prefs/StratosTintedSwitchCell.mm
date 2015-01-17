@@ -14,12 +14,16 @@
     }
     return self;
 }
-
+*/
 -(void)layoutSubviews {
 	DebugLog(@"4");
     [super layoutSubviews];
     DebugLog(@"5");
     self.textLabel.textColor = kDarkerTintColor;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Eclipse.dylib"] && [(__bridge id)CFPreferencesCopyAppValue(CFSTR("enabled"), CFSTR("com.gmoran.eclipse")) boolValue]) //Eclipse Compatibility
+        [((UISwitch *)[self control]) setTintColor:kTintColor];
+    DebugLog(@"3");
+    [((UISwitch *)[self control]) setOnTintColor:kTintColor]; //change the switch color
 }
-*/
+
 @end

@@ -7,7 +7,7 @@
 
 // Main Controller -------------------------------------------------------------
 #import "StratosPrefsController.h"
-#define StratosTintedSwitchCell PSSwitchTableCell
+//#define StratosTintedSwitchCell StratosTintedSwitchCell
 AVAudioPlayer *audioPlayer;
 @implementation StratosPrefsController
 @synthesize backImageView = _backImageView;
@@ -102,9 +102,8 @@ AVAudioPlayer *audioPlayer;
                                                       detail:Nil
                                                         cell:PSSliderCell
                                                         edit:Nil];
-        [spec setProperty:@50 forKey:@"default"];
-        [spec setProperty:@0 forKey:@"min"];
-        [spec setProperty:@100 forKey:@"max"];
+        [spec setProperty:@190 forKey:@"min"];
+        [spec setProperty:@250 forKey:@"max"];
         [spec setProperty:@NO forKey:@"showValue"];
         [spec setProperty:@"switcherHeight" forKey:@"key"];
         [spec setProperty:NSClassFromString(@"StratosTintedSliderCell") forKey:@"cellClass"];
