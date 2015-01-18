@@ -10,6 +10,7 @@
 @property (nonatomic, retain) UIView *grabber;
 @property (nonatomic, retain) NSUserDefaults *stratosUserDefaults;
 @property (nonatomic) BOOL isOpen;
+@property (nonatomic) int localPageCount;
 
 + (id)sharedInstance;
 - (void)updateTrayContentSize;
@@ -18,7 +19,7 @@
 - (void)addSettingControls;
 - (void)killAllApps;
 - (void)prepareToOpen;
-- (void)reloadIfNecessary;
+- (void)reloadShouldForce:(BOOL)force;
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading;
 - (void)handlePan:(UIPanGestureRecognizer *)pan;
 - (void)closeTray;

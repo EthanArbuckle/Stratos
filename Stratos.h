@@ -46,6 +46,8 @@ static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
 static NSString *const kCDTSPreferencesActivateByDoubleHome = @"activateViaHome";
 static NSString *const kCDTSPreferencesDefaultPage = @"defaultPage";
 static NSString *const kCDTSPreferencesSwitcherHeight = @"switcherHeight";
+static NSString *const kCDTSPreferencesPageOrder = @"pageOrder";
+static NSString *const kCDTSPreferencesNumberOfPages = @"numberOfPages";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesEnabledKey          : @NO,
                                                         kCDTSPreferencesTrayBackgroundStyle : @1,

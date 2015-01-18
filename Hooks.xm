@@ -58,6 +58,11 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	//update tray position (cards)
 	[switcher trayHeightDidChange];
 
+	//reload cards if # of pages has been changed
+	if ([[SwitcherTrayView sharedInstance] localPageCount] != [stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages]) {
+		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
+	}
+
 }
 
 
@@ -135,7 +140,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	switcher = [SwitcherTrayView sharedInstance];
 
 	//this method will check to see if the current running apps have changed, and update if need be
-	[switcher reloadIfNecessary];
+	[switcher reloadShouldForce:NO];
 
 	[switcher setParentWindow:trayWindow];
 	[trayWindow addSubview:switcher];
@@ -401,7 +406,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 - (BOOL)clickedMenuButton {
 	DebugLog0;
 	
-	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
+	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey] && [[SwitcherTrayView sharedInstance] isOpen]) {
 		//home button pressed, dismiss the tray if open
 		DebugLog(@"closing switcher tray");
 		[[SwitcherTrayView sharedInstance] closeTray];
@@ -411,14 +416,8 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 - (BOOL)handleMenuDoubleTap {
 	DebugLog0;
-	
-	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey] && [[SwitcherTrayView sharedInstance] isOpen]) {
-		//home button double tapped, dismiss the tray
-		DebugLog(@"closing switcher tray");
-		[[SwitcherTrayView sharedInstance] closeTray];
-	}
 
-	else if ([stratosUserDefaults boolForKey:kCDTSPreferencesActivateByDoubleHome] && ![[SwitcherTrayView sharedInstance] isOpen]) {
+	if ([stratosUserDefaults boolForKey:kCDTSPreferencesActivateByDoubleHome] && ![[SwitcherTrayView sharedInstance] isOpen]) {
 
 		[[SwitcherTrayView sharedInstance] openTray];
 
@@ -447,7 +446,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		[[IdentifierDaemon sharedInstance] reloadApps];
 
 		//also reload them in the switcher tray
-		[[SwitcherTrayView sharedInstance] reloadIfNecessary];
+		[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
 	}
 }
 

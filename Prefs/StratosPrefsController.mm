@@ -206,7 +206,7 @@ AVAudioPlayer *audioPlayer;
         [hiddenSpecs addObject:spec];
         
         
-        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"NUMBER_OF_SWITCHER_PAGES", @"Number of switcer pages")
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"NUMBER_OF_SWITCHER_PAGES", @"Number of switcher pages")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
                                                             get:@selector(readPreferenceValue:)
