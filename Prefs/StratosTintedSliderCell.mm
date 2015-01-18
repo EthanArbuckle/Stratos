@@ -17,8 +17,8 @@
 -(void)layoutSubviews {
 	[super layoutSubviews];
     UISlider *slider = (UISlider *)[self control];
-    [slider setMinimumTrackTintColor:kDarkerTintColor]; //change the slider color
-    [slider setMaximumTrackTintColor:[UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:228.0f/255.0f alpha:1.0]];
+    //[slider setMinimumTrackTintColor:kDarkerTintColor]; //change the slider color
+    //[slider setMaximumTrackTintColor:[UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:228.0f/255.0f alpha:1.0]];
     //NSLog(@"Target: %@", specifier.target);
     [slider addTarget:_specifier.target action:@selector(sliderMoved:) forControlEvents:UIControlEventAllTouchEvents];
 }

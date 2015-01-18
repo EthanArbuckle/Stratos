@@ -31,18 +31,18 @@ AVAudioPlayer *audioPlayer;
         NSMutableArray *specifiers = [NSMutableArray new];
         hiddenSpecs = [NSMutableArray new];
         PSSpecifier *spec;
-        
+
         //Stratos Header Cell
         spec = [PSSpecifier emptyGroupSpecifier];
         [spec setProperty:@"StratosSpacerCell" forKey:@"headerCellClass"];
         [spec setProperty:@160.0f forKey:@"spacerHeight"];
         [specifiers addObject:spec];
-        
+
         //Spacer
         spec = [PSSpecifier emptyGroupSpecifier];
         [spec setProperty:localized(@"ENABLED_FOOTER", @"A new multitasking experience is just the flip of a switch away") forKey:@"footerText"];
         [specifiers addObject:spec];
-        
+
         //Main kill switch
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ENABLED", @"Enabled")
                                                        target:self
@@ -56,15 +56,15 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@YES forKey:@"isEnabledSpec"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [specifiers addObject:spec];
-        
+
         //"Tray Settings" Spacer
         //backgroundStyleFooter = [PSSpecifier emptyGroupSpecifier];
         //[backgroundStyleFooter setProperty:@"Choose the blur for your Stratos switcher tray" forKey:@"footerText"];
-        
+
         spec = [PSSpecifier groupSpecifierWithName:localized(@"APPEARANCE_HEADER", @"Appearance")];
         [spec setProperty:localized(@"HEIGHT_SLIDER_FOOTER", @"Choose the height to which your switcher extends") forKey:@"footerText"];
         [hiddenSpecs addObject:spec];
-        
+
         //Background Style Picker
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"BACKGROUND_STYLE", @"Background Style")
                                                              target:self
@@ -79,8 +79,8 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@1 forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
-        
+
+
         //Disable Grabber
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_GRABBER", @"Show Grabber")
                                                        target:self
@@ -93,8 +93,8 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@YES forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
-        
+
+
         //Height of switcher slider
         spec = [PSSpecifier preferenceSpecifierNamed:@"Switcher Height"
                                                       target:self
@@ -114,26 +114,26 @@ AVAudioPlayer *audioPlayer;
             [hiddenSpecs addObject:[PSSpecifier emptyGroupSpecifier]];
         //[previewSpecifier setProperty:@"StratosSpacerCell" forKey:@"footerCellClass"];
         //[spec setProperty:@300.0f forKey:@"height"];
-        
-        
+
+
         //grabberSwitchFooter = [PSSpecifier emptyGroupSpecifier];
         //[grabberSwitchFooter setProperty:@"Show the grabber on your Stratos switcher" forKey:@"footerText"];
-        
-        
+
+
         //showCCSwitchFooter = [PSSpecifier emptyGroupSpecifier];
         //[showCCSwitchFooter setProperty:@"Invoke the Control Center after swiping up beyond the Stratos switcher" forKey:@"footerText"];
-        
-        
-        
+
+
+
         //ADD A FOOTER WHEN REARRAGING: "Enabling this shows allows you to invoke the control center by swiping up past the Stratos switcher"
-        
+
         //showRunningAppFooter = [PSSpecifier emptyGroupSpecifier];
         //[showRunningAppFooter setProperty:@"Show the application that you are currently using in the Stratos switcher" forKey:@"footerText"];
-        
+
         spec = [PSSpecifier groupSpecifierWithName:localized(@"FUNCTIONALITY_HEADER", @"Functionality")];
         [spec setProperty:localized(@"INVOKE_CC_FOOTER", @"Invoke the Control Center after swiping up beyond the Stratos switcher") forKey:@"footerText"];
         [hiddenSpecs addObject:spec];
-        
+
         //Show currently running applications
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"SHOW_RUNNING_APP", @"Show Running App in Switcher")
                                                       target:self
@@ -146,7 +146,7 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@NO forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
+
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ACTIVATE_VIA_HOME", @"Activate via home button")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
@@ -158,7 +158,7 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@NO forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
+
         //Enable control center being pulled up
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"INVOKE_CC", @"Invoke Control Center")
                                                       target:self
@@ -171,13 +171,13 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@YES forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
+
         //defaultPageCellFooter = [PSSpecifier emptyGroupSpecifier];
         //[defaultPageCellFooter setProperty:@"The default page to show when you first invoke the Stratos switcher" forKey:@"footerText"];
-        
+
         spec = [PSSpecifier groupSpecifierWithName:localized(@"PAGING_HEADER", @"Paging")];
         [hiddenSpecs addObject:spec];
-        
+
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"DEFAULT_PAGE", @"Default Page")
                                                              target:self
                                                                 set:@selector(setPreferenceValue:specifier:)
@@ -191,8 +191,8 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@1 forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
-        
+
+
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"PAGE_ORDER", @"Page Order")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
@@ -204,8 +204,8 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@1 forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        
-        
+
+
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"NUMBER_OF_SWITCHER_PAGES", @"Number of switcher pages")
                                                          target:self
                                                             set:@selector(setPreferenceValue:specifier:)
@@ -221,13 +221,13 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
-        
+
         //doublePressHomeFooter = [PSSpecifier emptyGroupSpecifier];
         //[doublePressHomeFooter setProperty:@"Allow the activation of Stratos via a double press of the home button" forKey:@"footerText"];
-        
+
         spec = [PSSpecifier emptyGroupSpecifier];
         [hiddenSpecs addObject:spec];
-        
+
         spec = [PSSpecifier preferenceSpecifierNamed:@"Reset All Prefs"
                                               target:self
                                                  set:NULL
@@ -244,7 +244,7 @@ AVAudioPlayer *audioPlayer;
                 [specifiers addObject:spec];
             }
         }
-        
+
         [specifiers addObject:[PSSpecifier emptyGroupSpecifier]];
         PSSpecifier *moreButton = [PSSpecifier preferenceSpecifierNamed:localized(@"MORE", @"More")
                                                                  target:self
@@ -255,7 +255,7 @@ AVAudioPlayer *audioPlayer;
                                                                    edit:Nil];
         [moreButton setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
         [specifiers addObject:moreButton];
-        
+
         _specifiers = [specifiers copy];
         DebugLogC(@"_specifiers: %@", _specifiers);
 	}
@@ -290,7 +290,7 @@ AVAudioPlayer *audioPlayer;
 {
     return [self.stratosUserDefaults objectForKey:specifier.properties[@"key"]];
 }
- 
+
 -(void) setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier
 {
     NSDictionary *properties = specifier.properties;
@@ -310,7 +310,7 @@ AVAudioPlayer *audioPlayer;
             [self.table performSelector:@selector(addSubview:) withObject:phoneView afterDelay:0.15f];
         }
     }
-    
+
     if ([key isEqualToString:@"switcherBackgroundStyle"])
         [self reloadBlurView];
     if ([key isEqualToString:@"showGrabber"]) {
@@ -319,7 +319,7 @@ AVAudioPlayer *audioPlayer;
         else
             [grabberView removeFromSuperview];
     }
-    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -340,8 +340,8 @@ AVAudioPlayer *audioPlayer;
     [someButton addGestureRecognizer:longPress];
     UIBarButtonItem *tweetButton = [[UIBarButtonItem alloc] initWithCustomView:someButton];
     self.navigationItem.rightBarButtonItem = tweetButton;
-    
-    
+
+
 }
 
 -(void)viewDidLoad {
@@ -353,15 +353,29 @@ AVAudioPlayer *audioPlayer;
     [[self table] addSubview:_iconImageView];
 
     int width = [[UIScreen mainScreen] bounds].size.width;
-    
+
     UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone_small.png"];
     phoneView = [[UIImageView alloc] initWithImage:phoneImage];
     phoneView.frame = CGRectMake((width/2)-160, 510, phoneImage.size.width, phoneImage.size.height);
     //phoneView.center = CGPointMake(, 650);
 
-    switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
-    [phoneView addSubview:switcherView];
+    //48L - 217W - 320H
 
+    UIImage *userHomescreen = _UICreateScreenUIImage();
+    DebugLog(@"userHomescreen: %@", userHomescreen);
+    UIImageWriteToSavedPhotosAlbum(userHomescreen, nil, nil, nil);
+    double homescreenHeight = userHomescreen.size.height;
+    CGRect cropRect = CGRectMake(0, .52023988*homescreenHeight, userHomescreen.size.width, .47976012*homescreenHeight);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([userHomescreen CGImage], cropRect);
+    UIImageView *homescreenView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:imageRef]];
+    CGImageRelease(imageRef);
+
+    [phoneView addSubview:homescreenView];
+    [homescreenView setFrame:CGRectMake(48, 0, 217, 320)];
+
+    switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+    //[phoneView addSubview:switcherView];
+    [homescreenView addSubview:switcherView];
         //SUMS: Y = 265
     [self setNewHeight:[stratosUserDefaults floatForKey:@"switcherHeight"]];
     CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
@@ -392,13 +406,14 @@ AVAudioPlayer *audioPlayer;
 - (void)sliderMoved:(UISlider *)slider {
     //NSLog(@"Scaling %@ to %f", self.switcherPreview, slider.value);
     [self setNewHeight:slider.value];
-    
+
 }
 
 -(void)setNewHeight:(float)height {
     float newHeight = (height/kScreenHeight)*(385.970666889);
     float newOrigin = 193-newHeight;
-    [switcherView setFrame:CGRectMake(47.8, newOrigin, 217, newHeight)];
+    //[switcherView setFrame:CGRectMake(48, newOrigin, 217, newHeight)];
+    [switcherView setFrame:CGRectMake(0, newOrigin, 217, newHeight)];
 }
 
 -(void)setTitle:(id)title {

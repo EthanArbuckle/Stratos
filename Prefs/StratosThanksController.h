@@ -1,6 +1,8 @@
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSTableCellType.h>
+#import <objc/runtime.h>
+
 #define thanksCell(a, b, c) spec = [PSSpecifier preferenceSpecifierNamed:(a) \
                                               target:self \
                                                  set:NULL \
@@ -13,12 +15,12 @@
 						spec->action = (c); \
 						[specifiers addObject:spec]; \
 						spec = nil
-						
+
 #define PlainCell(a) spec = [PSSpecifier preferenceSpecifierNamed:(a) \
                                               target:self \
                                                  set:NULL \
                                                  get:NULL \
-                                              detail:Nil \
+                                              detail:objc_getClass("StratosCreditsController") \
                                                 cell:PSStaticTextCell \
                                                 edit:Nil]; \
                      [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"]; \

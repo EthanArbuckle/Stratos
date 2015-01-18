@@ -1,0 +1,75 @@
+/*
+ Thanks for helping translate Stratos! Translate the items that are not in all caps, for example, you would change:
+ "HELLO_PHRASE" = "Hello";
+ to:
+ "HELLO_PHRASE" = "Hola";
+ Try to follow the same scheme as me for capitalization.
+ Happy translating! Thanks again,
+    The Cortex Dev Team :)
+ If you have any questions, or a setting needs more clarification/context for you to translate it well, feel free to shoot me an email at milodarling98@gmail.com and I'll get back to you as soon as I can
+ */
+
+"ENABLED" = "啟用";
+"ENABLED_FOOTER" = "一個全新的多工作業體驗，就在一個開關的距離"; //If this one is hard to translate while still sounding nice, try to think of something similar that sounds very nice :)
+"APPEARANCE_HEADER" = "外觀";
+"BACKGROUND_STYLE" = "背景模式";
+
+"DARK_BACKGROUND" = "暗背景";
+"COMMON_BLUR_BACKGROUND" = "模糊背景";
+"CC_STYLE_BACKGROUND" = "控制中心模式"; //Control Center Style
+"LIGHT_BACKGROUND" = "光亮背景";
+
+"SHOW_GRABBER" = "顯示拉橫";
+"HEIGHT_SLIDER_FOOTER" = "選擇多工欄的高度";
+
+"FUNCTIONALITY_HEADER" = "功能";
+"SHOW_RUNNING_APP" = "在多工欄顯示正在運行的應用程式";
+"ACTIVATE_VIA_HOME" = "以主畫面按鈕啟動";
+"INVOKE_CC" = "打開控制中心";
+"INVOKE_CC_FOOTER" = "在打開Stratos多工欄後向上拉會打開控制中心";
+
+"PAGING_HEADER" = "分頁";
+"DEFAULT_PAGE" = "預設頁";
+
+"SWITCHER_CARDS" = "多工應用程式卡";
+"CONTROL_CENTER" = "控制中心";
+"MEDIA_CONTROLS" = "多媒體控制";
+
+"PAGE_ORDER" = "分頁次序";
+"NUMBER_OF_SWITCHER_PAGES" = "總多工作業頁數";
+"TOP_TO_BOTTOM" = "上至下代表左至右";
+"SWITCHER_PAGES_NUMBER_FOOTER" = "多工應用程式卡顯示的頁數。當你多工右邊有另一版面時適用(如啟用控制中心或多媒體控制)。";
+
+"ALL" = "全部";
+
+"MORE" = "更多";
+
+/*More Page*/
+"CREDITS" = "歸功於";
+"THE_DEVELOPERS" = "開發者";
+"THE_TEAM" = "隊伍";
+"TEAM_SUBTITLE" = "Stratos 背後的隊伍";
+
+"ETHAN_TITLE" = "主開發者";
+"ETHAN_SUBTITLE" = "Stratos 的心臟及靈魂";
+
+"MILO_TITLE" = "副開發者";
+"MILO_SUBTITLE" = "設計及制定設定介面";
+
+"PHILLIP_TITLE" = "副開發者";
+"PHILLIP_SUBTITLE" = "作出兩項重要貢獻";
+
+"CYRIL_TITLE" = "設計者";
+"CYRIL_SUBTITLE" = "亦被稱為Cereal";
+
+"MIX_TAPE_FOOTER" = "© 2014-2015 Cortex 開發團隊. 混音帶二月面世囉";
+
+"CHECK_IT_OUT" = "來看看吧!";
+"VELOX" = "Velox為Cortex開發團隊另一新插件, 由Phillip Tennen開發.";
+
+
+
+
+
+
+
