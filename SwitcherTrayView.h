@@ -27,5 +27,6 @@
 - (void)cardRequestingToClose:(UIView *)card;
 - (void)reloadBlurView;
 - (void)refreshGrabber;
+- (void)trayHeightDidChange;
 
 @end

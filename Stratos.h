@@ -26,7 +26,7 @@
 
 #define kiPhoneSmall 			[[UIScreen mainScreen] bounds].size.height < 568
 
-#define kSwitcherHeight 		kScreenHeight / 3.3 //172
+#define kSwitcherHeight 		[[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] floatForKey:kCDTSPreferencesSwitcherHeight]//kScreenHeight / 3.3 //172
 #define kSwitcherMaxY 			kScreenHeight - kSwitcherHeight
 #define kSwitcherCardWidth 		kScreenWidth / 4.5714 //70
 #define kSwitcherCardHeight 	        kScreenHeight / 4.36 //130
@@ -45,10 +45,11 @@ static NSString *const kCDTSPreferencesInvokeControlCenter = @"shouldInvokeCC";
 static NSString *const kCDTSPreferencesShowRunningApp = @"showRunningApp";
 static NSString *const kCDTSPreferencesActivateByDoubleHome = @"activateViaHome";
 static NSString *const kCDTSPreferencesDefaultPage = @"defaultPage";
+static NSString *const kCDTSPreferencesSwitcherHeight = @"switcherHeight";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesEnabledKey          : @NO,
                                                         kCDTSPreferencesTrayBackgroundStyle : @1,
-                                                        @"switcherHeight"                   : @50,
+                                                        @"switcherHeight"                   : @(kScreenHeight / 3.3),
                                                         kCDTSPreferencesShowGrabber         : @YES,
                                                         kCDTSPreferencesInvokeControlCenter : @YES,
                                                         kCDTSPreferencesShowRunningApp      : @NO,

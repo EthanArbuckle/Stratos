@@ -130,7 +130,9 @@
 			NSMutableArray *newIdentifiers = [[NSMutableArray alloc] initWithArray:identifiers copyItems:YES];
 
 			//remove first identifier (running app)
-			[newIdentifiers removeObjectAtIndex:0];
+			if ([newIdentifiers count] > 0) {
+				[newIdentifiers removeObjectAtIndex:0];
+			}
 
 			//return nonmutable array
 			return [newIdentifiers copy];

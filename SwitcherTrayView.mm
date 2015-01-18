@@ -18,7 +18,7 @@ NSUserDefaults *_stratosUserDefaults;
 	__strong static id _sharedObject = nil;
 	 
 	dispatch_once(&p, ^{
-		_sharedObject = [[self alloc] initWithFrame:CGRectMake(0, kScreenHeight - kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
+		_sharedObject = [[self alloc] initWithFrame:CGRectMake(0, kScreenHeight - kSwitcherHeight, kScreenWidth, kScreenHeight /*just to be safe and ensure its never short */)];
 	});
 
 	return _sharedObject;
@@ -74,7 +74,7 @@ NSUserDefaults *_stratosUserDefaults;
 		_switcherCards = [[NSMutableArray alloc] init];
 
 		//create the scroll view that will hold everything
-		_trayScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, kSwitcherHeight - 20)]; //create 40px buffer above and below it
+		_trayScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, (kSwitcherHeight / 2) - (kSwitcherCardHeight / 2), kScreenWidth, kSwitcherHeight - 20)]; //create 40px buffer above and below it
 		[_trayScrollView setScrollEnabled:YES];
 		[_trayScrollView setPagingEnabled:YES];
 		[_trayScrollView setShowsHorizontalScrollIndicator:NO];
@@ -205,6 +205,12 @@ NSUserDefaults *_stratosUserDefaults;
 	int defaultPage = [[_stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
 
 	//i think 1->Cards 2->Settings 3->Media
+
+	//make sure we dont open to no cards
+	if (defaultPage == 1 && [[[IdentifierDaemon sharedInstance] identifiers] count] == 0) {
+		defaultPage = 2;
+	}
+
 	if (defaultPage == 1) {
 
 		//open to cards
@@ -327,6 +333,8 @@ NSLog(@"reloading");
 		//if no apps are running, default to the quicklaunch page
 		[_trayScrollView setContentOffset:CGPointMake(0, 0) animated:NO];
 	}
+
+	[self updateTrayContentSize];
 }
 
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading {
@@ -501,6 +509,12 @@ NSLog(@"reloading");
 		[_gestureView addSubview:_grabber];
 	}
 
+}
+
+- (void)trayHeightDidChange {
+
+	//update placement of cards
+	[_trayScrollView setFrame:CGRectMake(0, (kSwitcherHeight / 2) - (kSwitcherCardHeight / 2), kScreenWidth, kSwitcherHeight - 20)];
 }
 
 @end
