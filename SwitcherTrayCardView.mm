@@ -125,17 +125,20 @@
 		//decide if card is pushed up enough to close
 		if (point.y <= 30.0f) {
 
-			[UIView animateWithDuration:1.0f animations:^{
+			[UIView animateWithDuration:0.4f animations:^{
 
 				//animate this card out
 				CGRect frame = [self frame];
 				frame.origin.y = -500;
 				[self setFrame:frame];
 
+			} completion:^(BOOL completed) {
+
+				//tell the switcher to close this app
+				[(SwitcherTrayView *)_superSwitcher cardRequestingToClose:self];
+
 			}];
 
-			//tell the switcher to close this app
-			[(SwitcherTrayView *)_superSwitcher cardRequestingToClose:self];
 		}
 		else {
 
