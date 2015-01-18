@@ -103,7 +103,7 @@ AVAudioPlayer *audioPlayer;
                                                       detail:Nil
                                                         cell:PSSliderCell
                                                         edit:Nil];
-        [spec setProperty:[NSNumber numberWithDouble:kScreenHeight/3.5] forKey:@"min"];
+        [spec setProperty:[NSNumber numberWithDouble:kScreenHeight/3.4] forKey:@"min"];
         [spec setProperty:[NSNumber numberWithDouble:kScreenHeight/2.5] forKey:@"max"];
         [spec setProperty:@NO forKey:@"showValue"];
         [spec setProperty:@"switcherHeight" forKey:@"key"];
