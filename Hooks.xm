@@ -362,7 +362,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	if (location.y <= kScreenHeight - (kSwitcherHeight / 2)) { //opening switcher
 		
 
-		[self animateObject:switcher toFrame:CGRectMake(0, kSwitcherMaxY - 1, kScreenWidth, kSwitcherHeight)];
+		[self animateObject:switcher toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
 		[switcher setIsOpen:YES];
 
 	}
