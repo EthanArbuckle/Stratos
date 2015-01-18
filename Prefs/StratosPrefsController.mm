@@ -110,7 +110,7 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:NSClassFromString(@"StratosTintedSliderCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
-        for (int i=0; i<9; i++)
+        for (int i=0; i<10; i++)
             [hiddenSpecs addObject:[PSSpecifier emptyGroupSpecifier]];
         //[previewSpecifier setProperty:@"StratosSpacerCell" forKey:@"footerCellClass"];
         //[spec setProperty:@300.0f forKey:@"height"];
@@ -354,9 +354,9 @@ AVAudioPlayer *audioPlayer;
 
     int width = [[UIScreen mainScreen] bounds].size.width;
     
-    UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone.png"];
+    UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone_small.png"];
     phoneView = [[UIImageView alloc] initWithImage:phoneImage];
-    phoneView.frame = CGRectMake((width/2)-544/6, 510, phoneImage.size.width, phoneImage.size.height);
+    phoneView.frame = CGRectMake((width/2)-160, 510, phoneImage.size.width, phoneImage.size.height);
     //phoneView.center = CGPointMake(, 650);
 
     switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
@@ -371,7 +371,7 @@ AVAudioPlayer *audioPlayer;
     UIImageView *grabber = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/grabber.png"]];
     [grabber setUserInteractionEnabled:NO];
     [grabberView addSubview:grabber];
-    [grabber setFrame:CGRectMake(57, 3, 10, 2)];
+    [grabber setFrame:CGRectMake(98.5, 5, 20, 4)];
     if ([stratosUserDefaults boolForKey:@"showGrabber"])
         [switcherView addSubview:grabberView];
 
@@ -396,9 +396,9 @@ AVAudioPlayer *audioPlayer;
 }
 
 -(void)setNewHeight:(float)height {
-    float newHeight = (height/kScreenHeight)*(219);
-    float newOrigin = 258-newHeight;
-    [switcherView setFrame:CGRectMake(163/6, newOrigin, 123, newHeight)];
+    float newHeight = (height/kScreenHeight)*(385.970666889);
+    float newOrigin = 193-newHeight;
+    [switcherView setFrame:CGRectMake(47.8, newOrigin, 217, newHeight)];
 }
 
 -(void)setTitle:(id)title {

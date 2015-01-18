@@ -250,6 +250,16 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>Thanks</string>
+			<key>detail</key>
+			<string>StratosThanksController</string>
+			<key>cellClass</key>
+			<string>StratosTintedCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
 			<string>MIX_TAPE_FOOTER</string>
