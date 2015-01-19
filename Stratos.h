@@ -48,11 +48,13 @@ static NSString *const kCDTSPreferencesDefaultPage = @"defaultPage";
 static NSString *const kCDTSPreferencesSwitcherHeight = @"switcherHeight";
 static NSString *const kCDTSPreferencesPageOrder = @"pageOrder";
 static NSString *const kCDTSPreferencesNumberOfPages = @"numberOfPages";
+static NSString *const kCDTSPreferencesEnableParallax = @"enableParallax";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesEnabledKey          : @NO,
                                                         kCDTSPreferencesTrayBackgroundStyle : @1,
                                                         @"switcherHeight"                   : @(kScreenHeight / 3.3),
                                                         kCDTSPreferencesShowGrabber         : @YES,
+                                                        kCDTSPreferencesEnableParallax      : @YES,
                                                         kCDTSPreferencesInvokeControlCenter : @YES,
                                                         kCDTSPreferencesShowRunningApp      : @NO,
                                                         @"defaultPage"                      : @1,

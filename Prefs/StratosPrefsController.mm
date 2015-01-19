@@ -94,6 +94,20 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
+        //enable parallax
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ENABLE_PARALLAX", @"Enable Parallax")
+                                                       target:self
+                                                          set:@selector(setPreferenceValue:specifier:)
+                                                          get:@selector(readPreferenceValue:)
+                                                       detail:Nil
+                                                         cell:PSSwitchCell
+                                                         edit:Nil];
+        [spec setProperty:@"enableParallax" forKey:@"key"];
+        [spec setProperty:@YES forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
+
+
 
         //Height of switcher slider
         spec = [PSSpecifier preferenceSpecifierNamed:@"Switcher Height"
@@ -384,7 +398,7 @@ AVAudioPlayer *audioPlayer;
 
     UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone_small.png"];
     phoneView = [[UIImageView alloc] initWithImage:phoneImage];
-    phoneView.frame = CGRectMake((width/2)-160, 510, phoneImage.size.width, phoneImage.size.height);
+    phoneView.frame = CGRectMake((width/2)-160, 532, phoneImage.size.width, phoneImage.size.height);
     //phoneView.center = CGPointMake(, 650);
 
     //48L - 217W - 320H
