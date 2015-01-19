@@ -110,7 +110,7 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:NSClassFromString(@"StratosTintedSliderCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
-        for (int i=0; i<10; i++)
+        for (int i=0; i<9; i++)
             [hiddenSpecs addObject:[PSSpecifier emptyGroupSpecifier]];
         //[previewSpecifier setProperty:@"StratosSpacerCell" forKey:@"footerCellClass"];
         //[spec setProperty:@300.0f forKey:@"height"];
