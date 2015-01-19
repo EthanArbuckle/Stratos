@@ -377,7 +377,7 @@ AVAudioPlayer *audioPlayer;
     UIImage* headerImage = [[UIImage alloc] initWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/Header.png"];
     _iconImageView = [[UIImageView alloc] initWithImage:headerImage];
     _iconImageView.contentMode = UIViewContentModeCenter;
-    [_iconImageView setCenter:CGPointMake( [[UIScreen mainScreen] bounds].size.width/2, headerImage.size.height/2 )];
+    [_iconImageView setCenter:CGPointMake( [[UIScreen mainScreen] bounds].size.width/2, -48 )];
     [[self table] addSubview:_iconImageView];
 
     int width = [[UIScreen mainScreen] bounds].size.width;
