@@ -271,11 +271,33 @@ AVAudioPlayer *audioPlayer;
 }
 
 -(NSArray *)defaultPageTitles {
-    return @[ localized(@"SWITCHER_CARDS", @"Switcher Cards"), localized(@"CONTROL_CENTER", @"Control Center"), localized(@"MEDIA_CONTROLS", @"Media Controls") ];
+    NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
+    NSDictionary *names = @{
+            @"controlCenter" : localized(@"CONTROL_CENTER", @"Control Center"),
+            @"mediaControls" : localized(@"MEDIA_CONTROLS", @"Media Controls"),
+            @"switcherCards" : localized(@"SWITCHER_CARDS", @"Switcher Cards")
+        };
+    NSMutableArray *pageTitles = [NSMutableArray new];
+    for (NSString *pageIdent in pageOrder) {
+        [pageTitles addObject:names[pageIdent]];
+    }
+    return pageTitles;
+    //return @[ localized(@"SWITCHER_CARDS", @"Switcher Cards"), localized(@"CONTROL_CENTER", @"Control Center"), localized(@"MEDIA_CONTROLS", @"Media Controls") ];
 }
 
 -(NSArray *)defaultPageValues {
-    return @[ @1, @2, @3 ];
+    NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
+    NSDictionary *values = @{
+            @"controlCenter" : @2,
+            @"mediaControls" : @3,
+            @"switcherCards" : @1
+        };
+    NSMutableArray *pageValues = [NSMutableArray new];
+    for (NSString *pageIdent in pageOrder) {
+      [pageValues addObject:values[pageIdent]];
+    }
+    return pageValues;
+    //return @[ @1, @2, @3 ];
 }
 
 -(NSArray *)backgroundStyleTitles {
@@ -302,12 +324,18 @@ AVAudioPlayer *audioPlayer;
         if (![value boolValue]) {
             [self removeContiguousSpecifiers:hiddenSpecs
                                     animated:YES];
-            [phoneView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.1f];
+            [UIView animateWithDuration:0.2f animations:^{
+              [phoneView setAlpha:0];
+            }];
+            //[phoneView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.1f];
         } else {
             [self insertContiguousSpecifiers:hiddenSpecs
                                      atIndex:3
                                     animated:YES];
-            [self.table performSelector:@selector(addSubview:) withObject:phoneView afterDelay:0.15f];
+            [UIView animateWithDuration:0.3f animations:^{
+              [phoneView setAlpha:1];
+            }];
+            //[self.table performSelector:@selector(addSubview:) withObject:phoneView afterDelay:0.15f];
         }
     }
 
@@ -360,8 +388,10 @@ AVAudioPlayer *audioPlayer;
     //phoneView.center = CGPointMake(, 650);
 
     //48L - 217W - 320H
-
-    UIImage *userHomescreen = _UICreateScreenUIImage();
+    /*
+    CGImageRef homescreenRef = UIGetScreenImage();
+    UIImage *userHomescreen = [UIImage imageWithCGImage:homescreenRef];
+    CGImageRelease(homescreenRef);
     DebugLog(@"userHomescreen: %@", userHomescreen);
     UIImageWriteToSavedPhotosAlbum(userHomescreen, nil, nil, nil);
     double homescreenHeight = userHomescreen.size.height;
@@ -372,10 +402,10 @@ AVAudioPlayer *audioPlayer;
 
     [phoneView addSubview:homescreenView];
     [homescreenView setFrame:CGRectMake(48, 0, 217, 320)];
-
+    */
     switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
     //[phoneView addSubview:switcherView];
-    [homescreenView addSubview:switcherView];
+    [phoneView addSubview:switcherView];
         //SUMS: Y = 265
     [self setNewHeight:[stratosUserDefaults floatForKey:@"switcherHeight"]];
     CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
@@ -391,7 +421,10 @@ AVAudioPlayer *audioPlayer;
 
     //[switcherView setFrame:CGRectMake(10, 195, 130, 70)];
     if ([stratosUserDefaults boolForKey:@"isEnabled"])
-        [self.table addSubview:phoneView];
+      [phoneView setAlpha:1];
+    else
+      [phoneView setAlpha:0];
+    [self.table addSubview:phoneView];
 }
 
 -(void)reloadBlurView {
@@ -412,8 +445,8 @@ AVAudioPlayer *audioPlayer;
 -(void)setNewHeight:(float)height {
     float newHeight = (height/kScreenHeight)*(385.970666889);
     float newOrigin = 193-newHeight;
-    //[switcherView setFrame:CGRectMake(48, newOrigin, 217, newHeight)];
-    [switcherView setFrame:CGRectMake(0, newOrigin, 217, newHeight)];
+    [switcherView setFrame:CGRectMake(47.8, newOrigin, 217, newHeight)];
+    //[switcherView setFrame:CGRectMake(0, newOrigin, 217, newHeight)];
 }
 
 -(void)setTitle:(id)title {

@@ -1,6 +1,6 @@
 #import "StratosMovableItemsController.h"
 @implementation StratosMovableItemsController
-@synthesize tableView;
+//@synthesize tableView;
 
 - (id)initForContentSize:(CGSize)size
 {
@@ -10,6 +10,7 @@
         stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
         [stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
         [stratosUserDefaults synchronize];
+
 
         names = @{
             @"controlCenter" : localized(@"CONTROL_CENTER", @"Control Center"),
@@ -42,20 +43,22 @@
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
-    }
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier] ?: [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     NSInteger index = indexPath.row;
     DebugLogC(@"Cell Index: %ld", (long)index);
     NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
     
     cell.textLabel.text = [names objectForKey:pageOrder[index]];
-    //cell.imageView.image = iconForDescription(desc);
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSLog(@"hi");
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

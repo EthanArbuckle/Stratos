@@ -6,5 +6,6 @@ Packages/
 _/
 
 *.xcworkspace
-
+*.sublime-project
+*.sublime-workspace
 Packages/Prefs/.theos/obj/arm64/StratosPrefs.bundle/StratosPrefs
