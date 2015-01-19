@@ -78,8 +78,7 @@
 
 
 		//add parallax effect to card
-		BOOL parallax = YES;
-		if (parallax) {
+		if ([[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesEnableParallax]) {
 
 			UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
 			verticalMotionEffect.minimumRelativeValue = @(-10);

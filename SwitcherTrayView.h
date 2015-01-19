@@ -10,7 +10,10 @@
 @property (nonatomic, retain) UIView *grabber;
 @property (nonatomic, retain) NSUserDefaults *stratosUserDefaults;
 @property (nonatomic) BOOL isOpen;
+
+//these are for checking if certain settings have been changes
 @property (nonatomic) int localPageCount;
+@property (nonatomic) BOOL enableParallax;
 
 + (id)sharedInstance;
 - (void)updateTrayContentSize;

@@ -83,6 +83,9 @@ NSUserDefaults *_stratosUserDefaults;
 		//save local copy of numberofpages to render so we can compare it later to know if settings have been changed
 		_localPageCount = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
 
+		//same idea for enabling parallax
+		_enableParallax = [_stratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax];
+
 		//add the media controls
 		[self addMediaControls];
 
@@ -351,6 +354,11 @@ NSLog(@"reloading");
 	}
 
 	[self updateTrayContentSize];
+
+	//update setting stuff
+	_localPageCount = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
+	_enableParallax = [_stratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax];
+	
 }
 
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading {
