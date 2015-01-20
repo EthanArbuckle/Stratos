@@ -362,9 +362,9 @@ NSLog(@"reloading");
 }
 
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading {
-NSLog(@"x::%d", xOrigin);
-	//create the switcher card for the app
-	SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:ident];
+
+	//get the switcher card for the app
+	SwitcherTrayCardView *currentApp = (SwitcherTrayCardView *)[[IdentifierDaemon sharedInstance] switcherCardForIdentifier:ident];
 
 	//add that card view to the array of cards
 	[_switcherCards addObject:currentApp];

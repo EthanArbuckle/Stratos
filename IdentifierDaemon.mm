@@ -21,6 +21,9 @@
 		_appIdentifiers = [[NSMutableArray alloc] init];
 		_appSnapshots = [[NSMutableArray alloc] init];
 
+		//app card holder
+		_appCards = [[NSMutableDictionary alloc] init];
+
 		//reload apps
 		[self reloadApps];
 
@@ -99,10 +102,45 @@
 
 			}
 
+			//see if card for this ident exists. if not, create it
+			if ([_appCards objectForKey:ident] == nil) {
+
+				//there is no card for this identifier, create it
+				SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:ident];
+
+				//add it to dictionary with key as its identifier
+				[_appCards setObject:currentApp forKey:ident];
+			}
+			else {
+
+				//the app exists, lets tell it to refresh
+				[(SwitcherTrayCardView *)[_appCards objectForKey:ident] cardNeedsUpdating];
+			}
+
 		}
 	//});
 
 
+}
+
+- (UIView *)switcherCardForIdentifier:(NSString *)identifier {
+
+	//make sure it exists
+	if ([_appCards objectForKey:identifier] != nil) {
+
+		//return it
+		return (UIView *)[_appCards objectForKey:identifier];
+	}
+
+	//card doesnt exist, go ahead and create it
+	DebugLog(@"tried to access card that didnt exist, creating it");
+	SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:identifier];
+
+	//add it to dictionary with key as its identifier
+	[_appCards setObject:currentApp forKey:identifier];
+
+	//and return it
+	return (UIView *)currentApp;
 }
 
 - (NSArray *)identifiers {
@@ -141,6 +179,15 @@
 	}
 
 	return identifiers;
+}
+
+- (void)purgeCardCache {
+
+	l(@"Purging card cache");
+	
+	//just recreate the dictionary, which will clear it of everything
+	_appCards = [[NSMutableDictionary alloc] init];
+
 }
 
 @end
