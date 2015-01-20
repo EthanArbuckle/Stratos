@@ -6,10 +6,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import "buttons.h"
 
-//OBJC_EXTERN UIImage *_UICreateScreenUIImage(void) NS_RETURNS_RETAINED;
-//OBJC_EXTERN CGImageRef UIGetScreenImage(void);
-
 #define localized(a, b) [[self bundle] localizedStringForKey:(a) value:(b) table:nil]
+
+AVAudioPlayer *audioPlayer;
 
 @interface StratosPrefsController : PSListController {
     UIView *stratosHeightView;

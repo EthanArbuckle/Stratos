@@ -1,6 +1,5 @@
 #import "StratosMovableItemsController.h"
 @implementation StratosMovableItemsController
-//@synthesize tableView;
 
 - (id)initForContentSize:(CGSize)size
 {
@@ -94,7 +93,6 @@
     [stratosUserDefaults setObject:pageOrder forKey:@"pageOrder"];
     [stratosUserDefaults synchronize];
     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.cortexdevteam.stratos.prefs-changed"), NULL, NULL, YES);
-    //[tableView reloadData];
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView*)tableView editingStyleForRowAtIndexPath:(NSIndexPath*)indexPath {

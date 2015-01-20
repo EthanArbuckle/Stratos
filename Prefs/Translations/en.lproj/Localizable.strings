@@ -20,7 +20,7 @@
 "LIGHT_BACKGROUND" = "Light";
 
 "SHOW_GRABBER" = "Show Grabber";
-"ENABLE_PARALLAX" = "Enable Parallax"
+"ENABLE_PARALLAX" = "Enable Parallax";
 "HEIGHT_SLIDER_FOOTER" = "Choose the height to which your switcher extends";
 
 "FUNCTIONALITY_HEADER" = "Functionality";

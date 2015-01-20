@@ -26,7 +26,7 @@
 }
 
 -(void)openTwitter:(PSSpecifier *)specifier {
-    NSString *screenName = [specifier.properties[@"handle"] substringFromIndex:1];
+    NSString *screenName = [specifier.properties[@"handle"] substringFromIndex:1]; //remove the "@"
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tweetbot:"]])
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tweetbot:///user_profile/%@", screenName]]];
     else if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitterrific:"]])
@@ -41,7 +41,7 @@
 
 -(void)openReddit:(PSSpecifier *)specifier {
     NSString *screenName = specifier.properties[@"handle"];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://www.reddit.com" stringByAppendingString:screenName]]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://www.reddit.com" stringByAppendingPathComponent:screenName]]];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
