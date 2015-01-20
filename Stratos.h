@@ -111,6 +111,11 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 
 
 @interface SBControlCenterGrabberView : UIView
+- (id)chevronView;
+@end
+
+@interface SBChevronView
+- (void)setState:(int)state animated:(BOOL)animated;
 @end
 
 @interface SBApplicationController : NSObject

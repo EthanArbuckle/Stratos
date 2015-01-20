@@ -214,6 +214,9 @@ NSUserDefaults *_stratosUserDefaults;
 //this is called right before the tray is presented
 - (void)prepareToOpen {
 
+	//set grabber state to 0 (flat)
+	[[(SBControlCenterGrabberView *)_grabber chevronView] setState:0 animated:NO];
+
 	//get default page we need to open to
 	int defaultPage = [[_stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
 
@@ -392,6 +395,9 @@ NSLog(@"reloading");
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
 
+	//since tray is moving, change chevron to flat line (state 0)
+	[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:0 animated:YES];
+
 	//location of touch
 	CGPoint point = [pan locationInView:_parentWindow];
 
@@ -415,6 +421,9 @@ NSLog(@"reloading");
 		else {
 
 			[self openTray];
+
+			//tray is open, change chevron to down arrow (state 1)
+			[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 		}
 
 	}
