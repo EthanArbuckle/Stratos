@@ -8,7 +8,6 @@ SBCCSettingsSectionController *settings;
 MPUSystemMediaControlsViewController *mediaView;
 
 //this is subject to change
-_UIBackdropView *blurView;
 NSUserDefaults *_stratosUserDefaults;
 
 @implementation SwitcherTrayView
@@ -45,9 +44,9 @@ NSUserDefaults *_stratosUserDefaults;
 		//create the blur view
 	//    if ([[UIScreen mainScreen] bounds].size.height > 568) {
 
-			blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
-			[blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
-			[self addSubview:blurView];
+			_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+			[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+			[self addSubview:_blurView];
 
    //     }
    //     else {
@@ -215,10 +214,24 @@ NSUserDefaults *_stratosUserDefaults;
 //this is called right before the tray is presented
 - (void)prepareToOpen {
 
+	//set grabber state to 0 (flat)
+	[[(SBControlCenterGrabberView *)_grabber chevronView] setState:0 animated:NO];
+
 	//get default page we need to open to
 	int defaultPage = [[_stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
 
 	//i think 1->Cards 2->Settings 3->Media
+
+	//open to media controls if music is playing
+	if ([_stratosUserDefaults boolForKey:kCDTSPreferencesActiveMediaEnabled]) {
+
+		//see if music is playing
+		if (((SBMediaController *)[NSClassFromString(@"SBMediaController") sharedInstance]).nowPlayingApplication) {
+
+			//something is playing, change default page to 3 (media controls)
+			defaultPage = 3;
+		}
+	}
 
 	//make sure we dont open to no cards
 	if (defaultPage == 1 && [[[IdentifierDaemon sharedInstance] identifiers] count] == 0) {
@@ -362,9 +375,9 @@ NSLog(@"reloading");
 }
 
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading {
-NSLog(@"x::%d", xOrigin);
-	//create the switcher card for the app
-	SwitcherTrayCardView *currentApp = [[SwitcherTrayCardView alloc] initWithIdentifier:ident];
+
+	//get the switcher card for the app
+	SwitcherTrayCardView *currentApp = (SwitcherTrayCardView *)[[IdentifierDaemon sharedInstance] switcherCardForIdentifier:ident];
 
 	//add that card view to the array of cards
 	[_switcherCards addObject:currentApp];
@@ -393,6 +406,9 @@ NSLog(@"x::%d", xOrigin);
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
 
+	//since tray is moving, change chevron to flat line (state 0)
+	[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:0 animated:YES];
+
 	//location of touch
 	CGPoint point = [pan locationInView:_parentWindow];
 
@@ -416,6 +432,9 @@ NSLog(@"x::%d", xOrigin);
 		else {
 
 			[self openTray];
+
+			//tray is open, change chevron to down arrow (state 1)
+			[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 		}
 
 	}
@@ -515,14 +534,44 @@ NSLog(@"x::%d", xOrigin);
 				[self animateObject:possibleCard toFrame:frame];
 			}
 		}
+
+		//if user has limited amount of pages to show, lets grab the next app
+		//that would normally be showing and add it, since we're going to be 1 short
+		if ([_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] != 6) {
+
+			int pagesToShow = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
+
+			//make sure there is even another app to show
+			if ([[[IdentifierDaemon sharedInstance] identifiers] count] > (pagesToShow * 4)) {
+
+				//get the app, index should be (pagesToShow X 4) - 1 (to account for 0 index)
+				int indexOfNext = (pagesToShow * 4) - 1;
+				NSString *identifier = [[[IdentifierDaemon sharedInstance] identifiers] objectAtIndex:indexOfNext];
+				SwitcherTrayCardView *newApp = (SwitcherTrayCardView *)[[IdentifierDaemon sharedInstance] switcherCardForIdentifier:identifier];
+
+				//calculate x origin for it
+				int xOrigin = [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] * kScreenWidth;
+				xOrigin += ((pagesToShow * 3) * kSwitcherCardWidth) + ((pagesToShow * 4) * kSwitcherCardSpacing);
+
+				//set the new apps frame
+				[newApp setFrame:CGRectMake(xOrigin, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
+
+				//add it to card array
+				[_switcherCards addObject:newApp];
+
+				//and add it to the switcher
+				[_trayScrollView addSubview:newApp];
+
+			}
+		}
 	}
 }
 
 - (void)reloadBlurView {
-	[blurView removeFromSuperview];
-	blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
-	[blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
-	[self insertSubview:blurView atIndex:0];
+	[_blurView removeFromSuperview];
+	_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+	[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+	[self insertSubview:_blurView atIndex:0];
 }
 
 - (void)refreshGrabber {

@@ -37,9 +37,11 @@
 "MEDIA_CONTROLS" = "Media Controls";
 
 "PAGE_ORDER" = "Page Order";
+"PAGING_FOOTER" = "Open to media controls if audio is playing";
 "NUMBER_OF_SWITCHER_PAGES" = "Number of Switcher Pages";
 "TOP_TO_BOTTOM" = "Top to bottom represents left to right";
 "SWITCHER_PAGES_NUMBER_FOOTER" = "The number of pages to show for the switcher cards. Used when you have another page (i.e. the Control Center or Media Controls) to the right of the switcher cards";
+"ACTIVE_MEDIACONTROLS" = "Open to Media if Playing";
 
 "ALL" = "All";
 

@@ -9,14 +9,14 @@
 		_identifier = identifier;
 
 		//create the imageview that will hold the preview image of the app
-		UIImageView *snapshotHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
-		[snapshotHolder setContentMode:UIViewContentModeScaleAspectFit];
+		_snapshotHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
+		[_snapshotHolder setContentMode:UIViewContentModeScaleAspectFit];
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self addSubview:snapshotHolder];
+			[self addSubview:_snapshotHolder];
 
 			//get the image from our ident daemon
-			[snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+			[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
 		});
 
 		//create imageview that will hold the apps icon
@@ -212,5 +212,13 @@
 
 	return YES;
 }
+
+- (void)cardNeedsUpdating {
+	
+	//get the image from our ident daemon
+	[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];;
+	
+}
+
 
 @end

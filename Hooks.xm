@@ -61,6 +61,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	//reload cards if # of pages has been changed OR parallax settings have been changed
 	if ([[SwitcherTrayView sharedInstance] localPageCount] != [stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] || 
 		[[SwitcherTrayView sharedInstance] enableParallax] != [stratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax]) {
+		[[IdentifierDaemon sharedInstance] purgeCardCache];
 		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
 	}
 
@@ -216,6 +217,9 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		return;
 	}
 
+	//since tray is moving, change chevron to flat line (state 0)
+	[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:0 animated:YES];
+
 	//detect touches for closing gesture
 	if (location.x <= 30 || [gestureView frame].origin.y != 0) {
 
@@ -367,6 +371,8 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
 	if (location.y <= kScreenHeight - (kSwitcherHeight / 2)) { //opening switcher
 		
+		//set grabber view to down arrow now that tray is open
+		[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 
 		[self animateObject:switcher toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
 		[switcher setIsOpen:YES];

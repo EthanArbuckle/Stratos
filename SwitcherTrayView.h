@@ -8,6 +8,7 @@
 @property (nonatomic, retain) NSArray *localIdentifiers;
 @property (nonatomic, retain) UIView *gestureView;
 @property (nonatomic, retain) UIView *grabber;
+@property (nonatomic, retain) UIView *blurView;
 @property (nonatomic, retain) NSUserDefaults *stratosUserDefaults;
 @property (nonatomic) BOOL isOpen;
 
