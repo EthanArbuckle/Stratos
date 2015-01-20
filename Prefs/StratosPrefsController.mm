@@ -190,6 +190,7 @@ AVAudioPlayer *audioPlayer;
         //[defaultPageCellFooter setProperty:@"The default page to show when you first invoke the Stratos switcher" forKey:@"footerText"];
 
         spec = [PSSpecifier groupSpecifierWithName:localized(@"PAGING_HEADER", @"Paging")];
+        [spec setProperty:localized(@"PAGING_FOOTER", @"Open to media controls if audio is playing") forKey:@"footerText"];
         [hiddenSpecs addObject:spec];
 
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"DEFAULT_PAGE", @"Default Page")
@@ -233,6 +234,19 @@ AVAudioPlayer *audioPlayer;
         [spec setProperty:@6 forKey:@"default"];
         [spec setProperty:localized(@"SWITCHER_PAGES_NUMBER_FOOTER", @"The number of pages to show for the switcher cards. Used when you have another page (i.e. the Control Center or Media Controls) to the right of the switcher cards") forKey:@"staticTextMessage"];
         [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
+
+        //open to media controls if a song is playing
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ACTIVE_MEDIACONTROLS", @"Open to Media if Playing")
+                                                      target:self
+                                                         set:@selector(setPreferenceValue:specifier:)
+                                                         get:@selector(readPreferenceValue:)
+                                                      detail:Nil
+                                                        cell:PSSwitchCell
+                                                        edit:Nil];
+        [spec setProperty:@"activeMediaEnabled" forKey:@"key"];
+        [spec setProperty:@NO forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
 
