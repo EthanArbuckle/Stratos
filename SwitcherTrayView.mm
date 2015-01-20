@@ -515,6 +515,36 @@ NSLog(@"reloading");
 				[self animateObject:possibleCard toFrame:frame];
 			}
 		}
+
+		//if user has limited amount of pages to show, lets grab the next app
+		//that would normally be showing and add it, since we're going to be 1 short
+		if ([_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] != 6) {
+
+			int pagesToShow = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
+
+			//make sure there is even another app to show
+			if ([[[IdentifierDaemon sharedInstance] identifiers] count] > (pagesToShow * 4)) {
+
+				//get the app, index should be (pagesToShow X 4) - 1 (to account for 0 index)
+				int indexOfNext = (pagesToShow * 4) - 1;
+				NSString *identifier = [[[IdentifierDaemon sharedInstance] identifiers] objectAtIndex:indexOfNext];
+				SwitcherTrayCardView *newApp = (SwitcherTrayCardView *)[[IdentifierDaemon sharedInstance] switcherCardForIdentifier:identifier];
+
+				//calculate x origin for it
+				int xOrigin = [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] * kScreenWidth;
+				xOrigin += ((pagesToShow * 3) * kSwitcherCardWidth) + ((pagesToShow * 4) * kSwitcherCardSpacing);
+
+				//set the new apps frame
+				[newApp setFrame:CGRectMake(xOrigin, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
+
+				//add it to card array
+				[_switcherCards addObject:newApp];
+
+				//and add it to the switcher
+				[_trayScrollView addSubview:newApp];
+
+			}
+		}
 	}
 }
 
