@@ -8,7 +8,6 @@ SBCCSettingsSectionController *settings;
 MPUSystemMediaControlsViewController *mediaView;
 
 //this is subject to change
-_UIBackdropView *blurView;
 NSUserDefaults *_stratosUserDefaults;
 
 @implementation SwitcherTrayView
@@ -45,9 +44,9 @@ NSUserDefaults *_stratosUserDefaults;
 		//create the blur view
 	//    if ([[UIScreen mainScreen] bounds].size.height > 568) {
 
-			blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
-			[blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
-			[self addSubview:blurView];
+			_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+			[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+			[self addSubview:_blurView];
 
    //     }
    //     else {
@@ -549,10 +548,10 @@ NSLog(@"reloading");
 }
 
 - (void)reloadBlurView {
-	[blurView removeFromSuperview];
-	blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
-	[blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
-	[self insertSubview:blurView atIndex:0];
+	[_blurView removeFromSuperview];
+	_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+	[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+	[self insertSubview:_blurView atIndex:0];
 }
 
 - (void)refreshGrabber {
