@@ -1,114 +1,15 @@
-//
-//  Stratos Tweak
-//  Description.
-//
-//  Copyright (c)2014 Cortex Dev Team. All rights reserved.
-//
-// 
-
 #import "Stratos.h"
 
-#define PREFS_PLIST_PATH	[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/com.cortexdevteam.stratos.plist"]
-
+static NSUserDefaults *stratosUserDefaults;
 static SBApplication *topMostApp;
 static SBControlCenterController *controlCenter;
 static id mainWorkspace;
 static UIView *gestureView;
 static UIWindow *trayWindow;
 static TouchHighjacker *touchView;
-
-static SwitcherTrayView *switcher;
-
-static NSUserDefaults *stratosUserDefaults;
-
-static BOOL isSwipeToCloseEnabled;
-
-
+static BOOL isSwipeToCloseEnabled = NO;
 //
-// set user defaults up
-//
-static inline void loadPrefs() {
-
-	//create user default instance
-	stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-
-	//set default values
-	[stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
-
-	[stratosUserDefaults synchronize];
-
-}
-
-//
-// Prefs Notification Handler
-//
-static void prefsChanged(CFNotificationCenterRef center, void *observer,
-						 CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	
-	DebugLogC(@"** Preferences Changed Notification **");
-
-    [stratosUserDefaults synchronize];
-
-	//redraw background in case settings were changed
-	[switcher reloadBlurView];
-
-	//update grabber
-	[switcher refreshGrabber];
-
-	//update tray position (cards)
-	[switcher trayHeightDidChange];
-
-	//reload cards if # of pages has been changed OR parallax settings have been changed
-	if ([[SwitcherTrayView sharedInstance] localPageCount] != [stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] || 
-		[[SwitcherTrayView sharedInstance] enableParallax] != [stratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax]) {
-		[[IdentifierDaemon sharedInstance] purgeCardCache];
-		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
-	}
-
-}
-
-
-//iOS 8 compat stuff
-%group iOS8
-
-//iOS 8 no longer has applicationWithDisplayIdentifier, so create this method and
-//return the bundlIdent method instead
-%hook SBApplicationController
-
-%new
-- (id)applicationWithDisplayIdentifier:(NSString *)ident {
-	
-	if (self) {
-
-		return [self applicationWithBundleIdentifier:ident];
-	}
-
-	return nil;
-}
-
-%end
-
-//iOS 8 no longer uses -displayIdent, so replace it with bundleIdent
-%hook SBApplication
-
-%new
-- (id)displayIdentifier {
-
-	return [self bundleIdentifier];
-}
-
-%end
-
-%end
-
-//END IOS 8 COMPAT
-
-// Hooks -----------------------------------------------------------------------
-
-%group main
-
-//
-// Does stuff.
+// This is where the magic happens
 //
 %hook SBUIController
 
@@ -138,13 +39,13 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	[trayWindow makeKeyAndVisible];
 
 	//create the background view. This is what everything will be added to
-	switcher = [SwitcherTrayView sharedInstance];
+	[SwitcherTrayView sharedInstance];
 
 	//this method will check to see if the current running apps have changed, and update if need be
-	[switcher reloadShouldForce:NO];
+	[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
 
-	[switcher setParentWindow:trayWindow];
-	[trayWindow addSubview:switcher];
+	[[SwitcherTrayView sharedInstance] setParentWindow:trayWindow];
+	[trayWindow addSubview:[SwitcherTrayView sharedInstance]];
 
 	//this makes everything under the traywindow not recieve our touches, but enables interaction with the switcher view.
 	[trayWindow setUserInteractionEnabled:YES];
@@ -246,7 +147,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 		//animate it
 		[UIView animateWithDuration:0.1f animations:^{
-			[switcher setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
+			[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
 		}];
 
 		//cancel gesture
@@ -260,13 +161,13 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	//limit how high the switcher can be pulled up
 	if (location.y >= kSwitcherMaxY) {
 
-		[switcher setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
+		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
 	}
 
 	else if (location.y <= kSwitcherHeight + 100 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
 
 		//hide switcher
-		[switcher closeTray];
+		[[SwitcherTrayView sharedInstance] closeTray];
 
 		//cancel gesture
 		[self _suspendGestureChanged:0];
@@ -390,8 +291,8 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		//set grabber view to down arrow now that tray is open
 		[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 
-		[self animateObject:switcher toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
-		[switcher setIsOpen:YES];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
+		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
 
 	}
 	else if (location.y <= kSwitcherHeight + 100) {
@@ -402,7 +303,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 	else {
 
-		[self animateObject:switcher toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
 	}
@@ -415,16 +316,6 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		[view setFrame:frame];
 	}];
 }
-
-%end
-
-
-
-//
-// This hook is used to listen for home or lock button presses, and
-// dismiss the switcher when they are pressed
-//
-%hook SBUIController
 
 - (BOOL)clickedMenuButton {
 	DebugLog0;
@@ -476,108 +367,19 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 %new
 + (NSUserDefaults *)stratosUserDefaults {
 
+	if (!stratosUserDefaults) {
+
+		//create user default instance
+		stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+
+		//set default values
+		[stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
+
+		[stratosUserDefaults synchronize];
+
+	}
+
 	return stratosUserDefaults;
 }
 
 %end
-
-
-
-//
-// This hooks into the quicklaunch item. If any button besides the torch
-// is tapped, the switcher will be dismissed (because its opening a quicklaunch app).
-//
-%hook SBCCQuickLaunchSectionController
-- (void)buttonTapped:(id)tapped {
-	%orig;
-
-	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
-		//if its x origin isnt 0, its not the flashlight and we need to close the switcher
-		if ([(UIButton *)tapped frame].origin.x != 0) {
-			[[SwitcherTrayView sharedInstance] closeTray];
-		}
-	}
-}
-%end
-
-
-
-//
-// This is for the app switching animations. All apps will animate side to side opening, instead of the weird
-// springboard zooming effect.
-//
-%hook SBAppToAppWorkspaceTransaction
-- (id)_setupAnimationFrom:(SBApplication *)senderApp to:(SBApplication *)dest {
-	if (![stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
-		return %orig;
-	}
-	
-	//get running app idents
-	NSArray *runningApps = [[IdentifierDaemon sharedInstance] identifiers];
-	
-	//get id of opening app
-	NSString *toApp = [dest valueForKey:@"_bundleIdentifier"];
-
-	//find the index of it
-	if ([runningApps containsObject:toApp] && [[SwitcherTrayView sharedInstance] isOpen]) {
-		int index = [runningApps indexOfObject:toApp];
-		
-		//make sure its not the first app
-		if (index > 0) {
-			//get ident of app right before it
-			NSString *beforeApp = [runningApps objectAtIndex:index + 1];
-
-			//get instance of sbapplication of before app
-			id beforeSBApp = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:beforeApp];
-			
-			//call original method with new args
-			DebugLog(@"Forcing side to side app transition animation");
-			return %orig(beforeSBApp, dest);
-		}
-	}
-
-	return %orig;
-}
-%end
-
-
-//
-// Does something on iOS 7
-//
-%hook SBWorkspace
-- (id)init {
-    self = %orig;
-    mainWorkspace = self;
-    return self;
-}
-%end
-
-
-%end //group:main
-
-
-//
-// Init
-//
-%ctor {
-	@autoreleasepool {
-		loadPrefs();
-		
-		//do that hacky iOS 8 stuff
-		if (IS_OS_8_OR_LATER) {
-			%init(iOS8);
-		}
-
-		// start hooks
-		%init(main);
-		
-		// listen for notifications from Settings
-		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-										NULL,
-										(CFNotificationCallback)prefsChanged,
-										CFSTR("com.cortexdevteam.stratos.prefs-changed"),
-										NULL,
-										CFNotificationSuspensionBehaviorDeliverImmediately);
-	}
-}
-

@@ -5,7 +5,7 @@ THEOS_BUILD_DIR = Packages
 
 TWEAK_NAME = nighthawke
 nighthawke_CFLAGS = -fobjc-arc
-nighthawke_FILES = Hooks.xm $(wildcard *.mm)
+nighthawke_FILES = $(wildcard *.xm) $(wildcard *.mm)
 nighthawke_FRAMEWORKS = UIKit QuartzCore CoreGraphics
 
 SUBPROJECTS += Prefs

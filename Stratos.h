@@ -34,6 +34,8 @@
 #define kMultiViewCardHeight 	150
 #define kMultiViewCardSpacing 	20
 
+#define kStratosUserDefaults [(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] 
+
 //settings
 static NSString *const kCDTSPreferencesDomain = @"com.cortexdevteam.stratos";
 static NSString *const kCDTSPreferencesEnabledKey = @"isEnabled";
