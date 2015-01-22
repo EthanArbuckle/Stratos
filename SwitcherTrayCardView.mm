@@ -36,7 +36,7 @@
 		//add shadow to the view
 		[[iconHolder layer] setShadowColor:[UIColor blackColor].CGColor];
 		[[iconHolder layer] setShadowOffset:CGSizeMake(0, 2)];
-		[[iconHolder layer] setShadowOpacity:1];
+		[[iconHolder layer] setShadowOpacity:.8];
 		[[iconHolder layer] setShadowRadius:4.0];
 		[[iconHolder layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:iconHolder.bounds cornerRadius:4.0] CGPath]];
 		[iconHolder setClipsToBounds:NO];
