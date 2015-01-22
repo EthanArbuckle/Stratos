@@ -572,6 +572,9 @@ NSLog(@"reloading");
 	_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
 	[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
 	[self insertSubview:_blurView atIndex:0];
+
+	[_switcherCards makeObjectsPerformSelector:@selector(cardNeedsUpdating)];
+
 }
 
 - (void)refreshGrabber {

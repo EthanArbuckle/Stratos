@@ -54,15 +54,20 @@
 		});
 
 		//create the label that displays the name of the app
-		UILabel *appName = [[UILabel alloc] initWithFrame:CGRectMake(0, kSwitcherCardHeight, kSwitcherCardWidth, 20)];
+		_appName = [[UILabel alloc] initWithFrame:CGRectMake(0, kSwitcherCardHeight, kSwitcherCardWidth, 20)];
 
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[appName setText:[(SBApplication *)_application displayName]];
-			[appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
-			[appName setTextColor:[UIColor whiteColor]];
-			[appName setTextAlignment:NSTextAlignmentCenter];
-			[self addSubview:appName];
+			[_appName setText:[(SBApplication *)_application displayName]];
+			[_appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
+			[_appName setTextAlignment:NSTextAlignmentCenter];
+			if ([[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2060 || 
+			   [[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2010) {
+				[_appName setTextColor:[UIColor darkGrayColor]];
+			} else {
+				[_appName setTextColor:[UIColor whiteColor]];
+			}
+			[self addSubview:_appName];
 
 		});
 
@@ -216,7 +221,19 @@
 - (void)cardNeedsUpdating {
 	
 	//get the image from our ident daemon
-	[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];;
+	[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+
+	//change the app label text color if needed
+	if ([[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2060 || 
+		[[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2010) {
+
+		[_appName setTextColor:[UIColor darkGrayColor]];
+
+	} else {
+
+		[_appName setTextColor:[UIColor whiteColor]];
+
+	}
 	
 }
 
