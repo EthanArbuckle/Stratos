@@ -52,6 +52,12 @@
 
 - (void)reloadApps {
 
+	//just stop the method if we dont actually need to reload
+	if (![self doesRequireReload]) {
+
+		return;
+	}
+
 	//get the running app identifiers
 	_appIdentifiers = [[NSMutableArray alloc] initWithArray:[self identifiers]];
 
@@ -188,6 +194,35 @@
 	//just recreate the dictionary, which will clear it of everything
 	_appCards = [[NSMutableDictionary alloc] init];
 
+}
+
+- (BOOL)doesRequireReload {
+
+	//get current running idents
+	NSArray *systemRunningIdentifiers = [self identifiers];
+
+	//if our array doesnt have the same amount as the system, we need to reload
+	if ([_appIdentifiers count] != [systemRunningIdentifiers count]) {
+
+		return YES;
+
+	}
+
+	//cycle through each index comparing identifiers, return YES if one of them doesnt match
+	for (NSString *identifierToCompare in _appIdentifiers) {
+
+		int index = [_appIdentifiers indexOfObject:identifierToCompare];
+
+		if (identifierToCompare != systemRunningIdentifiers[index]) {
+
+			return YES;
+
+		}
+
+	}
+
+	DebugLog(@"No reload required");
+	return NO;
 }
 
 @end

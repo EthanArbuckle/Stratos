@@ -13,5 +13,6 @@
 - (UIView *)switcherCardForIdentifier:(NSString *)identifier;
 - (NSArray *)identifiers;
 - (void)purgeCardCache;
+- (BOOL)doesRequireReload;
 
 @end
