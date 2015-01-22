@@ -129,7 +129,7 @@ NSUserDefaults *_stratosUserDefaults;
 - (void)addMediaControls {
 
 	//create a media controls controller
-	mediaView = [(MPUSystemMediaControlsViewController *)[NSClassFromString(@"MPUSystemMediaControlsViewController") alloc] initWithStyle:2];
+	mediaView = [(MPUSystemMediaControlsViewController *)[NSClassFromString(@"MPUSystemMediaControlsViewController") alloc] initWithStyle:1];
 	[[mediaView view] setFrame:CGRectMake([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] * kScreenWidth, 0, kScreenWidth, kSwitcherHeight - 25)];
 	[_trayScrollView addSubview:[mediaView view]];
 
