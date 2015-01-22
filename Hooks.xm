@@ -80,7 +80,6 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	
 	if (self) {
 
-		DebugLog(@"iOS 8 device, adding displayIdentifier method");
 		return [self applicationWithBundleIdentifier:ident];
 	}
 
@@ -94,7 +93,7 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 %new
 - (id)displayIdentifier {
-	DebugLog(@"iOS 8 device, adding displayIdentifier method");
+
 	return [self bundleIdentifier];
 }
 

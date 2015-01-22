@@ -9,6 +9,7 @@
 + (id)sharedInstance;
 - (UIImage *)appSnapshotForIdentifier:(NSString *)ident;
 - (void)reloadApps;
+- (UIImage *)preheatSnapshotForIndentifier:(NSString *)ident withController:(id)sliderController;
 - (UIView *)switcherCardForIdentifier:(NSString *)identifier;
 - (NSArray *)identifiers;
 - (void)purgeCardCache;

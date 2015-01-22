@@ -64,38 +64,8 @@
 	//cycle through them all
 	for (NSString *ident in _appIdentifiers) {
 
-		//get SBAppSliderSnapshotView from appslidercontroller
-		SBAppSliderSnapshotView *snapshotView;
-		if ([sliderController respondsToSelector:@selector(_snapshotViewForDisplayIdentifier:)]) {
-			snapshotView = [sliderController _snapshotViewForDisplayIdentifier:ident];
-		}
-		else {
-			//sliderController is an sbappslidercontroller on iOS 7, but sbappswitchercontroller on iOS 8 (so cast it)
-			snapshotView = [(SBAppSwitcherController *)sliderController _snapshotViewForDisplayItem:(SBDisplayItem *)[NSClassFromString(@"SBDisplayItem") displayItemWithType:@"App" displayIdentifier:ident]];
-		}
-
-		//tell snapshot view to load a new snapshot
-		[snapshotView _loadSnapshotSync];
-		if ([snapshotView valueForKey:@"_snapshotImageView"]) { //if it succeeded and a image view is present
-
-			UIImage *realImage = [[snapshotView valueForKey:@"_snapshotImageView"] image]; //get the image
-			[_appSnapshots addObject:realImage];
-		}
-		else {
-
-			//couldnt get the preview, now we have to do a bunch of work to get the splashscreen -_-
-			id application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:ident];
-			NSString *splashPath = [NSString stringWithFormat:@"%@/Default.png", [(SBApplication *)application path]];
-			UIImage *splashImage = [UIImage imageWithContentsOfFile:splashPath];
-
-			//not all apps have a defual image, so create nil obejct to avoid crash
-			if (!splashImage) {
-				splashImage = [[UIImage alloc] init];
-			}
-
-			[_appSnapshots addObject:splashImage];
-
-		}
+		//add snapshot for ident to preview array
+		[_appSnapshots addObject:[self preheatSnapshotForIndentifier:ident withController:sliderController]];
 
 		//see if card for this ident exists. if not, create it
 		if ([_appCards objectForKey:ident] == nil) {
@@ -112,6 +82,43 @@
 			[(SwitcherTrayCardView *)[_appCards objectForKey:ident] cardNeedsUpdating];
 		}
 
+	}
+
+}
+
+- (UIImage *)preheatSnapshotForIndentifier:(NSString *)ident withController:(SBAppSliderController *)sliderController {
+
+	//get SBAppSliderSnapshotView from appslidercontroller
+	SBAppSliderSnapshotView *snapshotView;
+	if ([sliderController respondsToSelector:@selector(_snapshotViewForDisplayIdentifier:)]) {
+		snapshotView = [sliderController _snapshotViewForDisplayIdentifier:ident];
+	}
+	else {
+		//sliderController is an sbappslidercontroller on iOS 7, but sbappswitchercontroller on iOS 8 (so cast it)
+		snapshotView = [(SBAppSwitcherController *)sliderController _snapshotViewForDisplayItem:(SBDisplayItem *)[NSClassFromString(@"SBDisplayItem") displayItemWithType:@"App" displayIdentifier:ident]];
+	}
+
+	//tell snapshot view to load a new snapshot
+	[snapshotView _loadSnapshotSync];
+	if ([snapshotView valueForKey:@"_snapshotImageView"]) { //if it succeeded and a image view is present
+
+		//return the uiimage
+		return [[snapshotView valueForKey:@"_snapshotImageView"] image]; //get the image
+		
+	}
+	else {
+
+		//couldnt get the preview, now we have to do a bunch of work to get the splashscreen -_-
+		id application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:ident];
+		NSString *splashPath = [NSString stringWithFormat:@"%@/Default.png", [(SBApplication *)application path]];
+		UIImage *splashImage = [UIImage imageWithContentsOfFile:splashPath];
+
+		//not all apps have a default image, so create nil object to avoid crash
+		if (!splashImage) {
+			splashImage = [[UIImage alloc] init];
+		}	
+
+		return splashImage;
 	}
 
 }
