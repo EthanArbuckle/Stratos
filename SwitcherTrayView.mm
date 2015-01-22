@@ -65,7 +65,7 @@ NSUserDefaults *_stratosUserDefaults;
 
 		//create grabber view
 		_grabber = [[NSClassFromString(@"SBControlCenterGrabberView") alloc] initWithFrame:CGRectMake(0, 0, 50, 22)];
-		[_grabber setCenter:CGPointMake(kScreenWidth / 2, 10)];
+		[_grabber setCenter:CGPointMake(kScreenWidth / 2, 12)];
 		[_grabber setUserInteractionEnabled:NO]; //let touches pass through to the gestureview
 		[self refreshGrabber];
 
