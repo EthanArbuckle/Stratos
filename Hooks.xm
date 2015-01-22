@@ -241,8 +241,25 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 		return;
 	}
 
+	//user swiped fast as fuck, pop this hoe open super fast
+	if (duration <= 0.03) {
+
+		//animate it
+		[UIView animateWithDuration:0.1f animations:^{
+			[switcher setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
+		}];
+
+		//cancel gesture
+		[self _suspendGestureChanged:0];
+
+		//safety measure
+		return;
+
+	}
+
 	//limit how high the switcher can be pulled up
 	if (location.y >= kSwitcherMaxY) {
+
 		[switcher setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
 	}
 
