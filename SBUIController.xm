@@ -118,6 +118,7 @@ static TouchHighjacker *touchView;
 		[[controlCenter _window] setWindowLevel:UIWindowLevelAlert]; 
 
 	}
+
 }
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
@@ -195,9 +196,15 @@ static TouchHighjacker *touchView;
 	DebugLog0;
 	
 	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
+		
 		//lock button pressed, dismiss the tray
-		DebugLog(@"closing switcher tray");
 		[[SwitcherTrayView sharedInstance] closeTray];
+
+		//reload in daemon
+		[[IdentifierDaemon sharedInstance] reloadApps];
+
+		//also reload them in the switcher tray
+		[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
 	}
 
 	%orig;
@@ -230,6 +237,20 @@ static TouchHighjacker *touchView;
 	}
 
 	return stratosUserDefaults;
+}
+
+- (void)finishLaunching {
+
+	%orig;
+
+	//springboard has finished launching, load all the initial stuff
+	//so there is no lag on the first pullup
+	[[IdentifierDaemon sharedInstance] reloadApps];
+	[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
+	[self _showControlCenterGestureBeganWithLocation:CGPointMake(0,0)];
+	[trayWindow setUserInteractionEnabled:NO];
+	[touchView removeFromSuperview];
+
 }
 
 %end

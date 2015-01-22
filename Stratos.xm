@@ -17,7 +17,6 @@ static inline void loadPrefs() {
 
 	//make sure the settings get created
 	[kStratosUserDefaults synchronize];
-
 }
 
 //
@@ -51,9 +50,6 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 //
 %ctor {
 
-
-
-	
 	@autoreleasepool {
 
 		loadPrefs();
@@ -64,7 +60,8 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 										(CFNotificationCallback)prefsChanged,
 										CFSTR("com.cortexdevteam.stratos.prefs-changed"),
 										NULL,
-										CFNotificationSuspensionBehaviorDeliverImmediately);
+										CFNotificationSuspensionBehaviorDeliverImmediately);		
+
 	}
 }
 

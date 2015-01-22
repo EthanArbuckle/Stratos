@@ -67,7 +67,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 
 // private interfaces
 @interface SBUIController : NSObject
-+(id)sharedInstance;
++ (id)sharedInstance;
 - (id)valueForKey:(id)arg1;
 - (void)_suspendGestureBegan;
 - (void)_suspendGestureChanged:(CGFloat)arg1;
