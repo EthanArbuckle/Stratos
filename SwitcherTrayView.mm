@@ -635,9 +635,9 @@ NSLog(@"reloading");
 	}
 
 	[[mediaView view] setFrame:CGRectMake(mediaControlXOrigin, 0, kScreenWidth, kSwitcherHeight - 25)];
-	[[settings view] setFrame:CGRectMake(controlCenterXOrigin + 10, 10, kScreenWidth - 20, 50)];
-	[[brightness view] setFrame:CGRectMake(controlCenterXOrigin, 60, kScreenWidth, 50)];
-	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, 115, kScreenWidth - 20, 50)];
+	[[settings view] setFrame:CGRectMake(controlCenterXOrigin + 10, 0, kScreenWidth - 20, 50)];
+	[[brightness view] setFrame:CGRectMake(controlCenterXOrigin, 50, kScreenWidth, 50)];
+	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, 103, kScreenWidth - 20, 65)];
 
 } 
 
