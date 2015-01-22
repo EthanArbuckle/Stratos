@@ -1,13 +1,10 @@
 #import "Stratos.h"
 
 static NSUserDefaults *stratosUserDefaults;
-static SBApplication *topMostApp;
 static SBControlCenterController *controlCenter;
-static id mainWorkspace;
-static UIView *gestureView;
 static UIWindow *trayWindow;
 static TouchHighjacker *touchView;
-static BOOL isSwipeToCloseEnabled = NO;
+
 //
 // This is where the magic happens
 //
@@ -54,46 +51,6 @@ static BOOL isSwipeToCloseEnabled = NO;
 	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kSwitcherHeight)];
 	[trayWindow addSubview:touchView];
 
-	//detect the touches to setup the closing gesture
-	if (location.x <= 30 && isSwipeToCloseEnabled) {
-
-		//sbapplication instance of open app
-		topMostApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
-
-		//make sure its open or exists
-		if (topMostApp == nil) {
-
-			return;
-		}
-
-		//create gesture view
-		gestureView = [[NSClassFromString(@"SBGestureViewVendor") sharedInstance] viewForApp:topMostApp gestureType:1 includeStatusBar:YES];
-
-		//shadows (TAKEN FROM MultitaskingGestures)
-		[gestureView.layer setShadowOpacity:0.8];
-        [gestureView.layer setShadowRadius:5];
-        [gestureView.layer setShadowOffset:CGSizeMake(0, 10)];
-        [gestureView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:gestureView.bounds] CGPath]];
-
-        //add gesture to springboard
-        [[NSClassFromString(@"SBUIController") sharedInstance] _installSystemGestureView:gestureView forKey:topMostApp.displayIdentifier forGesture:1];
-
-        //notify app. notifyAppResignActive ios iOS 7 only
-        if ([[NSClassFromString(@"SBUIController") sharedInstance] respondsToSelector:@selector(notifyAppResignActive:)]) {
-        	[[NSClassFromString(@"SBUIController") sharedInstance] notifyAppResignActive:topMostApp];
-        }
-        else { //iOS 8
- 			//get topmost app
-			SBApplication *frontApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
-			[frontApp notifyResignActiveForReason:1];
-        }
-
-        [[NSClassFromString(@"SBWallpaperController") sharedInstance] beginRequiringWithReason:@"CloseAppGesture"];
-
-        //restore homescreen
-        [[NSClassFromString(@"SBUIController") sharedInstance] restoreContentAndUnscatterIconsAnimated:NO];
-	}
-
 	//let the tray know its funna get opened
 	[[SwitcherTrayView sharedInstance] prepareToOpen];
 
@@ -119,28 +76,6 @@ static BOOL isSwipeToCloseEnabled = NO;
 
 	//since tray is moving, change chevron to flat line (state 0)
 	[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:0 animated:YES];
-
-	//detect touches for closing gesture
-	if (location.x <= 30 || [gestureView frame].origin.y != 0) {
-
-		//only if we have a top app and gesture view
-		if (topMostApp && gestureView && isSwipeToCloseEnabled) {
-
-			CGRect gestureFrame = [gestureView frame];
-			gestureFrame.origin.y = location.y - [[UIScreen mainScreen] bounds].size.height;
-
-			//iOS 8 has a diff way, but use the same frame anyways
-			if (IS_OS_7_OR_UNDER) {
-				[gestureView setFrame:gestureFrame];
-			}
-			else { //iOS 8
-				[(UIView *)[[(FBScene *)[topMostApp mainScene] contextHostManager] valueForKey:@"_hostView"] setFrame:gestureFrame];
-			}
-
-		}
-
-		return;
-	}
 
 	//user swiped fast as fuck, pop this hoe open super fast
 	if (duration <= 0.03) {
@@ -198,91 +133,6 @@ static BOOL isSwipeToCloseEnabled = NO;
 	if ([[[[NSClassFromString(@"SBUIController") sharedInstance] valueForKey:@"switcherController"] valueForKey:@"_visible"] boolValue]) {
 		%orig;
 		return;
-	}
-	
-	//touches most likely to do with closing gesture
-	if (location.x <= 30 || [gestureView frame].origin.y != 0) {
-
-		//check for app or we get a blank springboard
-		if (topMostApp && isSwipeToCloseEnabled) {
-
-			[[SwitcherTrayView sharedInstance] closeTray];
-			[UIView animateWithDuration:.3 animations:^{
-	            
-	        	CGRect gestureViewFrame = gestureView.frame;
-	           	gestureViewFrame.origin.y = (location.y <= 350 && velocity.y<0 ? -[[UIScreen mainScreen]bounds].size.height : 0);
-	            [gestureView setFrame:gestureViewFrame];
-
-	        } completion:nil];	
-
-			//mainScreenContextHostManager is iOS 7 only
-			if ([topMostApp respondsToSelector:@selector(mainScreenContextHostManager)]) {
-				[(SBWindowContextHostManager *)topMostApp.mainScreenContextHostManager disableHostingForRequester:@"LaunchSuspend"];
-			}
-			else { //iOS 8
-				[[(SBWindowContextHostManager *)(FBScene *)[topMostApp mainScene] valueForKey:@"_contextHostManager"] disableHostingForRequester:@"LaunchSuspend"];
-			}
-			
-			//[[NSClassFromString(@"SBUIController") sharedInstance] _clearInstalledSystemGestureViewForKey:topMostApp.bundleIdentifier];
-
-			//close app 
-			if (location.y <= 350 && velocity.y<0) {
-
-				//close to springboard. iOS 7 uses SB, iOS 8 is FB (frontboard) 
-				if (IS_OS_7_OR_UNDER) {
-					SBWorkspaceEvent *event = [NSClassFromString(@"SBWorkspaceEvent") eventWithLabel:@"ActivateSpringBoard" handler:^{
-		            	SBApplication *frontApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
-		            	[frontApp setDeactivationSetting:20 flag:YES];
-		            	[frontApp setDeactivationSetting:2 flag:NO];
-		            	SBAppToAppWorkspaceTransaction *transaction = [[NSClassFromString(@"SBAppToAppWorkspaceTransaction") alloc] initWithWorkspace:((SBWorkspace *)mainWorkspace).bksWorkspace alertManager:nil from:frontApp to:nil activationHandler:nil];
-		                [mainWorkspace setCurrentTransaction:transaction];
-
-		            }];
-
-		            [[NSClassFromString(@"SBWorkspaceEventQueue") sharedInstance] executeOrAppendEvent:event];
-				}
-				else {//iOS 8 (FrontBoard) 
-
-					FBWorkspaceEvent *event = [NSClassFromString(@"FBWorkspaceEvent") eventWithName:@"ActivateSpringBoard" handler:^{
-		            	SBApplication *frontApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
-		            	SBDeactivationSettings *deactiveSets = [[NSClassFromString(@"SBDeactivationSettings") alloc] init];
-		            	[deactiveSets setFlag:YES forDeactivationSetting:20];
-		            	[deactiveSets setFlag:NO forDeactivationSetting:2];
-		            	[frontApp _setDeactivationSettings:deactiveSets];
-		            	SBAppToAppWorkspaceTransaction *transaction = [[NSClassFromString(@"SBAppToAppWorkspaceTransaction") alloc] initWithAlertManager:nil exitedApp:frontApp];
-		                [transaction begin];
-
-		            }];
-
-		            [(FBWorkspaceEventQueue *)[NSClassFromString(@"FBWorkspaceEventQueue") sharedInstance] executeOrAppendEvent:event];
-				}
-
-	            
-
-			}
-			else { //open app
-
-				//resume app. notifyAppResumeActive is iOS 7 only
-				if ([[NSClassFromString(@"SBUIController") sharedInstance] respondsToSelector:@selector(notifyAppResumeActive:)]) {
-					[[NSClassFromString(@"SBUIController") sharedInstance] notifyAppResumeActive:topMostApp];
-				}
-				else { //iOS 8
-					//get topmost app
-					SBApplication *frontApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
-
-					// create a transaction to open the application, which also activates it
-					SBAppToAppWorkspaceTransaction *transaction = [[NSClassFromString(@"SBAppToAppWorkspaceTransaction") alloc] initWithAlertManager:nil toApplication:frontApp withResult:nil];
-					[transaction begin];
-				}
-
-	            [[NSClassFromString(@"SBUIController") sharedInstance] stopRestoringIconList];
-	            [[NSClassFromString(@"SBUIController") sharedInstance] tearDownIconListAndBar];
-			}
-			
-			[trayWindow setUserInteractionEnabled:NO];
-
-			return;
-		}
 	}
 
 	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
