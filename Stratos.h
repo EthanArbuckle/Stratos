@@ -4,8 +4,6 @@
 #import "SwitcherTrayView.h"
 #import "SwitcherTrayCardView.h"
 #import "IdentifierDaemon.h"
-#import "MultitaskView.h"
-#import "MultitaskViewCard.h"
 #import "TouchHighjacker.h"
 
 

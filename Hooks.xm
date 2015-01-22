@@ -556,82 +556,12 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 %end //group:main
 
 
-
-/*
-
-//This is all the multiview stuff
-%hook SBAppSliderController
-
-- (id)init {
-
-	//get return switcher
-	SBAppSliderController *slider = %orig;
-
-	//remove everything on it
-	for (UIView *sub in [[slider view] subviews]) {
-
-		[sub removeFromSuperview];
-	}
-
-	//return the modified controller
-	return slider;
-}
-
-- (void)switcherWasPresented:(_Bool)arg1 {
-
-	multiView = [[MultitaskView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-	[[self view] addSubview:multiView];
-
-	//animate in
-	//[UIView animateWithDuration:2 animations:^{
-
-		[multiView setBackgroundColor:[UIColor colorWithRed:204/255.0f green:0/255.0f blue:153/255.0f alpha:0.4]];
-
-	//}];
-
-	[multiView setAlpha:0.5];
-	multiView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
-	[UIView animateWithDuration:0.25 animations:^{
-		[multiView setAlpha:1.0];
-		multiView.transform = CGAffineTransformIdentity;
-	}];
-
-	%orig;
-
-}
-
-- (void)forceDismissAnimated:(_Bool)arg1{
-	[UIView animateWithDuration:0.25 animations:^{
-		[multiView setAlpha:0.0];
-		multiView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
-	} completion:^(BOOL completed){
-		//for some reason, the status bar wont come back, so force it to show
-		[(SBAppStatusBarManager *)[NSClassFromString(@"SBAppStatusBarManager") sharedInstance] showStatusBar];
-
-		//supa fast way to make switcher go away
-		[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] getRidOfAppSwitcher];
-		%orig(NO);
-	}];
-}
-
-%end
-
-*/
-
-
-
 //
 // Init
 //
 %ctor {
 	@autoreleasepool {
 		loadPrefs();
-		
-		if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
-			NSLog(@"⚛ Stratos is enabled.");
-		} else {
-			NSLog(@"⚛ Stratos is disabled.");
-		}
 		
 		//do that hacky iOS 8 stuff
 		if (IS_OS_8_OR_LATER) {
