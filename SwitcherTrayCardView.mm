@@ -110,6 +110,12 @@
 
 - (void)openApp {
 
+	//only continue if our y origin is 0, meaning we arent being panned
+	if ([self frame].origin.y != 0) {
+
+		return;
+	}
+
 	//close the switcher
 	if (_superSwitcher) {
 
