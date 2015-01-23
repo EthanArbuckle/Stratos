@@ -465,7 +465,7 @@ NSLog(@"reloading");
 	//init all the window stuff by faking a gesture starting
 	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(0, 0)];
 
-	[self animateObject:self toFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, kSwitcherHeight)];
+	[self animateObject:self toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
 	_isOpen = YES;
 }
 
