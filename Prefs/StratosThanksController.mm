@@ -48,4 +48,16 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"https://www.reddit.com" stringByAppendingString:screenName]]];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    settingsView = [[UIApplication sharedApplication] keyWindow];
+    settingsView.tintColor = kDarkerTintColor;
+    //[self setTitle:localized(@"CREDITS", @"Credits")];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    settingsView.tintColor = nil;
+}
+
 @end

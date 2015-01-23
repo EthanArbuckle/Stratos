@@ -1,3 +1,4 @@
+DEBUG = 1
 GO_EASY_ON_ME = 1
 ARCHS = armv7 arm64
 TARGET = iphone:clang:latest:7.0

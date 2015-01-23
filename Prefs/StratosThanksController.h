@@ -2,6 +2,7 @@
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSTableCellType.h>
 #import <objc/runtime.h>
+#import "StratosPrefs.h"
 
 #define thanksCell(a, b, c) spec = [PSSpecifier preferenceSpecifierNamed:(a) \
                                               target:self \
@@ -28,6 +29,6 @@
 						         spec = nil
 
 @interface StratosThanksController : PSListController {
-
+  UIWindow *settingsView;
 }
 @end

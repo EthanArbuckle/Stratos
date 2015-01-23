@@ -228,10 +228,10 @@
         [spec setProperty:@NO forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-
+        /*
         //empty group cell
         [hiddenSpecs addObject:[PSSpecifier emptyGroupSpecifier]];
-
+        
         //REMOVE THIS. THIS IS FOR TESTING
         spec = [PSSpecifier preferenceSpecifierNamed:@"Reset All Prefs"
                                               target:self
@@ -242,7 +242,7 @@
                                                 edit:Nil];
         spec->action = @selector(resetPreferences);
         [hiddenSpecs addObject:spec];
-
+        */
         //if we're enabled, show all of the "hidden" specifiers
         if ([self.stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
             for (PSSpecifier *spec in hiddenSpecs) {
@@ -393,15 +393,18 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    int width = [[UIScreen mainScreen] bounds].size.width;
     //header
     UIImage* headerImage = [[UIImage alloc] initWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/Header.png"];
-    _iconImageView = [[UIImageView alloc] initWithImage:headerImage];
+    NSLog(@"headerImage size: %@", NSStringFromCGSize(headerImage.size));
+    CGImageRef imageRef = CGImageCreateWithImageInRect([headerImage CGImage], CGRectMake((621-width), 0, width*2, 416*2));
+    _iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:imageRef scale:headerImage.scale orientation:headerImage.imageOrientation]];
+    CGImageRelease(imageRef);
     _iconImageView.contentMode = UIViewContentModeCenter;
     [_iconImageView setCenter:CGPointMake( [[UIScreen mainScreen] bounds].size.width/2, -48 )];
     [[self table] addSubview:_iconImageView];
 
     //phone preview
-    int width = [[UIScreen mainScreen] bounds].size.width;
 
     //phone base
     UIImage *phoneImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/iphone_small.png"];

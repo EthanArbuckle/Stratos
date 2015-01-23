@@ -4,6 +4,9 @@ theos/
 obj/
 Packages/
 _/
+.theos/packages
+.theos/packages/*
+.theos/packages/com.cortexdevteam.internal.nighthawk-0.0.1
 
 *.xcworkspace
 *.sublime-project
