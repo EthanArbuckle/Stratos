@@ -71,7 +71,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (id)valueForKey:(id)arg1;
 - (void)_suspendGestureBegan;
 - (void)_suspendGestureChanged:(CGFloat)arg1;
-- (void)animateObject:(id)view toFrame:(CGRect)frame;
+- (void)animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration;
 - (void)activateApplicationAnimated:(id)application;
 - (void)getRidOfAppSwitcher;
 - (void)_installSystemGestureView:(UIView *)gestureView forKey:(id<NSCopying>)key forGesture:(NSUInteger)gestureType;

@@ -137,12 +137,16 @@ static TouchHighjacker *touchView;
 	}
 
 	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
-	if (location.y <= kScreenHeight - (kSwitcherHeight / 2)) { //opening switcher
+	//switch to all velocity-based
+	if (/*location.y <= kScreenHeight - (kSwitcherHeight / 2) && */velocity.y < 0) { //opening switcher
+
+		CGFloat animationDuration = ((kSwitcherHeight - location.y)/velocity.y < 0.4f) ? (kSwitcherHeight - location.y)/velocity.y : 0.4f;
+		DebugLog(@"Velocity: %f, time to animate: %f", velocity.y, animationDuration);
 		
 		//set grabber view to down arrow now that tray is open
 		[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight) withDuration:animationDuration];
 		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
 
 	}
@@ -154,16 +158,16 @@ static TouchHighjacker *touchView;
 
 	else {
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight) withDuration:0.4f];
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
 	}
 }
 
 %new
-- (void)animateObject:(id)view toFrame:(CGRect)frame {
+- (void)animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration {
 
-	[UIView animateWithDuration:0.4f animations:^{
+	[UIView animateWithDuration:duration animations:^{
 		[view setFrame:frame];
 	}];
 }
