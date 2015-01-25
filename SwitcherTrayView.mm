@@ -44,8 +44,9 @@ NSUserDefaults *_stratosUserDefaults;
 		//create the blur view
 	//    if ([[UIScreen mainScreen] bounds].size.height > 568) {
 
-			_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+			_blurView = [[NSClassFromString(@"_SBFakeBlurView") alloc] initWithVariant:0];//WithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
 			[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+			[(_SBFakeBlurView *)_blurView requestStyle:11];
 			[self addSubview:_blurView];
 
    //     }

@@ -295,3 +295,10 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (BOOL)displayStratosViewForBundleIdentifier:(NSString *)identifier withFrame:(CGRect)frame;
 
 @end
+
+@interface _SBFakeBlurView : UIView
+
+-(id)initWithVariant:(int)variant;
+-(void)requestStyle:(int)style;
+
+@end
