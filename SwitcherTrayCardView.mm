@@ -20,7 +20,7 @@
 		});
 
 		//create imageview that will hold the apps icon
-		UIImageView *iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 38, 40, 40)];
+		UIImageView *iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 30, 40, 40)];
 		
 		//get instance of the application
 		_application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:identifier];
@@ -36,8 +36,8 @@
 		//add shadow to the view
 		[[iconHolder layer] setShadowColor:[UIColor blackColor].CGColor];
 		[[iconHolder layer] setShadowOffset:CGSizeMake(0, 2)];
-		[[iconHolder layer] setShadowOpacity:.8];
-		[[iconHolder layer] setShadowRadius:4.0];
+		[[iconHolder layer] setShadowOpacity:.2];
+		[[iconHolder layer] setShadowRadius:8.0];
 		[[iconHolder layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:iconHolder.bounds cornerRadius:4.0] CGPath]];
 		[iconHolder setClipsToBounds:NO];
 
@@ -54,7 +54,7 @@
 		});
 
 		//create the label that displays the name of the app
-		_appName = [[UILabel alloc] initWithFrame:CGRectMake(0, kSwitcherCardHeight, kSwitcherCardWidth, 20)];
+		_appName = [[UILabel alloc] initWithFrame:CGRectMake(0, kSwitcherCardHeight + 8, kSwitcherCardWidth, 20)];
 
 
 		dispatch_async(dispatch_get_main_queue(), ^{

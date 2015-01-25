@@ -65,7 +65,7 @@ NSUserDefaults *_stratosUserDefaults;
 
 		//create grabber view
 		_grabber = [[NSClassFromString(@"SBControlCenterGrabberView") alloc] initWithFrame:CGRectMake(0, 0, 50, 22)];
-		[_grabber setCenter:CGPointMake(kScreenWidth / 2, 12)];
+		[_grabber setCenter:CGPointMake(kScreenWidth / 2, 8)];
 		[_grabber setUserInteractionEnabled:NO]; //let touches pass through to the gestureview
 		[self refreshGrabber];
 
@@ -590,7 +590,7 @@ NSLog(@"reloading");
 - (void)trayHeightDidChange {
 
 	//update placement of cards
-	[_trayScrollView setFrame:CGRectMake(0, (kSwitcherHeight / 2) - (kSwitcherCardHeight / 2), kScreenWidth, kSwitcherHeight - 20)];
+	[_trayScrollView setFrame:CGRectMake(0, ((kSwitcherHeight / 2) - (kSwitcherCardHeight / 2)) - 5, kScreenWidth, kSwitcherHeight - 20)];
 
 	//update order of pages (reset the frames)
 	int mediaControlXOrigin = [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] * kScreenWidth;
