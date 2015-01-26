@@ -181,6 +181,11 @@ static UIView *hotAreaView;
 		[[controlCenter _window] setWindowLevel:UIWindowLevelAlert]; 
 
 	}
+	else {
+
+		[self removeHotArea];
+		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+	}
 
 }
 
@@ -226,9 +231,8 @@ static UIView *hotAreaView;
 	[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 	[self removeHotArea];
 
-	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
-	//switch to all velocity-based
-	if (/*location.y <= kScreenHeight - (kSwitcherHeight / 2) && */velocity.y < 0) { //opening switcher
+	//use velocity and height to decide whether to open it or not
+	if (location.y <= kScreenHeight - (kSwitcherHeight / 3) || velocity.y < 0) { //opening switcher
 
 		CGFloat animationDuration = ((kSwitcherHeight - location.y)/velocity.y < 0.4f) ? (kSwitcherHeight - location.y)/velocity.y : 0.4f;
 		DebugLog(@"Velocity: %f, time to animate: %f", velocity.y, animationDuration);
@@ -351,7 +355,7 @@ static UIView *hotAreaView;
 %new
 - (void)removeHotArea {
 
-	[UIView animateWithDuration:0.2f animations:^{
+	[UIView animateWithDuration:0.3f animations:^{
 		[hotAreaView setAlpha:0];
 	}
 	completion:^(BOOL completed){
