@@ -36,8 +36,9 @@ static UIView *hotAreaView;
 
 		hotAreaView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
 		[(SBWallpaperEffectView *)hotAreaView setStyle:11];
-		[hotAreaView setFrame:CGRectMake(0, (kScreenHeight - kSwitcherHeight) - 90, kScreenWidth, 40)];
 	}
+
+	[hotAreaView setFrame:CGRectMake(0, (kScreenHeight - kSwitcherHeight) - 90, kScreenWidth, 40)];
 
 	[trayWindow makeKeyAndVisible];
 
@@ -157,7 +158,7 @@ static UIView *hotAreaView;
 
 	}
 
-	else if (location.y <= kSwitcherHeight + 100 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
+	else if (location.y <= (kScreenHeight - kSwitcherHeight) - 200 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
 
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 		[self removeHotArea];
