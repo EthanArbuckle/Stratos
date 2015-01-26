@@ -215,13 +215,17 @@ static UIView *hotAreaView;
 
 				if ([card frame].origin.y != 0) {
 
+					//close the tray
+					[[SwitcherTrayView sharedInstance] closeTray];
+					[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+					[self removeHotArea];
+
 					//open the app
 					[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:[(SwitcherTrayCardView *)card identifier]]];
 
-					//close the tray
-					[[SwitcherTrayView sharedInstance] closeTray];
+					[self _suspendGestureCancelled];
 
-					break;
+					return;
 				}
 			}
 		}
