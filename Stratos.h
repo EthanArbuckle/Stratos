@@ -296,9 +296,9 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 
 @end
 
-@interface _SBFakeBlurView : UIView
+@interface SBWallpaperEffectView : UIView
 
--(id)initWithVariant:(int)variant;
--(void)requestStyle:(int)style;
+-(id)initWithWallpaperVariant:(int)wallpaperVariant;
+-(void)setStyle:(int)style;
 
 @end

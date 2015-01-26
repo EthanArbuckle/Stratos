@@ -15,6 +15,7 @@
 "BACKGROUND_STYLE" = "Background Style";
 
 "DARK_BACKGROUND" = "Dark";
+"DOCK_BLUR_BACKGROUND" = "Dock Blur";
 "COMMON_BLUR_BACKGROUND" = "Common Blur";
 "CC_STYLE_BACKGROUND" = "CC Style"; //Control Center Style
 "LIGHT_BACKGROUND" = "Light";

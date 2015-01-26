@@ -309,11 +309,11 @@
 }
 
 -(NSArray *)backgroundStyleTitles {
-    return [NSArray arrayWithObjects:localized(@"DARK_BACKGROUND", @"Dark"), localized(@"COMMON_BLUR_BACKGROUND", @"Common Blur"), localized(@"CC_STYLE_BACKGROUND", @"CC Style"), localized(@"LIGHT_BACKGROUND", @"Light"), nil];
+    return [NSArray arrayWithObjects:localized(@"DARK_BACKGROUND", @"Dark"), localized(@"DOCK_BLUR_BACKGROUND", @"Dock Blur"), localized(@"COMMON_BLUR_BACKGROUND", @"Common Blur"), localized(@"CC_STYLE_BACKGROUND", @"CC Style"), localized(@"LIGHT_BACKGROUND", @"Light"), nil];
 }
 
 -(NSArray *)backgroundStyleValues {
-    return [NSArray arrayWithObjects:@1, @2, @2060, @2010, nil];
+    return [NSArray arrayWithObjects:@1, @9999, @2, @2060, @2010, nil];
 }
 
 -(id) readPreferenceValue:(PSSpecifier*)specifier
@@ -412,7 +412,15 @@
     phoneView.frame = CGRectMake((width/2)-160, 560, phoneImage.size.width, phoneImage.size.height);
 
     //blur view
-    switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+    if ([self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+
+        switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
+        [(SBWallpaperEffectView *)switcherView setStyle:11];
+    }
+    else {
+
+        switcherView = [[_UIBackdropView alloc] initWithStyle:[self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+    }
     [phoneView addSubview:switcherView];
         //SUMS: Y = 265
     [self setNewHeight:[stratosUserDefaults floatForKey:@"switcherHeight"]];
@@ -439,7 +447,15 @@
 
 -(void)reloadBlurView {
     [switcherView removeFromSuperview];
-    switcherView = [[_UIBackdropView alloc] initWithStyle:[[self.stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+    if ([self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+
+        switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
+        [(SBWallpaperEffectView *)switcherView setStyle:11];
+    }
+    else {
+
+        switcherView = [[_UIBackdropView alloc] initWithStyle:[self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+    }
     [phoneView addSubview:switcherView];
     [self setNewHeight:[stratosUserDefaults floatForKey:@"switcherHeight"]];
     [switcherView addSubview:grabberView];

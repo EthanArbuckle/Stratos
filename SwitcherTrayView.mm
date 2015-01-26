@@ -42,19 +42,17 @@ NSUserDefaults *_stratosUserDefaults;
         [_stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
 
 		//create the blur view
-	//    if ([[UIScreen mainScreen] bounds].size.height > 568) {
+	    if ([_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
 
-			_blurView = [[NSClassFromString(@"_SBFakeBlurView") alloc] initWithVariant:0];//WithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
-			[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
-			[(_SBFakeBlurView *)_blurView requestStyle:11];
-			[self addSubview:_blurView];
+			_blurView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
+			[(SBWallpaperEffectView *)_blurView setStyle:11];
+		}
+		else {
 
-   //     }
-   //     else {
-
-	//        [self setBackgroundColor:[UIColor colorWithRed:65/255.0 green:63/255.0 blue:63/255.0 alpha:1]];
-
-	  //  }
+			_blurView = [[_UIBackdropView alloc] initWithStyle:[_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+		}	
+		[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+		[self addSubview:_blurView];
 
 		//create small view that will hold the pan gesture recognizer. This is placed at the top of the tray
 		_gestureView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
@@ -570,7 +568,17 @@ NSLog(@"reloading");
 
 - (void)reloadBlurView {
 	[_blurView removeFromSuperview];
-	_blurView = [[_UIBackdropView alloc] initWithStyle:[[_stratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue]];
+
+	if ([_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+
+		_blurView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
+		[(SBWallpaperEffectView *)_blurView setStyle:11];
+	}
+	else {
+
+		_blurView = [[_UIBackdropView alloc] initWithStyle:[_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+	}
+
 	[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
 	[self insertSubview:_blurView atIndex:0];
 
