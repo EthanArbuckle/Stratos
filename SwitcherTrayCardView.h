@@ -12,5 +12,6 @@
 - (void)openApp;
 - (void)panning:(UIPanGestureRecognizer *)pan;
 - (void)cardNeedsUpdating;
+- (void)zeroOutYOrigin;
 
 @end

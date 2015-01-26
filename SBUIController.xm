@@ -3,6 +3,7 @@
 static NSUserDefaults *stratosUserDefaults;
 static SBControlCenterController *controlCenter;
 static UIWindow *trayWindow;
+static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
 
 //
@@ -97,14 +98,67 @@ static TouchHighjacker *touchView;
 	if (location.y >= kSwitcherMaxY) {
 
 		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, kSwitcherHeight)];
+		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+	}
+
+	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
+	else if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 && location.y >= (kScreenHeight - kSwitcherHeight) - 90) {
+
+		//only continue if we have at least 4 cards in the switcher
+		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
+
+			//the card our finger is over
+			int selectedIndex = ceil(location.x / (kSwitcherCardWidth + kSwitcherCardSpacing)) - 1;
+
+			//make sure its first 4
+			if (selectedIndex > 3) {
+				selectedIndex = 3;
+			}
+
+			//get hot cards
+			hotCards = [[NSMutableArray alloc] initWithCapacity:4];
+			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:0]];
+			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:1]];
+			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:2]];
+			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:3]];
+
+			//lift the current card and reset all others
+			for (UIView *card in hotCards) {
+
+				//get index of card
+				int cardIndex = [hotCards indexOfObject:card];
+
+				//get frame of card
+				CGRect frame = [card frame];
+
+				//reset frame if it isnt selected one
+				if (cardIndex != selectedIndex) {
+
+					frame.origin.y = 0;
+				}
+
+				else {
+
+					frame.origin.y = -50;
+				}
+
+				//set the new frame
+				[self animateObject:card toFrame:frame withDuration:0.2f];
+
+			}
+		}
+
 	}
 
 	else if (location.y <= kSwitcherHeight + 100 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
+
+		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 
 		//hide switcher
 		[[SwitcherTrayView sharedInstance] closeTray];
 
 		//cancel gesture
+		[self _showControlCenterGestureEndedWithLocation:CGPointMake(0, 0) velocity:CGPointMake(0, 0)];
 		[self _suspendGestureChanged:0];
 
 		if (!controlCenter) {
@@ -136,6 +190,32 @@ static TouchHighjacker *touchView;
 		return;
 	}
 
+	//see if we need to open a hot card
+	if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 && location.y >= (kScreenHeight - kSwitcherHeight) - 90) {
+
+		//make sure we have cards
+		if ([hotCards count] > 0) {
+
+			//open the card with a non-zero y origin
+			for (UIView *card in hotCards) {
+
+				if ([card frame].origin.y != 0) {
+
+					//open the app
+					[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:[(SwitcherTrayCardView *)card identifier]]];
+
+					//close the tray
+					[[SwitcherTrayView sharedInstance] closeTray];
+
+					break;
+				}
+			}
+		}
+
+	}
+
+	[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+
 	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
 	//switch to all velocity-based
 	if (/*location.y <= kScreenHeight - (kSwitcherHeight / 2) && */velocity.y < 0) { //opening switcher
@@ -159,6 +239,7 @@ static TouchHighjacker *touchView;
 	else {
 
 		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight) withDuration:0.4f];
+		[[SwitcherTrayView sharedInstance] setIsOpen:NO];
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
 	}

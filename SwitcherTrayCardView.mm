@@ -243,5 +243,13 @@
 	
 }
 
+- (void)zeroOutYOrigin {
+
+	[UIView animateWithDuration:0.3f animations:^{
+		CGRect frame = [self frame];
+		frame.origin.y = 0;
+		[self setFrame:frame];
+	}];
+}
 
 @end
