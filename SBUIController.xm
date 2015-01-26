@@ -5,6 +5,7 @@ static SBControlCenterController *controlCenter;
 static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
+static UIView *hotAreaView;
 
 //
 // This is where the magic happens
@@ -32,6 +33,10 @@ static TouchHighjacker *touchView;
 	if (!trayWindow) {
 		trayWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
 		[trayWindow setWindowLevel:9999];
+
+		hotAreaView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
+		[(SBWallpaperEffectView *)hotAreaView setStyle:11];
+		[hotAreaView setFrame:CGRectMake(0, (kScreenHeight - kSwitcherHeight) - 90, kScreenWidth, 40)];
 	}
 
 	[trayWindow makeKeyAndVisible];
@@ -107,6 +112,8 @@ static TouchHighjacker *touchView;
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
 
+			[self addHotArea];
+
 			//the card our finger is over
 			int selectedIndex = ceil(location.x / (kSwitcherCardWidth + kSwitcherCardSpacing)) - 1;
 
@@ -153,6 +160,7 @@ static TouchHighjacker *touchView;
 	else if (location.y <= kSwitcherHeight + 100 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
 
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+		[self removeHotArea];
 
 		//hide switcher
 		[[SwitcherTrayView sharedInstance] closeTray];
@@ -215,6 +223,7 @@ static TouchHighjacker *touchView;
 	}
 
 	[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+	[self removeHotArea];
 
 	//if the switcher is over halfway open when released, fully open it. otherwise dismiss it
 	//switch to all velocity-based
@@ -336,6 +345,33 @@ static TouchHighjacker *touchView;
 	[trayWindow setUserInteractionEnabled:NO];
 	[touchView removeFromSuperview];
 
+}
+
+%new
+- (void)removeHotArea {
+
+	[UIView animateWithDuration:0.2f animations:^{
+		[hotAreaView setAlpha:0];
+	}
+	completion:^(BOOL completed){
+		[hotAreaView removeFromSuperview];
+	}];
+
+}
+
+%new
+- (void)addHotArea {
+
+	[trayWindow addSubview:hotAreaView];
+
+	if ([hotAreaView alpha] == 1) {
+		return;
+	}
+
+	[UIView animateWithDuration:0.2f animations:^{
+		[hotAreaView setAlpha:1];
+	}];
+	
 }
 
 %end

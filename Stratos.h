@@ -84,6 +84,8 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
 - (NSUserDefaults *)stratosUserDefaults;
+- (void)removeHotArea;
+- (void)addHotArea;
 @end
 
 
