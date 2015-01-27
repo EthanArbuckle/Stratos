@@ -22,7 +22,7 @@
 - (void)mediaTapped;
 - (void)addSettingControls;
 - (void)killAllApps;
-- (void)prepareToOpen;
+- (void)prepareToOpenWithDefaultPage:(int)defaultPage;
 - (void)reloadShouldForce:(BOOL)force;
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading;
 - (void)handlePan:(UIPanGestureRecognizer *)pan;

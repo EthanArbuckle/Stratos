@@ -6,6 +6,7 @@ static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
 static UIView *hotAreaView;
+static int pageToOpen;
 
 //
 // This is where the magic happens
@@ -58,8 +59,33 @@ static UIView *hotAreaView;
 	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kSwitcherHeight)];
 	[trayWindow addSubview:touchView];
 
+	if ([stratosUserDefaults boolForKey:kCDTSPreferencesThirdSplit]) {
+		int pageIndex;
+		NSString *pageName;
+
+		//get the index of the page order array we want to acceess, based on which third of the screen they access
+		if (location.x < kScreenWidth/3) { // 0 - 1/3
+			pageIndex = 0;
+		} else if (location.x < (2*kScreenWidth)/3) { // 1/3 - 2/3
+			pageIndex = 1;
+		} else { //2/3 - 3/3
+			pageIndex = 2;
+		}
+		pageName = [[stratosUserDefaults stringArrayForKey:kCDTSPreferencesPageOrder] objectAtIndex:pageIndex];
+
+		//get pageToOpen
+		//1=switcher, 2=toggles, 3=music
+		if ([pageName isEqualToString:@"switcherCards"])
+			pageToOpen = 1;
+		else if ([pageName isEqualToString:@"controlCenter"])
+			pageToOpen = 2;
+		else //pageName is @"mediaControls"
+			pageToOpen = 3;
+	} else {
+		pageToOpen = 0;
+	}
 	//let the tray know its funna get opened
-	[[SwitcherTrayView sharedInstance] prepareToOpen];
+	[[SwitcherTrayView sharedInstance] prepareToOpenWithDefaultPage:pageToOpen];
 
 	//dont actually show the controlcenter
 	[self _suspendGestureBegan];
@@ -108,7 +134,7 @@ static UIView *hotAreaView;
 	}
 
 	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
-	else if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 && location.y >= (kScreenHeight - kSwitcherHeight) - 90) {
+	else if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 /*&& location.y >= (kScreenHeight - kSwitcherHeight) - 90*/ && pageToOpen == 1) {
 
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
@@ -157,7 +183,7 @@ static UIView *hotAreaView;
 		}
 
 	}
-
+	/*
 	else if (location.y <= (kScreenHeight - kSwitcherHeight) - 200 && [stratosUserDefaults boolForKey:kCDTSPreferencesInvokeControlCenter]) {
 
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
@@ -181,6 +207,7 @@ static UIView *hotAreaView;
 		[[controlCenter _window] setWindowLevel:UIWindowLevelAlert]; 
 
 	}
+	*/
 	else {
 
 		[self removeHotArea];
@@ -205,7 +232,7 @@ static UIView *hotAreaView;
 	}
 
 	//see if we need to open a hot card
-	if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 && location.y >= (kScreenHeight - kSwitcherHeight) - 90) {
+	if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 /*&& location.y >= (kScreenHeight - kSwitcherHeight) - 90*/ && pageToOpen == 1) {
 
 		//make sure we have cards
 		if ([hotCards count] > 0) {
@@ -248,12 +275,13 @@ static UIView *hotAreaView;
 		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
 
 	}
+	/*
 	else if (location.y <= kSwitcherHeight + 100) {
 
 		//opening the cc, do nothing
 		controlCenter = nil;
 	}
-
+	*/
 	else {
 
 		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight) withDuration:0.4f];

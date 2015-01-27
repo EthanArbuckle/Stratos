@@ -50,6 +50,7 @@ static NSString *const kCDTSPreferencesPageOrder = @"pageOrder";
 static NSString *const kCDTSPreferencesNumberOfPages = @"numberOfPages";
 static NSString *const kCDTSPreferencesEnableParallax = @"enableParallax";
 static NSString *const kCDTSPreferencesActiveMediaEnabled = @"activeMediaEnabled";
+static NSString *const kCDTSPreferencesThirdSplit = @"thirdSplit";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesEnabledKey          : @NO,
                                                         kCDTSPreferencesTrayBackgroundStyle : @1,
@@ -62,7 +63,8 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         @"defaultPage"                      : @1,
                                                         kCDTSPreferencesActivateByDoubleHome: @NO,
                                                         @"pageOrder"                        : @[ @"controlCenter", @"mediaControls", @"switcherCards" ], //in order from left to right
-                                                        @"numberOfPages"                    : @6 //number of pages for multitasking card view
+                                                        @"numberOfPages"                    : @6, //number of pages for multitasking card view
+                                                        kCDTSPreferencesThirdSplit          : @NO
                                                         };
 
 // private interfaces

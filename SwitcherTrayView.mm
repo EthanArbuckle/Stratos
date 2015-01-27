@@ -211,13 +211,14 @@ NSUserDefaults *_stratosUserDefaults;
 }
 
 //this is called right before the tray is presented
-- (void)prepareToOpen {
+- (void)prepareToOpenWithDefaultPage:(int)defaultPage {
 
 	//set grabber state to 0 (flat)
 	[[(SBControlCenterGrabberView *)_grabber chevronView] setState:0 animated:NO];
 
 	//get default page we need to open to
-	int defaultPage = [[_stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
+	if (!defaultPage)
+		defaultPage = [[_stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
 
 	//i think 1->Cards 2->Settings 3->Media
 
@@ -228,7 +229,7 @@ NSUserDefaults *_stratosUserDefaults;
 		if (((SBMediaController *)[NSClassFromString(@"SBMediaController") sharedInstance]).nowPlayingApplication) {
 
 			//something is playing, change default page to 3 (media controls)
-			defaultPage = 3;
+			defaultPage = 3; 
 		}
 	}
 

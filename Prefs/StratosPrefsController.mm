@@ -125,7 +125,7 @@
 
         //Functionality group cell
         spec = [PSSpecifier groupSpecifierWithName:localized(@"FUNCTIONALITY_HEADER", @"Functionality")];
-        [spec setProperty:localized(@"INVOKE_CC_FOOTER", @"Invoke the Control Center after swiping up beyond the Stratos switcher") forKey:@"footerText"];
+        [spec setProperty:localized(@"THIRD_SPLIT_FOOTER", @"Invoke a different page based on where you swipe! Each third of the screen will open a different page. The first thrid will invoke the first page in your page ordering, and so on.") forKey:@"footerText"];
         [hiddenSpecs addObject:spec];
 
         //Show currently running applications
@@ -154,16 +154,16 @@
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
-        //Enable control center being pulled up
-        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"INVOKE_CC", @"Invoke Control Center")
-                                                      target:self
-                                                         set:@selector(setPreferenceValue:specifier:)
-                                                         get:@selector(readPreferenceValue:)
-                                                      detail:Nil
-                                                        cell:PSSwitchCell
-                                                        edit:Nil];
-        [spec setProperty:@"shouldInvokeCC" forKey:@"key"];
-        [spec setProperty:@YES forKey:@"default"];
+        //Split the bottom into thirds
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"THIRD_SPLIT", @"Page per third of screen")
+                                                       target:self
+                                                          set:@selector(setPreferenceValue:specifier:)
+                                                          get:@selector(readPreferenceValue:)
+                                                       detail:Nil
+                                                         cell:PSSwitchCell
+                                                         edit:Nil];
+        [spec setProperty:kCDTSPreferencesThirdSplit forKey:@"key"];
+        [spec setProperty:@NO forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
