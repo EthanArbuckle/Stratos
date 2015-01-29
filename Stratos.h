@@ -55,7 +55,7 @@ static NSString *const kCDTSPreferencesActiveMediaEnabled = @"activeMediaEnabled
 static NSString *const kCDTSPreferencesThirdSplit = @"thirdSplit";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                         kCDTSPreferencesEnabledKey          : @NO,
-                                                        kCDTSPreferencesTrayBackgroundStyle : @1,
+                                                        kCDTSPreferencesTrayBackgroundStyle : @9999,
                                                         @"switcherHeight"                   : @(kScreenHeight / 3.3),
                                                         kCDTSPreferencesShowGrabber         : @YES,
                                                         kCDTSPreferencesEnableParallax      : @YES,
