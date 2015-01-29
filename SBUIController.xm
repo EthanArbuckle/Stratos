@@ -40,6 +40,10 @@ static int pageToOpen;
 	//create the background view. This is what everything will be added to
 	[SwitcherTrayView sharedInstance];
 
+	//Dismiss the tray when tapped outside of it
+	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kSwitcherHeight)];
+	[trayWindow addSubview:touchView];
+
 	//this method will check to see if the current running apps have changed, and update if need be
 	[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
 
@@ -48,10 +52,6 @@ static int pageToOpen;
 
 	//this makes everything under the traywindow not recieve our touches, but enables interaction with the switcher view.
 	[trayWindow setUserInteractionEnabled:YES];
-
-	//Dismiss the tray when tapped outside of it
-	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kSwitcherHeight)];
-	[trayWindow addSubview:touchView];
 
 	if ([stratosUserDefaults boolForKey:kCDTSPreferencesThirdSplit]) {
 		int pageIndex;
@@ -138,7 +138,7 @@ static int pageToOpen;
 	}
 
 	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
-	else if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 /*&& location.y >= (kScreenHeight - kSwitcherHeight) - 90*/ && pageToOpen == 1) {
+	else if (location.y <= (kScreenHeight - kSwitcherHeight) - kQuickLaunchTouchOffset /*&& location.y >= (kScreenHeight - kSwitcherHeight) - 90*/ && pageToOpen == 1) {
 
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {

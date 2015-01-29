@@ -34,6 +34,8 @@
 #define kMultiViewCardHeight 	150
 #define kMultiViewCardSpacing 	20
 
+#define kQuickLaunchTouchOffset 90
+
 #define kStratosUserDefaults [(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] 
 
 //settings
