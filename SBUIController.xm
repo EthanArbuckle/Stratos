@@ -5,7 +5,6 @@ static SBControlCenterController *controlCenter;
 static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
-static UIView *hotAreaView;
 static int pageToOpen;
 
 //
@@ -34,12 +33,7 @@ static int pageToOpen;
 	if (!trayWindow) {
 		trayWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
 		[trayWindow setWindowLevel:9999];
-
-		hotAreaView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
-		[(SBWallpaperEffectView *)hotAreaView setStyle:11];
 	}
-
-	[hotAreaView setFrame:CGRectMake(0, (kScreenHeight - kSwitcherHeight) - 90, kScreenWidth, 40)];
 
 	[trayWindow makeKeyAndVisible];
 
@@ -149,8 +143,6 @@ static int pageToOpen;
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
 
-			[self addHotArea];
-
 			//the card our finger is over
 			int selectedIndex = ceil(location.x / (kSwitcherCardWidth + kSwitcherCardSpacing)) - 1;
 
@@ -220,7 +212,6 @@ static int pageToOpen;
 	*/
 	else {
 
-		[self removeHotArea];
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 	}
 
@@ -255,7 +246,6 @@ static int pageToOpen;
 					//close the tray
 					[[SwitcherTrayView sharedInstance] closeTray];
 					[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
-					[self removeHotArea];
 
 					//open the app
 					[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:[(SwitcherTrayCardView *)card identifier]]];
@@ -270,7 +260,6 @@ static int pageToOpen;
 	}
 
 	[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
-	[self removeHotArea];
 
 	//use velocity and height to decide whether to open it or not
 	if (location.y <= kScreenHeight - (kSwitcherHeight / 3) || velocity.y < 0) { //opening switcher
@@ -353,12 +342,20 @@ static int pageToOpen;
 
 - (void)_applicationActivationStateDidChange:(id)_applicationActivationState {
 	%orig;
-	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
-		//an app was opened, closed, or killed. tell the identifier daemon to reload.
-		[[IdentifierDaemon sharedInstance] reloadApps];
+	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {	
 
-		//also reload them in the switcher tray
-		[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+
+			//an app was opened, closed, or killed. tell the identifier daemon to reload.
+			[[IdentifierDaemon sharedInstance] reloadApps];
+
+			//also reload them in the switcher tray
+			[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
+
+		});
+		
 	}
 }
 
@@ -394,31 +391,5 @@ static int pageToOpen;
 
 }
 
-%new
-- (void)removeHotArea {
-
-	[UIView animateWithDuration:0.3f animations:^{
-		[hotAreaView setAlpha:0];
-	}
-	completion:^(BOOL completed){
-		[hotAreaView removeFromSuperview];
-	}];
-
-}
-
-%new
-- (void)addHotArea {
-
-	[trayWindow addSubview:hotAreaView];
-
-	if ([hotAreaView alpha] == 1) {
-		return;
-	}
-
-	[UIView animateWithDuration:0.2f animations:^{
-		[hotAreaView setAlpha:1];
-	}];
-	
-}
 
 %end

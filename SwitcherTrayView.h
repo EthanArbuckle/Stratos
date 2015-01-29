@@ -24,7 +24,7 @@
 - (void)killAllApps;
 - (void)prepareToOpenWithDefaultPage:(int)defaultPage;
 - (void)reloadShouldForce:(BOOL)force;
-- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin onGCDThread:(BOOL)threading;
+- (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin;
 - (void)handlePan:(UIPanGestureRecognizer *)pan;
 - (void)closeTray;
 - (void)openTray;
