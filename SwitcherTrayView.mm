@@ -562,6 +562,8 @@ NSLog(@"reloading");
 
 - (void)trayHeightDidChange {
 
+	[self reloadShouldForce:YES];
+	
 	//update placement of cards
 	[_trayScrollView setFrame:CGRectMake(0, ((kSwitcherHeight / 2) - (kSwitcherCardHeight / 2)) - 5, kScreenWidth, kSwitcherHeight - 20)];
 
