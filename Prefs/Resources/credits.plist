@@ -164,54 +164,6 @@
 			<key>height</key>
 			<string>100</string>
 			<key>devName</key>
-			<string>Phillip Tennen</string>
-			<key>jobTitle</key>
-			<string>PHILLIP_TITLE</string>
-			<key>subtitle</key>
-			<string>PHILLIP_SUBTITLE</string>
-			<key>jobTitleEnglish</key>
-			<string>Co-developer</string>
-			<key>subtitleEnglish</key>
-			<string>Made two _very_ important commits</string>
-			<key>imageName</key>
-			<string>phillip</string>
-		</dict>
-		<dict>
-			<key>cell</key>
- 			<string>PSButtonCell</string>
-			<key>label</key>
-			<string>Twitter</string>
-			<key>action</key>
-			<string>openTwitter:</string>
-			<key>handle</key>
-			<string>@phillipten</string>
-			<key>cellClass</key>
-			<string>StratosSocialCell</string>
-		</dict>
-		<dict>
-			<key>cell</key>
- 			<string>PSButtonCell</string>
-			<key>label</key>
-			<string>Reddit</string>
-			<key>action</key>
-			<string>openReddit:</string>
-			<key>handle</key>
-			<string>/u/Codyd51</string>
-			<key>cellClass</key>
-			<string>StratosSocialCell</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSG</string>
-			<key>cellClass</key>
-			<string>StratosDevCell</string>
-			<key>height</key>
-			<string>100</string>
-			<key>devName</key>
 			<string>Cyril Zakka</string>
 			<key>jobTitle</key>
 			<string>CYRIL_TITLE</string>
@@ -245,6 +197,54 @@
 			<string>openReddit:</string>
 			<key>handle</key>
 			<string>/u/Does-Aurum-Have-Reddit?</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Phillip Tennen</string>
+			<key>jobTitle</key>
+			<string>PHILLIP_TITLE</string>
+			<key>subtitle</key>
+			<string>PHILLIP_SUBTITLE</string>
+			<key>jobTitleEnglish</key>
+			<string>Co-developer</string>
+			<key>subtitleEnglish</key>
+			<string>Made two _very_ important commits</string>
+			<key>imageName</key>
+			<string>phillip</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Twitter</string>
+			<key>action</key>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@phillipten</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Reddit</string>
+			<key>action</key>
+			<string>openReddit:</string>
+			<key>handle</key>
+			<string>/u/Codyd51</string>
 			<key>cellClass</key>
 			<string>StratosSocialCell</string>
 		</dict>

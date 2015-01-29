@@ -82,7 +82,17 @@ static int pageToOpen;
 		else //pageName is @"mediaControls"
 			pageToOpen = 3;
 	} else {
-		pageToOpen = 0;
+		pageToOpen = [[stratosUserDefaults valueForKey:kCDTSPreferencesDefaultPage] intValue];
+	}
+
+	if ([stratosUserDefaults boolForKey:kCDTSPreferencesActiveMediaEnabled]) {
+
+		//see if music is playing
+		if (((SBMediaController *)[NSClassFromString(@"SBMediaController") sharedInstance]).nowPlayingApplication) {
+
+			//something is playing, change default page to 3 (media controls)
+			pageToOpen = 3;  
+		}
 	}
 	//let the tray know its funna get opened
 	[[SwitcherTrayView sharedInstance] prepareToOpenWithDefaultPage:pageToOpen];
