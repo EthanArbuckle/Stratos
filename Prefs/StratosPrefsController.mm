@@ -154,6 +154,20 @@
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
+        //enable quicklaunch
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ENABLE_QUICKLAUNCH", @"Enable QuickLaunch")
+                                                         target:self
+                                                            set:@selector(setPreferenceValue:specifier:)
+                                                            get:@selector(readPreferenceValue:)
+                                                         detail:Nil
+                                                           cell:PSSwitchCell
+                                                           edit:Nil];
+        [spec setProperty:@"enableQuickLaunch" forKey:@"key"];
+        [spec setProperty:@YES forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
+
+
         //Split the bottom into thirds
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"THIRD_SPLIT", @"Page per third of screen")
                                                        target:self

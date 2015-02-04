@@ -53,20 +53,22 @@ static NSString *const kCDTSPreferencesNumberOfPages = @"numberOfPages";
 static NSString *const kCDTSPreferencesEnableParallax = @"enableParallax";
 static NSString *const kCDTSPreferencesActiveMediaEnabled = @"activeMediaEnabled";
 static NSString *const kCDTSPreferencesThirdSplit = @"thirdSplit";
+static NSString *const kCDTSPreferencesEnableQuickLaunch = @"enableQuickLaunch";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
-                                                        kCDTSPreferencesEnabledKey          : @NO,
-                                                        kCDTSPreferencesTrayBackgroundStyle : @9999,
-                                                        @"switcherHeight"                   : @(kScreenHeight / 3.3),
-                                                        kCDTSPreferencesShowGrabber         : @YES,
-                                                        kCDTSPreferencesEnableParallax      : @YES,
-                                                        kCDTSPreferencesInvokeControlCenter : @YES,
-                                                        kCDTSPreferencesActiveMediaEnabled  : @NO,
-                                                        kCDTSPreferencesShowRunningApp      : @NO,
-                                                        @"defaultPage"                      : @1,
-                                                        kCDTSPreferencesActivateByDoubleHome: @NO,
-                                                        @"pageOrder"                        : @[ @"controlCenter", @"mediaControls", @"switcherCards" ], //in order from left to right
-                                                        @"numberOfPages"                    : @6, //number of pages for multitasking card view
-                                                        kCDTSPreferencesThirdSplit          : @NO
+                                                                kCDTSPreferencesEnabledKey          : @NO,
+                                                                kCDTSPreferencesTrayBackgroundStyle : @9999,
+                                                                kCDTSPreferencesSwitcherHeight      : @(kScreenHeight / 3.3),
+                                                                kCDTSPreferencesShowGrabber         : @YES,
+                                                                kCDTSPreferencesEnableParallax      : @YES,
+                                                                kCDTSPreferencesEnableQuickLaunch   : @YES,
+                                                                kCDTSPreferencesInvokeControlCenter : @YES,
+                                                                kCDTSPreferencesActiveMediaEnabled  : @NO,
+                                                                kCDTSPreferencesShowRunningApp      : @NO,
+                                                                kCDTSPreferencesDefaultPage         : @1,
+                                                                kCDTSPreferencesActivateByDoubleHome: @NO,
+                                                                kCDTSPreferencesPageOrder           : @[ @"controlCenter", @"mediaControls", @"switcherCards" ], //in order from left to right
+                                                                kCDTSPreferencesNumberOfPages       : @6, //number of pages for multitasking card view
+                                                                kCDTSPreferencesThirdSplit          : @NO
                                                         };
 
 // private interfaces

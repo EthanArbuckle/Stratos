@@ -138,10 +138,19 @@ static int pageToOpen;
 	}
 
 	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
-	else if (location.y <= (kScreenHeight - kSwitcherHeight) - kQuickLaunchTouchOffset /*&& location.y >= (kScreenHeight - kSwitcherHeight) - 90*/ && pageToOpen == 1) {
+	else if (location.y <= (kScreenHeight - kSwitcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && [stratosUserDefaults boolForKey:kCDTSPreferencesEnableQuickLaunch]) {
 
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
+
+			/*if (location.x >= kScreenWidth - 4) {
+				int currentPage = [[[SwitcherTrayView sharedInstance] trayScrollView] contentOffset] / kScreenWidth;
+				//int switcherStartPage = [stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] + 1;
+				if (currentPage > switcherStartPage) {
+
+				}
+
+			} */
 
 			//the card our finger is over
 			int selectedIndex = ceil(location.x / (kSwitcherCardWidth + kSwitcherCardSpacing)) - 1;
@@ -153,10 +162,8 @@ static int pageToOpen;
 
 			//get hot cards
 			hotCards = [[NSMutableArray alloc] initWithCapacity:4];
-			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:0]];
-			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:1]];
-			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:2]];
-			[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:3]];
+			for (int index = 0; index <= 3; index++)
+				[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:index]];
 
 			//lift the current card and reset all others
 			for (UIView *card in hotCards) {
@@ -233,7 +240,7 @@ static int pageToOpen;
 	}
 
 	//see if we need to open a hot card
-	if (location.y <= (kScreenHeight - kSwitcherHeight) - 50 /*&& location.y >= (kScreenHeight - kSwitcherHeight) - 90*/ && pageToOpen == 1) {
+	if (location.y <= (kScreenHeight - kSwitcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && [stratosUserDefaults boolForKey:kCDTSPreferencesEnableQuickLaunch]) {
 
 		//make sure we have cards
 		if ([hotCards count] > 0) {
