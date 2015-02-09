@@ -28,6 +28,7 @@
 "SHOW_RUNNING_APP" = "Show Running App in Switcher";
 "ACTIVATE_VIA_HOME" = "Activate Via Home Button";
 "ENABLE_QUICKLAUNCH" = "Enable QuickLaunch";
+"ENABLE_HOMESCREEN" = "Show HomeScreen Card";
 "INVOKE_CC" = "Invoke Control Center";
 "INVOKE_CC_FOOTER" = "Invoke the Control Center after swiping up beyond the Stratos switcher";
 

@@ -167,6 +167,19 @@
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
 
+        //enable homescreen card
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"ENABLE_HOMESCREEN", @"Show HomeScreen Card")
+                                                         target:self
+                                                            set:@selector(setPreferenceValue:specifier:)
+                                                            get:@selector(readPreferenceValue:)
+                                                         detail:Nil
+                                                           cell:PSSwitchCell
+                                                           edit:Nil];
+        [spec setProperty:@"enableHomescreen" forKey:@"key"];
+        [spec setProperty:@NO forKey:@"default"];
+        [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
+        [hiddenSpecs addObject:spec];
+
 
         //Split the bottom into thirds
         spec = [PSSpecifier preferenceSpecifierNamed:localized(@"THIRD_SPLIT", @"Page per third of screen")

@@ -54,6 +54,7 @@ static NSString *const kCDTSPreferencesEnableParallax = @"enableParallax";
 static NSString *const kCDTSPreferencesActiveMediaEnabled = @"activeMediaEnabled";
 static NSString *const kCDTSPreferencesThirdSplit = @"thirdSplit";
 static NSString *const kCDTSPreferencesEnableQuickLaunch = @"enableQuickLaunch";
+static NSString *const kCDTSPreferencesEnableHomescreen = @"enableHomescreen";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesEnabledKey          : @NO,
                                                                 kCDTSPreferencesTrayBackgroundStyle : @9999,
@@ -65,6 +66,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesActiveMediaEnabled  : @NO,
                                                                 kCDTSPreferencesShowRunningApp      : @NO,
                                                                 kCDTSPreferencesDefaultPage         : @1,
+                                                                kCDTSPreferencesEnableHomescreen    : @NO,
                                                                 kCDTSPreferencesActivateByDoubleHome: @NO,
                                                                 kCDTSPreferencesPageOrder           : @[ @"controlCenter", @"mediaControls", @"switcherCards" ], //in order from left to right
                                                                 kCDTSPreferencesNumberOfPages       : @6, //number of pages for multitasking card view
@@ -81,6 +83,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration;
 - (void)activateApplicationAnimated:(id)application;
 - (void)getRidOfAppSwitcher;
+- (BOOL)clickedMenuButton;
 - (void)_installSystemGestureView:(UIView *)gestureView forKey:(id<NSCopying>)key forGesture:(NSUInteger)gestureType;
 - (void)notifyAppResignActive:(id)active;
 - (void)restoreContentAndUnscatterIconsAnimated:(BOOL)animated;
@@ -91,6 +94,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
 - (NSUserDefaults *)stratosUserDefaults;
+- (UIImage *)homeScreenImage;
 @end
 
 
@@ -218,6 +222,10 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (id)_accessibilityFrontMostApplication;
 @end
 
+@interface UIApplication (Private)
+- (void)_relaunchSpringBoardNow;
+- (id)_accessibilityFrontMostApplication;
+@end
 
 @interface SBGestureViewVendor : NSObject
 + (id)sharedInstance;
@@ -308,4 +316,17 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 -(id)initWithWallpaperVariant:(int)wallpaperVariant;
 -(void)setStyle:(int)style;
 
+@end
+
+@interface SBViewSnapshotProvider
+
+@property(copy, nonatomic) id completionBlock;
+-(UIImage *)snapshot;
+-(void)snapshotAsynchronously:(BOOL)asynchronously withImageBlock:(id)imageBlock;
+-(id)initWithView:(id)view;
+@end
+
+@interface SBHomeScreenPreviewView : UIView
++ (void)cleanupPreview;
++ (id)preview;
 @end

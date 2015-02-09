@@ -12,16 +12,11 @@
 		_snapshotHolder = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
 		[_snapshotHolder setContentMode:UIViewContentModeScaleAspectFit];
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self addSubview:_snapshotHolder];
-
-			//get the image from our ident daemon
-			[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
-		});
-
 		//create imageview that will hold the apps icon
 		UIImageView *iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 30, 40, 40)];
 		
+		[self addSubview:_snapshotHolder];
+
 		//get instance of the application
 		_application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:identifier];
 
@@ -50,6 +45,23 @@
 
 			//set iconholders image to the image from the sbapplicationicon class
 			[iconHolder setImage:[icon generateIconImage:2]];
+
+		});
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+
+			//get the image from our ident daemon
+			if ([identifier isEqualToString:@"com.apple.SpringBoard"]) {
+
+				[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] homeScreenImage]];
+				[iconHolder removeFromSuperview];
+				[_appName removeFromSuperview];
+			}
+
+			else {
+
+				[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+			}
 
 		});
 
@@ -123,6 +135,12 @@
 		
 	}
 
+	//sim home button press if this is the homescreen card
+	if ([_identifier isEqualToString:@"com.apple.SpringBoard"]) {
+
+		[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] clickedMenuButton];
+	}
+
 	//open the app
 	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier]];
 }
@@ -166,8 +184,19 @@
 
 			} completion:^(BOOL completed) {
 
-				//tell the switcher to close this app
-				[(SwitcherTrayView *)_superSwitcher cardRequestingToClose:self];
+				//tell the switcher to close this app or trigger respring prompt
+				if (![_identifier isEqualToString:@"com.apple.SpringBoard"]) { 
+					//opening normal card
+					[(SwitcherTrayView *)_superSwitcher cardRequestingToClose:self];
+				}
+				else {
+					//homescreen card
+					[(SwitcherTrayView *)_superSwitcher closeTray];
+
+					UIAlertView *respring = [[UIAlertView alloc] initWithTitle:@"Respring" message:@"Would you like to respring your device now?" delegate:self
+																 cancelButtonTitle:@"No" otherButtonTitles:@"Respring", nil];
+					[respring show];
+				}
 
 			}];
 
@@ -227,7 +256,14 @@
 - (void)cardNeedsUpdating {
 	
 	//get the image from our ident daemon
-	[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+	if ([_identifier isEqualToString:@"com.apple.SpringBoard"]) {
+
+		[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] homeScreenImage]];
+	}
+	else {
+
+		[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+	}
 
 	//change the app label text color if needed
 	if ([[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2060 || 
@@ -250,6 +286,23 @@
 		frame.origin.y = 0;
 		[self setFrame:frame];
 	}];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex {
+
+	[self zeroOutYOrigin];
+
+	if (buttonIndex == 0) {
+
+		//cancel, reopen the tray
+		[(SwitcherTrayView *)_superSwitcher openTray];
+	}
+	else if (buttonIndex == 1) {
+
+		//respring
+		[[UIApplication sharedApplication] _relaunchSpringBoardNow];
+	}
+
 }
 
 @end

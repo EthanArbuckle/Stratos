@@ -6,6 +6,7 @@ static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
 static int pageToOpen;
+static UIImage *homeScreenImage;
 
 //
 // This is where the magic happens
@@ -255,7 +256,7 @@ static int pageToOpen;
 					[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 
 					//open the app
-					[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:[(SwitcherTrayCardView *)card identifier]]];
+					[(SwitcherTrayCardView *)card openApp];
 
 					[self _suspendGestureCancelled];
 
@@ -331,9 +332,15 @@ static int pageToOpen;
 
 - (void)_deviceLockStateChanged:(id)changed {
 	DebugLog0;
-	
+
 	if ([stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
-		
+
+		//get homescreen snapshot
+		SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
+		[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
+			homeScreenImage = snapshot;
+		}];
+
 		//lock button pressed, dismiss the tray
 		[[SwitcherTrayView sharedInstance] closeTray];
 
@@ -398,5 +405,12 @@ static int pageToOpen;
 
 }
 
+%new
+- (UIImage *)homeScreenImage {
+
+	if (homeScreenImage)
+		return homeScreenImage;
+	return [[UIImage alloc] init];
+}
 
 %end

@@ -90,6 +90,18 @@
 
 	}
 
+	//manually create homescreen card if needed
+	if ([self shouldShowHomescreenCard]) {
+
+		[_appIdentifiers insertObject:@"com.apple.SpringBoard" atIndex:0];	
+
+		//add blank image here to keep indexes synced up
+		[_appSnapshots insertObject:[[UIImage alloc] init] atIndex:0];
+		SwitcherTrayCardView *homeScreenCard = [[SwitcherTrayCardView alloc] initWithIdentifier:@"com.apple.SpringBoard"];
+		[_appCards setObject:homeScreenCard forKey:@"com.apple.SpringBoard"];
+
+	}
+
 }
 
 - (UIImage *)preheatSnapshotForIndentifier:(NSString *)ident withController:(SBAppSliderController *)sliderController {
@@ -178,10 +190,22 @@
 				[newIdentifiers removeObjectAtIndex:0];
 			}
 
-			//return nonmutable array
+			//return nonmutable array with or without homescreen
+			if (YES) {
+
+				[newIdentifiers insertObject:@"com.apple.SpringBoard" atIndex:0];
+			}
+
 			return [newIdentifiers copy];
 
 		}
+	}
+
+	if ([self shouldShowHomescreenCard]) {
+				
+		NSMutableArray *swipSwap = [identifiers mutableCopy];
+		[swipSwap insertObject:@"com.apple.SpringBoard" atIndex:0];
+		return [swipSwap copy];
 	}
 
 	return identifiers;
@@ -222,6 +246,17 @@
 	}
 
 	DebugLog(@"No reload required");
+	return NO;
+}
+
+- (BOOL)shouldShowHomescreenCard {
+
+	//only show homescreen card if its enable AND we're not on the homescreen
+	if ([[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesEnableHomescreen] && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
+
+		return YES;
+	}
+
 	return NO;
 }
 

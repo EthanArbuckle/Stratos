@@ -1,6 +1,6 @@
 #import "Stratos.h"
 
-@interface SwitcherTrayCardView : UIView <UIGestureRecognizerDelegate>
+@interface SwitcherTrayCardView : UIView <UIGestureRecognizerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) UIView *superSwitcher;
@@ -13,5 +13,6 @@
 - (void)panning:(UIPanGestureRecognizer *)pan;
 - (void)cardNeedsUpdating;
 - (void)zeroOutYOrigin;
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex;
 
 @end

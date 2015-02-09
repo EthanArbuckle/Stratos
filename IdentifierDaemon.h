@@ -14,5 +14,6 @@
 - (NSArray *)identifiers;
 - (void)purgeCardCache;
 - (BOOL)doesRequireReload;
+- (BOOL)shouldShowHomescreenCard;
 
 @end
