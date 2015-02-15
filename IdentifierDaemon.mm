@@ -1,5 +1,14 @@
 #import "IdentifierDaemon.h"
 
+static HBPreferences *_stratosPrefs;
+static BOOL showRunningApp;
+static BOOL showHomescreen;
+
+static void loadPrefs() {
+	showRunningApp = [_stratosPrefs boolForKey:kCDTSPreferencesShowRunningApp];
+	showHomescreen = [_stratosPrefs boolForKey:kCDTSPreferencesEnableHomescreen];
+}
+
 @implementation IdentifierDaemon
 
 + (id)sharedInstance {
@@ -24,6 +33,17 @@
 		//app card holder
 		_appCards = [[NSMutableDictionary alloc] init];
 
+		_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+		[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+		loadPrefs();
+		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+										NULL,
+										(CFNotificationCallback)loadPrefs,
+										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
+										NULL,
+										YES);
+		//[_stratosPrefs registerBool:&showHomescreen default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableHomescreen] boolValue] forKey:kCDTSPreferencesEnableHomescreen];
+		//[_stratosPrefs registerBool:&showRunningApp default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesShowRunningApp] boolValue] forKey:kCDTSPreferencesShowRunningApp];
 		//reload apps
 		[self reloadApps];
 
@@ -178,7 +198,7 @@
 	}
 
 	//if we need to remove the topmost app
-	if (![[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesShowRunningApp]) {
+	if (!showRunningApp) {
 
 		//if an app is open
 		if ([(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
@@ -252,12 +272,7 @@
 - (BOOL)shouldShowHomescreenCard {
 
 	//only show homescreen card if its enable AND we're not on the homescreen
-	if ([[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesEnableHomescreen] && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
-
-		return YES;
-	}
-
-	return NO;
+	return (showHomescreen && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
 }
 
 @end

@@ -1,11 +1,32 @@
 #import "SwitcherTrayCardView.h"
 
+static NSInteger backgroundStyle;
+static BOOL useParallax;
+static HBPreferences *_stratosPrefs;
+
+
+static void loadPrefs() {
+	backgroundStyle = [_stratosPrefs integerForKey:kCDTSPreferencesTrayBackgroundStyle];
+	useParallax = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax];
+}
+
 @implementation SwitcherTrayCardView
 
 - (id)initWithIdentifier:(NSString *)identifier {
 
 	if (self = [super init]) {
 
+		//preferences
+		_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+		//[_stratosPrefs registerInteger:&backgroundStyle default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] forKey:kCDTSPreferencesTrayBackgroundStyle];
+		//[_stratosPrefs registerBool:&useParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue] forKey:kCDTSPreferencesEnableParallax];
+		loadPrefs();
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+										NULL,
+										(CFNotificationCallback)loadPrefs,
+										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
+										NULL,
+										YES);
 		_identifier = identifier;
 
 		//create the imageview that will hold the preview image of the app
@@ -73,8 +94,7 @@
 			[_appName setText:[(SBApplication *)_application displayName]];
 			[_appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
 			[_appName setTextAlignment:NSTextAlignmentCenter];
-			if ([[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2060 || 
-			   [[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2010) {
+			if (backgroundStyle == 2060 || backgroundStyle == 2010) {
 				[_appName setTextColor:[UIColor darkGrayColor]];
 			} else {
 				[_appName setTextColor:[UIColor whiteColor]];
@@ -95,7 +115,7 @@
 
 
 		//add parallax effect to card
-		if ([[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesEnableParallax]) {
+		if (useParallax) {
 
 			UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
 			verticalMotionEffect.minimumRelativeValue = @(-15);
@@ -266,8 +286,7 @@
 	}
 
 	//change the app label text color if needed
-	if ([[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2060 || 
-		[[kStratosUserDefaults valueForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] == 2010) {
+	if (backgroundStyle == 2060 || backgroundStyle == 2010) {
 
 		[_appName setTextColor:[UIColor darkGrayColor]];
 

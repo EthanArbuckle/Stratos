@@ -1,6 +1,7 @@
 #import "Stratos.h"
 
-@interface SwitcherTrayCardView : UIView <UIGestureRecognizerDelegate, UIAlertViewDelegate>
+@interface SwitcherTrayCardView : UIView <UIGestureRecognizerDelegate, UIAlertViewDelegate> {
+}
 
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) UIView *superSwitcher;

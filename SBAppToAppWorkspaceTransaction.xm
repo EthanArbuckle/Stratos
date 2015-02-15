@@ -4,11 +4,14 @@
 // This is for the app switching animations. All apps will animate side to side opening, instead of the weird
 // springboard zooming effect.
 //
+static HBPreferences *stratosPrefs;
+static BOOL isEnabled;
+
 %hook SBAppToAppWorkspaceTransaction
 
 - (id)_setupAnimationFrom:(SBApplication *)senderApp to:(SBApplication *)dest {
 
-	if (![kStratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
+	if (!isEnabled) {
 		return %orig;
 	}
 	
@@ -41,3 +44,19 @@
 }
 
 %end
+
+static void loadPrefs() {
+	isEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnabledKey];
+}
+
+%ctor {
+	stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+	[stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+	loadPrefs();
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+										NULL,
+										(CFNotificationCallback)loadPrefs,
+										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
+										NULL,
+										YES);
+}

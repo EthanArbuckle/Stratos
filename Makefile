@@ -7,6 +7,7 @@ TWEAK_NAME = nighthawke
 nighthawke_CFLAGS = -fobjc-arc
 nighthawke_FILES = $(wildcard *.xm) $(wildcard *.mm)
 nighthawke_FRAMEWORKS = UIKit QuartzCore CoreGraphics
+nighthawke_LIBRARIES += cephei
 
 SUBPROJECTS += Prefs
 

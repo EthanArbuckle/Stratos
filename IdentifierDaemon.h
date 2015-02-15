@@ -1,6 +1,6 @@
 #import "Stratos.h"
 
-@interface IdentifierDaemon : NSObject
+@interface IdentifierDaemon : NSObject 
 
 @property (nonatomic, retain) NSMutableArray *appIdentifiers;
 @property (nonatomic, retain) NSMutableArray *appSnapshots;
