@@ -17,6 +17,12 @@ static UIImage *homeScreenImage;
 
 	DebugLog(@"swipe up gesture started at %f : %f", location.x, location.y);
 
+	//fuck landscape
+	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
+		%orig;
+		return;
+	}
+
 	//if tweak is disabled, run original method
 	if (![stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
 		%orig;
@@ -98,6 +104,12 @@ static UIImage *homeScreenImage;
 }
 
 - (void)_showControlCenterGestureChangedWithLocation:(CGPoint)location velocity:(CGPoint)velocity duration:(double)duration {
+
+	//fuck landscape
+	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
+		%orig;
+		return;
+	}
 
 	//if tweak is disabled, run original method
 	if (![stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
@@ -227,6 +239,12 @@ static UIImage *homeScreenImage;
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
 
+	//fuck landscape
+	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
+		%orig;
+		return;
+	}
+	
 	//if tweak is disabled, run original method
 	if (![stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
 
