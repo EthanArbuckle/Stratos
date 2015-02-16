@@ -6,10 +6,6 @@
     self = [super init];
     if (self)
     {
-        preferences = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-        [preferences registerDefaults:kCDTSPreferencesDefaults];
-        [preferences synchronize];
-
 
         names = @[
             localized(@"SWITCHER_CARDS", @"Switcher Cards"),
@@ -47,7 +43,7 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     NSInteger index = indexPath.row;
     DebugLogC(@"Cell Index: %ld", (long)index);
-    NSArray *pageOrder = (NSArray *)[preferences objectForKey:@"pageOrder"];
+    NSArray *pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
     
     cell.textLabel.text = [names objectAtIndex:([pageOrder[index] intValue]-1)];
     
@@ -73,7 +69,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSMutableArray *pageOrder = [((NSArray *)[preferences objectForKey:@"pageOrder"]) mutableCopy];
+    NSMutableArray *pageOrder = [((NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder))) mutableCopy];
     NSInteger sourceIndex = sourceIndexPath.row;
     NSInteger destIndex = destinationIndexPath.row;
     if (sourceIndex>destIndex) {
@@ -89,9 +85,9 @@
         }
         [pageOrder replaceObjectAtIndex:destIndex withObject:cellToMove];
     }
-    
-    [preferences setObject:pageOrder forKey:@"pageOrder"];
-    [preferences synchronize];
+    CFPreferencesSetAppValue(CFSTR("pageOrder"), (CFArrayRef)pageOrder, (CFStringRef)kCDTSPreferencesDomain);
+    //[preferences setObject:pageOrder forKey:@"pageOrder"];
+    //[preferences synchronize];
     CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
         (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],

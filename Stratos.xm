@@ -8,7 +8,7 @@
 
 #import "Stratos.h"
 
-static HBPreferences *stratosPrefs;
+//static HBPreferences *stratosPrefs;
 
 //
 // Prefs Notification Handler
@@ -26,8 +26,13 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	[[SwitcherTrayView sharedInstance] trayHeightDidChange];
 
 	//reload cards if # of pages has been changed OR parallax settings have been changed
-	if ([[SwitcherTrayView sharedInstance] localPageCount] != [stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages] || 
-		[[SwitcherTrayView sharedInstance] enableParallax] != [stratosPrefs boolForKey:kCDTSPreferencesEnableParallax]) {
+	int newNumPages;
+	BOOL newParallax;
+	syncPrefs;
+	integerPreference(kCDTSPreferencesNumberOfPages, newNumPages);
+	boolPreference(kCDTSPreferencesEnableParallax, newParallax);
+	if ([[SwitcherTrayView sharedInstance] localPageCount] != newNumPages || 
+		[[SwitcherTrayView sharedInstance] enableParallax] != newParallax) {
 		[[IdentifierDaemon sharedInstance] purgeCardCache];
 		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
 	}

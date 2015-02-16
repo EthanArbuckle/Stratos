@@ -22,5 +22,4 @@ AVAudioPlayer *audioPlayer;
 }
 @property (nonatomic, strong) UIImageView *backImageView;
 @property (nonatomic, strong) UIImageView *iconImageView;
-@property (nonatomic, strong) HBPreferences *preferences;
 @end

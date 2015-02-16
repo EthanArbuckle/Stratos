@@ -18,6 +18,15 @@
 #define IS_OS_8_OR_LATER [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
 #define IS_OS_7_OR_UNDER [[[UIDevice currentDevice] systemVersion] floatValue] <= 7.0
 
+#define syncPrefs CFPreferencesAppSynchronize((CFStringRef)kCDTSPreferencesDomain)
+#define boolPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+        (var) = obj ? [obj boolValue] : [kCDTSPreferencesDefaults[key] boolValue]; } while (0)
+#define floatPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+        (var) = obj ? [obj floatValue] : [kCDTSPreferencesDefaults[key] floatValue]; } while (0)
+#define integerPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+        (var) = obj ? [obj intValue] : [kCDTSPreferencesDefaults[key] intValue]; } while (0)
+#define getPreference(key) CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain)
+
 
 // layout
 #define kScreenHeight 			[[UIScreen mainScreen] bounds].size.height
@@ -103,6 +112,9 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (UIImage *)homeScreenImage;
 @end
 
+@interface NSUserDefaults (Private)
+-(instancetype)_initWithSuiteName:(NSString *)suiteName container:(NSURL *)container;
+@end
 
 @interface SBAppSliderSnapshotView : UIView
 - (void)_loadSnapshotSync;

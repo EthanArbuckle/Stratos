@@ -2,12 +2,15 @@
 
 static NSInteger backgroundStyle;
 static BOOL useParallax;
-static HBPreferences *_stratosPrefs;
+//static NSUserDefaults *_stratosPrefs;
 
 
 static void loadPrefs() {
-	backgroundStyle = [_stratosPrefs integerForKey:kCDTSPreferencesTrayBackgroundStyle];
-	useParallax = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax];
+	syncPrefs;
+	integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
+	//backgroundStyle = [_stratosPrefs integerForKey:kCDTSPreferencesTrayBackgroundStyle];
+	boolPreference(kCDTSPreferencesEnableParallax, useParallax);
+	//useParallax = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax];
 }
 
 @implementation SwitcherTrayCardView
@@ -17,7 +20,8 @@ static void loadPrefs() {
 	if (self = [super init]) {
 
 		//preferences
-		_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+		//_stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
 		//[_stratosPrefs registerInteger:&backgroundStyle default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] forKey:kCDTSPreferencesTrayBackgroundStyle];
 		//[_stratosPrefs registerBool:&useParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue] forKey:kCDTSPreferencesEnableParallax];
 		loadPrefs();

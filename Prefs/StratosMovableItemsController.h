@@ -7,7 +7,6 @@
 #define localized(a, b) [[NSBundle bundleWithPath:@"/Library/PreferenceBundles/StratosPrefs.bundle"] localizedStringForKey:(a) value:(b) table:nil]
 
 @interface StratosMovableItemsController : PSViewController <UITableViewDataSource, UITableViewDelegate> {
-    HBPreferences *preferences;
     UIWindow *settingsView;
     NSArray *names;
 }

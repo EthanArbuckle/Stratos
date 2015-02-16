@@ -1,6 +1,6 @@
 #import "Stratos.h"
 
-static HBPreferences *stratosPrefs;
+//static HBPreferences *stratosPrefs;
 static SBControlCenterController *controlCenter;
 static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
@@ -16,6 +16,7 @@ static BOOL quickLaunchEnabled;
 static BOOL activateByDoubleHome;
 static BOOL isEnabled;
 static CGFloat switcherHeight;
+static NSArray *pageOrder;
 //
 // This is where the magic happens
 //
@@ -73,7 +74,7 @@ static CGFloat switcherHeight;
 		} else { //2/3 - 3/3
 			pageIndex = 2;
 		}
-		pageToOpen = [[((NSArray *)[stratosPrefs objectForKey:kCDTSPreferencesPageOrder]) objectAtIndex:pageIndex] intValue];
+		pageToOpen = [[pageOrder objectAtIndex:pageIndex] intValue];
 
 	} else {
 		pageToOpen = defaultPage;
@@ -371,25 +372,7 @@ static CGFloat switcherHeight;
 		
 	}
 }
-/*
-%new
-+ (NSUserDefaults *)stratosUserDefaults {
 
-	if (!stratosUserDefaults) {
-
-		//create user default instance
-		stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-
-		//set default values
-		[stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
-
-		[stratosUserDefaults synchronize];
-
-	}
-
-	return stratosUserDefaults;
-}
-*/
 - (void)finishLaunching {
 
 	%orig;
@@ -415,18 +398,27 @@ static CGFloat switcherHeight;
 %end
 
 static void loadPrefs() {
-	isEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnabledKey];
-	shouldSplitInThirds = [stratosPrefs boolForKey:kCDTSPreferencesThirdSplit];
-	defaultPage = [stratosPrefs integerForKey:kCDTSPreferencesDefaultPage];
-	openToMediaWhenPlaying = [stratosPrefs boolForKey:kCDTSPreferencesActiveMediaEnabled];
-	quickLaunchEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnableQuickLaunch];
-	activateByDoubleHome = [stratosPrefs boolForKey:kCDTSPreferencesActivateByDoubleHome];
-	switcherHeight = [stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
+	syncPrefs;
+	boolPreference(kCDTSPreferencesEnabledKey, isEnabled);
+	//isEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnabledKey];
+	boolPreference(kCDTSPreferencesThirdSplit, shouldSplitInThirds);
+	//shouldSplitInThirds = [stratosPrefs boolForKey:kCDTSPreferencesThirdSplit];
+	integerPreference(kCDTSPreferencesDefaultPage, defaultPage);
+	//defaultPage = [stratosPrefs integerForKey:kCDTSPreferencesDefaultPage];
+	boolPreference(kCDTSPreferencesActiveMediaEnabled, openToMediaWhenPlaying);
+	//openToMediaWhenPlaying = [stratosPrefs boolForKey:kCDTSPreferencesActiveMediaEnabled];
+	boolPreference(kCDTSPreferencesEnableQuickLaunch, quickLaunchEnabled);
+	//quickLaunchEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnableQuickLaunch];
+	boolPreference(kCDTSPreferencesActivateByDoubleHome, activateByDoubleHome);
+	//activateByDoubleHome = [stratosPrefs boolForKey:kCDTSPreferencesActivateByDoubleHome];
+	floatPreference(kCDTSPreferencesSwitcherHeight, switcherHeight);
+	//switcherHeight = [stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
+	pageOrder = (__bridge NSArray *)getPreference(kCDTSPreferencesPageOrder);
 }
 
 %ctor {
-	stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-	[stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+	//stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+	//[stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
 	loadPrefs();
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
 										NULL,

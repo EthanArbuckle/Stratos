@@ -29,12 +29,14 @@ static BOOL isEnabled;
 %end
 
 static void loadPrefs() {
-	isEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnabledKey];
+	syncPrefs;
+	boolPreference(kCDTSPreferencesEnabledKey, isEnabled);
+	//isEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnabledKey];
 }
 
 %ctor {
-	stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-	[stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+	//stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+	//[stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
 	loadPrefs();
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
 										NULL,

@@ -12,14 +12,16 @@ static NSArray *pageOrder;
 static NSInteger backgroundStyle;
 static NSInteger numberOfPages;
 static BOOL showGrabber;
-static HBPreferences *_stratosPrefs;
+//static HBPreferences *_stratosPrefs;
 
 static void prefsChanged() {
-	pageOrder = (NSArray *)[_stratosPrefs objectForKey:kCDTSPreferencesPageOrder];
-	backgroundStyle = [_stratosPrefs integerForKey:kCDTSPreferencesTrayBackgroundStyle];
-	numberOfPages = [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages];
-	showGrabber = [_stratosPrefs boolForKey:kCDTSPreferencesShowGrabber];
-	switcherHeight = [_stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
+	syncPrefs;
+	pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
+	integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);// = [_stratosPrefs integerForKey:kCDTSPreferencesTrayBackgroundStyle];
+	integerPreference(kCDTSPreferencesNumberOfPages, numberOfPages);//numberOfPages = [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages];
+	boolPreference(kCDTSPreferencesShowGrabber, showGrabber); // = [_stratosPrefs boolForKey:kCDTSPreferencesShowGrabber];
+	floatPreference(kCDTSPreferencesSwitcherHeight, switcherHeight);
+	//switcherHeight = [_stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
 }
 
 
@@ -50,8 +52,8 @@ static void prefsChanged() {
 		[self setUserInteractionEnabled:YES];
 
 		//create settings
-		_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-		[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+		//_stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
         //[_stratosPrefs registerInteger:&backgroundStyle default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] forKey:kCDTSPreferencesTrayBackgroundStyle];
         //[_stratosPrefs registerInteger:&numberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue] forKey:kCDTSPreferencesNumberOfPages];
         //[_stratosPrefs registerBool:&showGrabber default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesShowGrabber] boolValue] forKey:kCDTSPreferencesShowGrabber];
@@ -102,10 +104,10 @@ static void prefsChanged() {
 		[self addSubview:_trayScrollView];        
 
 		//save local copy of numberofpages to render so we can compare it later to know if settings have been changed
-		_localPageCount = [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
+		integerPreference(kCDTSPreferencesNumberOfPages, _localPageCount); //[_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
 
 		//same idea for enabling parallax
-		_enableParallax = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
+		boolPreference(kCDTSPreferencesEnableParallax, _enableParallax);// = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
 
 		//add the media controls
 		[self addMediaControls];
@@ -367,8 +369,8 @@ NSLog(@"reloading");
 	[self updateTrayContentSize];
 
 	//update setting stuff
-	_localPageCount = [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
-	_enableParallax = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
+	integerPreference(kCDTSPreferencesNumberOfPages, _localPageCount); //= [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
+	boolPreference(kCDTSPreferencesEnableParallax, _enableParallax); //= [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
 	
 }
 

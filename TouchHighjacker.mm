@@ -6,7 +6,8 @@
 TouchHighjacker *hijacker;
 
 static void loadPrefs() {
-	hijacker.switcherHeight = [hijacker.stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
+	floatPreference(kCDTSPreferencesSwitcherHeight, hijacker.switcherHeight);
+	//hijacker.switcherHeight = [hijacker.stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
 }
 
 @implementation TouchHighjacker
@@ -22,8 +23,9 @@ static void loadPrefs() {
 		[self setBackgroundColor:[UIColor blueColor]];
 		[self setAlpha:.01];
 		hijacker = self;
-		_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-		[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+		//_stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+		loadPrefs();
 		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
 										NULL,
 										(CFNotificationCallback)loadPrefs,

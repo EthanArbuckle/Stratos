@@ -11,13 +11,12 @@
 @implementation StratosPrefsController
 @synthesize backImageView = _backImageView;
 @synthesize iconImageView = _iconImageView;
-@synthesize preferences;
 -(id)init {
     if (self = [super init]) {
         //initialize NSUserDefaults
-        self.preferences = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-        [self.preferences registerDefaults:kCDTSPreferencesDefaults];
-        [self.preferences synchronize];
+        //self.preferences = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+        //[self.preferences registerDefaults:kCDTSPreferencesDefaults];
+        //[self.preferences synchronize];
     }
     return self;
 }
@@ -271,7 +270,9 @@
         [hiddenSpecs addObject:spec];
         */
         //if we're enabled, show all of the "hidden" specifiers
-        if ([self.preferences boolForKey:kCDTSPreferencesEnabledKey]) {
+        BOOL enabled;
+        boolPreference(kCDTSPreferencesEnabledKey, enabled);
+        if (enabled) {
             for (PSSpecifier *spec in hiddenSpecs) {
                 [specifiers addObject:spec];
             }
@@ -307,7 +308,7 @@
 
 -(NSArray *)defaultPageTitles {
     //reorder the default page cells to match the user-defined order
-    NSArray *pageOrder = (NSArray *)[preferences objectForKey:@"pageOrder"];
+    NSArray *pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
     NSArray *names = @[
         localized(@"SWITCHER_CARDS", @"Switcher Cards"),
         localized(@"CONTROL_CENTER", @"Control Center"),
@@ -323,7 +324,7 @@
 
 -(NSArray *)defaultPageValues {
     //same thing, reorder the cells
-    NSArray *pageOrder = (NSArray *)[preferences objectForKey:@"pageOrder"];
+    NSArray *pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
     /*
     NSDictionary *values = @{
             @"controlCenter" : @2,
@@ -349,7 +350,10 @@
 
 -(id) readPreferenceValue:(PSSpecifier*)specifier
 {
-    return [self.preferences objectForKey:specifier.properties[@"key"]];
+    NSString *key = specifier.properties[@"key"];
+    id obj = (id)CFBridgingRelease(getPreference(key));
+    return obj ?: kCDTSPreferencesDefaults[key];
+    //return [self.preferences objectForKey:specifier.properties[@"key"]];
 }
 
 -(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier
@@ -357,9 +361,10 @@
     //set the setting in NSUserDefaults
     NSDictionary *properties = specifier.properties;
     NSString *key = properties[@"key"];
-    [self.preferences setObject:value forKey:key];
-    [self.preferences synchronize];
-    DebugLogC(@"Darwin Notification: %@", [kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"]);
+    CFPreferencesSetAppValue((CFStringRef)key, (CFPropertyListRef)value, (CFStringRef)kCDTSPreferencesDomain);
+    //[self.preferences setObject:value forKey:key];
+    //[self.preferences synchronize];
+    //DebugLogC(@"Darwin Notification: %@", [kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"]);
 	CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
         (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
@@ -450,18 +455,22 @@
     phoneView.frame = CGRectMake((width/2)-160, 560, phoneImage.size.width, phoneImage.size.height);
 
     //blur view
-    if ([self.preferences integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+    int backgroundStyle;
+    integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
+    if (backgroundStyle == 9999) {
 
         switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
         [(SBWallpaperEffectView *)switcherView setStyle:11];
     }
     else {
 
-        switcherView = [[_UIBackdropView alloc] initWithStyle:[self.preferences integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+        switcherView = [[_UIBackdropView alloc] initWithStyle:backgroundStyle];
     }
     [phoneView addSubview:switcherView];
         //SUMS: Y = 265
-    [self setNewHeight:[self.preferences floatForKey:@"switcherHeight"]];
+    CGFloat height;
+    floatPreference(kCDTSPreferencesSwitcherHeight, height);
+    [self setNewHeight:height];
 
     //Grabber view
     CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
@@ -472,11 +481,15 @@
     [grabber setUserInteractionEnabled:NO];
     [grabberView addSubview:grabber];
     [grabber setFrame:CGRectMake(98.5, 5, 20, 4)];
-    if ([self.preferences boolForKey:@"showGrabber"])
+    BOOL showGrabber;
+    boolPreference(kCDTSPreferencesShowGrabber, showGrabber);
+    if (showGrabber)
         [switcherView addSubview:grabberView];
 
     //show/hide it based on if the tweak is enabled
-    if ([self.preferences boolForKey:@"isEnabled"])
+    BOOL enabled;
+    boolPreference(kCDTSPreferencesEnabledKey, enabled);
+    if (enabled)
       [phoneView setAlpha:1];
     else
       [phoneView setAlpha:0];
@@ -485,17 +498,20 @@
 
 -(void)reloadBlurView {
     [switcherView removeFromSuperview];
-    if ([self.preferences integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+    int backgroundStyle;
+    integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
+    if (backgroundStyle == 9999) {
 
         switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
         [(SBWallpaperEffectView *)switcherView setStyle:11];
     }
     else {
-
-        switcherView = [[_UIBackdropView alloc] initWithStyle:[self.preferences integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+        switcherView = [[_UIBackdropView alloc] initWithStyle:backgroundStyle];
     }
     [phoneView addSubview:switcherView];
-    [self setNewHeight:[self.preferences floatForKey:@"switcherHeight"]];
+    CGFloat height;
+    floatPreference(kCDTSPreferencesSwitcherHeight, height);
+    [self setNewHeight:height];
     [switcherView addSubview:grabberView];
     //[switcherView setFrame:CGRectMake(10, 195, 130, 70)];
 }

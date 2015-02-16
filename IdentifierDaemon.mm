@@ -1,12 +1,14 @@
 #import "IdentifierDaemon.h"
 
-static HBPreferences *_stratosPrefs;
+//static HBPreferences *_stratosPrefs;
 static BOOL showRunningApp;
 static BOOL showHomescreen;
 
 static void loadPrefs() {
-	showRunningApp = [_stratosPrefs boolForKey:kCDTSPreferencesShowRunningApp];
-	showHomescreen = [_stratosPrefs boolForKey:kCDTSPreferencesEnableHomescreen];
+	boolPreference(kCDTSPreferencesShowRunningApp, showRunningApp);
+	//showRunningApp = [_stratosPrefs boolForKey:kCDTSPreferencesShowRunningApp];
+	boolPreference(kCDTSPreferencesEnableHomescreen, showHomescreen);
+	//showHomescreen = [_stratosPrefs boolForKey:kCDTSPreferencesEnableHomescreen];
 }
 
 @implementation IdentifierDaemon
@@ -33,8 +35,8 @@ static void loadPrefs() {
 		//app card holder
 		_appCards = [[NSMutableDictionary alloc] init];
 
-		_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-		[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+		//_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
 		loadPrefs();
 		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
 										NULL,
