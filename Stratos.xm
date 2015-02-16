@@ -37,11 +37,11 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	[[SwitcherTrayView sharedInstance] trayHeightDidChange];
 
 	//reload cards if # of pages has been changed OR parallax settings have been changed
-	if ([[SwitcherTrayView sharedInstance] localPageCount] != [kStratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] || 
-		[[SwitcherTrayView sharedInstance] enableParallax] != [kStratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax]) {
+	//if ([[SwitcherTrayView sharedInstance] localPageCount] != [kStratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] || 
+	//	[[SwitcherTrayView sharedInstance] enableParallax] != [kStratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax]) {
 		[[IdentifierDaemon sharedInstance] purgeCardCache];
 		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
-	}
+//	}
 
 }
 

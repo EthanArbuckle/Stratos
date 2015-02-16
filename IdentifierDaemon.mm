@@ -191,7 +191,7 @@
 			}
 
 			//return nonmutable array with or without homescreen
-			if (YES) {
+			if ([self shouldShowHomescreenCard]) {
 
 				[newIdentifiers insertObject:@"com.apple.SpringBoard" atIndex:0];
 			}
