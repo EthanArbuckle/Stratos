@@ -9,14 +9,7 @@ static int pageToOpen;
 static UIImage *homeScreenImage;
 
 //preferences
-static BOOL shouldSplitInThirds;
-static NSInteger defaultPage;
-static BOOL openToMediaWhenPlaying;
-static BOOL quickLaunchEnabled;
-static BOOL activateByDoubleHome;
-static BOOL isEnabled;
-static CGFloat switcherHeight;
-static NSArray *pageOrder;
+static CDTSPreferences *prefs;
 //
 // This is where the magic happens
 //
@@ -27,7 +20,7 @@ static NSArray *pageOrder;
 	DebugLog(@"swipe up gesture started at %f : %f", location.x, location.y);
 
 	//if tweak is disabled, run original method
-	if (!isEnabled) {
+	if (!prefs.isEnabled) {
 		%orig;
 		return;
 	}
@@ -51,7 +44,7 @@ static NSArray *pageOrder;
 	[SwitcherTrayView sharedInstance];
 
 	//Dismiss the tray when tapped outside of it
-	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - switcherHeight)];
+	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - prefs.switcherHeight)];
 	[trayWindow addSubview:touchView];
 
 	//this method will check to see if the current running apps have changed, and update if need be
@@ -63,7 +56,7 @@ static NSArray *pageOrder;
 	//this makes everything under the traywindow not recieve our touches, but enables interaction with the switcher view.
 	[trayWindow setUserInteractionEnabled:YES];
 
-	if (shouldSplitInThirds) {
+	if (prefs.thirdSplit) {
 		int pageIndex;
 
 		//get the index of the page order array we want to acceess, based on which third of the screen they access
@@ -74,13 +67,13 @@ static NSArray *pageOrder;
 		} else { //2/3 - 3/3
 			pageIndex = 2;
 		}
-		pageToOpen = [[pageOrder objectAtIndex:pageIndex] intValue];
+		pageToOpen = [[prefs.pageOrder objectAtIndex:pageIndex] intValue];
 
 	} else {
-		pageToOpen = defaultPage;
+		pageToOpen = prefs.defaultPage;
 	}
 
-	if (openToMediaWhenPlaying) {
+	if (prefs.activeMediaEnabled) {
 
 		//see if music is playing
 		if (((SBMediaController *)[NSClassFromString(@"SBMediaController") sharedInstance]).nowPlayingApplication) {
@@ -100,7 +93,7 @@ static NSArray *pageOrder;
 - (void)_showControlCenterGestureChangedWithLocation:(CGPoint)location velocity:(CGPoint)velocity duration:(double)duration {
 
 	//if tweak is disabled, run original method
-	if (!isEnabled) {
+	if (!prefs.isEnabled) {
 
 		%orig;
 		return;
@@ -120,7 +113,7 @@ static NSArray *pageOrder;
 
 		//animate it
 		[UIView animateWithDuration:0.1f animations:^{
-			[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, switcherHeight)];
+			[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, prefs.switcherHeight)];
 		}];
 
 		//cancel gesture
@@ -134,12 +127,12 @@ static NSArray *pageOrder;
 	//limit how high the switcher can be pulled up
 	if (location.y >= kSwitcherMaxY) {
 
-		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, switcherHeight)];
+		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, prefs.switcherHeight)];
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 	}
 
 	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
-	else if (location.y <= (kScreenHeight - switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && quickLaunchEnabled) {
+	else if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
 
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
@@ -228,7 +221,7 @@ static NSArray *pageOrder;
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
 
 	//if tweak is disabled, run original method
-	if (!isEnabled) {
+	if (!prefs.isEnabled) {
 
 		%orig;
 		return;
@@ -241,7 +234,7 @@ static NSArray *pageOrder;
 	}
 
 	//see if we need to open a hot card
-	if (location.y <= (kScreenHeight - switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && quickLaunchEnabled) {
+	if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
 
 		//make sure we have cards
 		if ([hotCards count] > 0) {
@@ -270,15 +263,15 @@ static NSArray *pageOrder;
 	[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 
 	//use velocity and height to decide whether to open it or not
-	if (location.y <= kScreenHeight - (switcherHeight / 3) || velocity.y < 0) { //opening switcher
+	if (location.y <= kScreenHeight - (prefs.switcherHeight / 3) || velocity.y < 0) { //opening switcher
 
-		CGFloat animationDuration = ((switcherHeight - location.y)/velocity.y < 0.4f) ? (switcherHeight - location.y)/velocity.y : 0.4f;
+		CGFloat animationDuration = ((prefs.switcherHeight - location.y)/velocity.y < 0.4f) ? (prefs.switcherHeight - location.y)/velocity.y : 0.4f;
 		DebugLog(@"Velocity: %f, time to animate: %f", velocity.y, animationDuration);
 		
 		//set grabber view to down arrow now that tray is open
 		[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, switcherHeight) withDuration:animationDuration];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, prefs.switcherHeight) withDuration:animationDuration];
 		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
 
 	}
@@ -291,7 +284,7 @@ static NSArray *pageOrder;
 	*/
 	else {
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + switcherHeight, kScreenWidth, switcherHeight) withDuration:0.4f];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + prefs.switcherHeight, kScreenWidth, prefs.switcherHeight) withDuration:0.4f];
 		[[SwitcherTrayView sharedInstance] setIsOpen:NO];
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
@@ -309,7 +302,7 @@ static NSArray *pageOrder;
 - (BOOL)clickedMenuButton {
 	DebugLog0;
 	
-	if (isEnabled && [[SwitcherTrayView sharedInstance] isOpen]) {
+	if (prefs.isEnabled && [[SwitcherTrayView sharedInstance] isOpen]) {
 		//home button pressed, dismiss the tray if open
 		DebugLog(@"closing switcher tray");
 		[[SwitcherTrayView sharedInstance] closeTray];
@@ -320,7 +313,7 @@ static NSArray *pageOrder;
 - (BOOL)handleMenuDoubleTap {
 	DebugLog0;
 
-	if (activateByDoubleHome && ![[SwitcherTrayView sharedInstance] isOpen]) {
+	if (prefs.activateViaHome && ![[SwitcherTrayView sharedInstance] isOpen]) {
 
 		[[SwitcherTrayView sharedInstance] openTray];
 
@@ -333,7 +326,7 @@ static NSArray *pageOrder;
 - (void)_deviceLockStateChanged:(id)changed {
 	DebugLog0;
 
-	if (isEnabled) {
+	if (prefs.isEnabled) {
 
 		//get homescreen snapshot
 		SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
@@ -356,7 +349,7 @@ static NSArray *pageOrder;
 
 - (void)_applicationActivationStateDidChange:(id)_applicationActivationState {
 	%orig;
-	if (isEnabled) {	
+	if (prefs.isEnabled) {	
 
 		double delayInSeconds = 1.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -396,7 +389,7 @@ static NSArray *pageOrder;
 }
 
 %end
-
+/*
 static void loadPrefs() {
 	syncPrefs;
 	boolPreference(kCDTSPreferencesEnabledKey, isEnabled);
@@ -415,24 +408,7 @@ static void loadPrefs() {
 	//switcherHeight = [stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
 	pageOrder = (__bridge NSArray *)getPreference(kCDTSPreferencesPageOrder);
 }
-
+*/
 %ctor {
-	//stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-	//[stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
-	loadPrefs();
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-										NULL,
-										(CFNotificationCallback)loadPrefs,
-										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
-										NULL,
-										YES);
-	/*
-	[stratosPrefs registerBool:&isEnabled default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnabledKey] boolValue] forKey:kCDTSPreferencesEnabledKey];
-	[stratosPrefs registerBool:&shouldSplitInThirds default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesThirdSplit] boolValue] forKey:kCDTSPreferencesThirdSplit];
-	[stratosPrefs registerInteger:&defaultPage default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesDefaultPage] intValue] forKey:kCDTSPreferencesDefaultPage];
-	[stratosPrefs registerBool:&openToMediaWhenPlaying default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesActiveMediaEnabled] boolValue] forKey:kCDTSPreferencesActiveMediaEnabled];
-	[stratosPrefs registerBool:&quickLaunchEnabled default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableQuickLaunch] boolValue] forKey:kCDTSPreferencesEnableQuickLaunch];
-	[stratosPrefs registerBool:&activateByDoubleHome default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesActivateByDoubleHome] boolValue] forKey:kCDTSPreferencesActivateByDoubleHome];
-	[stratosPrefs registerFloat:&switcherHeight default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesSwitcherHeight] floatValue] forKey:kCDTSPreferencesSwitcherHeight];
-	*/
+	prefs = [CDTSPreferences sharedInstance];
 }

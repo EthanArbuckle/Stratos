@@ -1,15 +1,6 @@
 #import "IdentifierDaemon.h"
 
-//static HBPreferences *_stratosPrefs;
-static BOOL showRunningApp;
-static BOOL showHomescreen;
-
-static void loadPrefs() {
-	boolPreference(kCDTSPreferencesShowRunningApp, showRunningApp);
-	//showRunningApp = [_stratosPrefs boolForKey:kCDTSPreferencesShowRunningApp];
-	boolPreference(kCDTSPreferencesEnableHomescreen, showHomescreen);
-	//showHomescreen = [_stratosPrefs boolForKey:kCDTSPreferencesEnableHomescreen];
-}
+static CDTSPreferences *prefs;
 
 @implementation IdentifierDaemon
 
@@ -27,7 +18,7 @@ static void loadPrefs() {
 - (id)init {
 
 	if (self = [super init]) {
-
+		prefs = [CDTSPreferences sharedInstance];
 		//init the arrays
 		_appIdentifiers = [[NSMutableArray alloc] init];
 		_appSnapshots = [[NSMutableArray alloc] init];
@@ -35,18 +26,6 @@ static void loadPrefs() {
 		//app card holder
 		_appCards = [[NSMutableDictionary alloc] init];
 
-		//_stratosPrefs = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
-		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
-		loadPrefs();
-		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-										NULL,
-										(CFNotificationCallback)loadPrefs,
-										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
-										NULL,
-										YES);
-		//[_stratosPrefs registerBool:&showHomescreen default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableHomescreen] boolValue] forKey:kCDTSPreferencesEnableHomescreen];
-		//[_stratosPrefs registerBool:&showRunningApp default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesShowRunningApp] boolValue] forKey:kCDTSPreferencesShowRunningApp];
-		//reload apps
 		[self reloadApps];
 
 	}
@@ -200,7 +179,7 @@ static void loadPrefs() {
 	}
 
 	//if we need to remove the topmost app
-	if (!showRunningApp) {
+	if (!prefs.showRunningApp) {
 
 		//if an app is open
 		if ([(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
@@ -274,7 +253,7 @@ static void loadPrefs() {
 - (BOOL)shouldShowHomescreenCard {
 
 	//only show homescreen card if its enable AND we're not on the homescreen
-	return (showHomescreen && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
+	return (prefs.enableHomescreen && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
 }
 
 @end

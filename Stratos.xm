@@ -5,7 +5,7 @@
 //  Copyright (c)2014 Cortex Dev Team. All rights reserved.
 //
 // 
-
+/*
 #import "Stratos.h"
 
 //static HBPreferences *stratosPrefs;
@@ -56,4 +56,4 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 
 	}
 }
-
+*/

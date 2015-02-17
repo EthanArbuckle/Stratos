@@ -1,4 +1,5 @@
 #import "Stratos.h"
+#import "CDTSPreferences.h"
 
 @interface IdentifierDaemon : NSObject 
 

@@ -1,17 +1,6 @@
 #import "SwitcherTrayCardView.h"
 
-static NSInteger backgroundStyle;
-static BOOL useParallax;
-//static NSUserDefaults *_stratosPrefs;
-
-
-static void loadPrefs() {
-	syncPrefs;
-	integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
-	//backgroundStyle = [_stratosPrefs integerForKey:kCDTSPreferencesTrayBackgroundStyle];
-	boolPreference(kCDTSPreferencesEnableParallax, useParallax);
-	//useParallax = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax];
-}
+static CDTSPreferences *prefs;
 
 @implementation SwitcherTrayCardView
 
@@ -19,18 +8,8 @@ static void loadPrefs() {
 
 	if (self = [super init]) {
 
-		//preferences
-		//_stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
-		//[_stratosPrefs registerInteger:&backgroundStyle default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] forKey:kCDTSPreferencesTrayBackgroundStyle];
-		//[_stratosPrefs registerBool:&useParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue] forKey:kCDTSPreferencesEnableParallax];
-		loadPrefs();
-        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-										NULL,
-										(CFNotificationCallback)loadPrefs,
-										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
-										NULL,
-										YES);
+		prefs = [CDTSPreferences sharedInstance];
+
 		_identifier = identifier;
 
 		//create the imageview that will hold the preview image of the app
@@ -98,7 +77,7 @@ static void loadPrefs() {
 			[_appName setText:[(SBApplication *)_application displayName]];
 			[_appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
 			[_appName setTextAlignment:NSTextAlignmentCenter];
-			if (backgroundStyle == 2060 || backgroundStyle == 2010) {
+			if (prefs.switcherBackgroundStyle == 2060 || prefs.switcherBackgroundStyle == 2010) {
 				[_appName setTextColor:[UIColor darkGrayColor]];
 			} else {
 				[_appName setTextColor:[UIColor whiteColor]];
@@ -119,7 +98,7 @@ static void loadPrefs() {
 
 
 		//add parallax effect to card
-		if (useParallax) {
+		if (prefs.enableParallax) {
 
 			UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
 			verticalMotionEffect.minimumRelativeValue = @(-15);
@@ -290,7 +269,7 @@ static void loadPrefs() {
 	}
 
 	//change the app label text color if needed
-	if (backgroundStyle == 2060 || backgroundStyle == 2010) {
+	if (prefs.switcherBackgroundStyle == 2060 || prefs.switcherBackgroundStyle == 2010) {
 
 		[_appName setTextColor:[UIColor darkGrayColor]];
 

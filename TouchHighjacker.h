@@ -8,6 +8,4 @@
 
 - (id)initWithFrame:(CGRect)frame;
 
-@property (nonatomic, retain) HBPreferences *stratosPrefs;
-@property (nonatomic) CGFloat switcherHeight;
 @end 

@@ -43,7 +43,7 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     NSInteger index = indexPath.row;
     DebugLogC(@"Cell Index: %ld", (long)index);
-    NSArray *pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
+    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
     
     cell.textLabel.text = [names objectAtIndex:([pageOrder[index] intValue]-1)];
     
@@ -69,7 +69,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSMutableArray *pageOrder = [((NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder))) mutableCopy];
+    NSArray *pageOrderPreference = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSMutableArray *pageOrder = [pageOrderPreference mutableCopy];
     NSInteger sourceIndex = sourceIndexPath.row;
     NSInteger destIndex = destinationIndexPath.row;
     if (sourceIndex>destIndex) {

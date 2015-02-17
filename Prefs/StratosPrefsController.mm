@@ -308,7 +308,7 @@
 
 -(NSArray *)defaultPageTitles {
     //reorder the default page cells to match the user-defined order
-    NSArray *pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
+    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
     NSArray *names = @[
         localized(@"SWITCHER_CARDS", @"Switcher Cards"),
         localized(@"CONTROL_CENTER", @"Control Center"),
@@ -324,7 +324,7 @@
 
 -(NSArray *)defaultPageValues {
     //same thing, reorder the cells
-    NSArray *pageOrder = (NSArray *)CFBridgingRelease(getPreference(kCDTSPreferencesPageOrder));
+    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
     /*
     NSDictionary *values = @{
             @"controlCenter" : @2,
@@ -350,8 +350,9 @@
 
 -(id) readPreferenceValue:(PSSpecifier*)specifier
 {
+    syncPrefs;
     NSString *key = specifier.properties[@"key"];
-    id obj = (id)CFBridgingRelease(getPreference(key));
+    id obj = (id)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)key, (CFStringRef)kCDTSPreferencesDomain));
     return obj ?: kCDTSPreferencesDefaults[key];
     //return [self.preferences objectForKey:specifier.properties[@"key"]];
 }
@@ -365,6 +366,7 @@
     //[self.preferences setObject:value forKey:key];
     //[self.preferences synchronize];
     //DebugLogC(@"Darwin Notification: %@", [kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"]);
+    syncPrefs;
 	CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
         (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],

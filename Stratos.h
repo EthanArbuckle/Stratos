@@ -1,11 +1,11 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
-#import <Cephei/HBPreferences.h>
 
 #import "SwitcherTrayView.h"
 #import "SwitcherTrayCardView.h"
 #import "IdentifierDaemon.h"
 #import "TouchHighjacker.h"
+#import "CDTSPreferences.h"
 
 
 // helpers
@@ -25,8 +25,7 @@
         (var) = obj ? [obj floatValue] : [kCDTSPreferencesDefaults[key] floatValue]; } while (0)
 #define integerPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
         (var) = obj ? [obj intValue] : [kCDTSPreferencesDefaults[key] intValue]; } while (0)
-#define getPreference(key) CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain)
-
+//#define getPreference(key) CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain)
 
 // layout
 #define kScreenHeight 			[[UIScreen mainScreen] bounds].size.height
@@ -35,7 +34,7 @@
 #define kiPhoneSmall 			[[UIScreen mainScreen] bounds].size.height < 568
 
 //#define kSwitcherHeight 		[[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] floatForKey:kCDTSPreferencesSwitcherHeight]//kScreenHeight / 3.3 //172
-#define kSwitcherMaxY 			kScreenHeight - switcherHeight
+#define kSwitcherMaxY 			kScreenHeight - prefs.switcherHeight
 #define kSwitcherCardWidth 		kScreenWidth / 4.5714 //70
 #define kSwitcherCardHeight 	        kScreenHeight / 4.36 //130
 #define kSwitcherCardSpacing	        ceil((kScreenWidth - (kSwitcherCardWidth * 4)) / 5) //8
@@ -110,10 +109,6 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)notifyAppResumeActive:(id)app;
 //+ (NSUserDefaults *)stratosUserDefaults;
 - (UIImage *)homeScreenImage;
-@end
-
-@interface NSUserDefaults (Private)
--(instancetype)_initWithSuiteName:(NSString *)suiteName container:(NSURL *)container;
 @end
 
 @interface SBAppSliderSnapshotView : UIView

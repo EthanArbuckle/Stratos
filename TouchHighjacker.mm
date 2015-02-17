@@ -2,36 +2,21 @@
 //ethan arbuckle
 
 #import "TouchHighjacker.h"
-
-TouchHighjacker *hijacker;
-
-static void loadPrefs() {
-	floatPreference(kCDTSPreferencesSwitcherHeight, hijacker.switcherHeight);
-	//hijacker.switcherHeight = [hijacker.stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
-}
+static CDTSPreferences *prefs;
 
 @implementation TouchHighjacker
-@synthesize switcherHeight;
 
 - (id)initWithFrame:(CGRect)frame {
 
 	if (self = [super initWithFrame:frame]) {
-
+		prefs = [CDTSPreferences sharedInstance];
 		[self setUserInteractionEnabled:NO];
 
 		//works for some reason, dont question jesus
 		[self setBackgroundColor:[UIColor blueColor]];
 		[self setAlpha:.01];
-		hijacker = self;
 		//_stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
 		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
-		loadPrefs();
-		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-										NULL,
-										(CFNotificationCallback)loadPrefs,
-										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
-										NULL,
-										YES);
 		//[_stratosPrefs registerFloat:&switcherHeight default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesSwitcherHeight] floatValue] forKey:kCDTSPreferencesSwitcherHeight];
 	}
 
@@ -40,7 +25,7 @@ static void loadPrefs() {
 
 - (id)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
-	if ([[SwitcherTrayView sharedInstance] isOpen] && point.y <= kScreenHeight - switcherHeight) {
+	if ([[SwitcherTrayView sharedInstance] isOpen] && point.y <= kScreenHeight - prefs.switcherHeight) {
 		[[SwitcherTrayView sharedInstance] closeTray];
 		[self removeFromSuperview];
 	}
