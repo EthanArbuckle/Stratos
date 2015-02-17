@@ -4,6 +4,7 @@
 #import <Social/SLComposeViewController.h>
 #import <Social/SLServiceTypes.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Cephei/HBPreferences.h>
 #import "buttons.h"
 
 #define localized(a, b) [[self bundle] localizedStringForKey:(a) value:(b) table:nil]
@@ -21,5 +22,4 @@ AVAudioPlayer *audioPlayer;
 }
 @property (nonatomic, strong) UIImageView *backImageView;
 @property (nonatomic, strong) UIImageView *iconImageView;
-@property (nonatomic, strong) NSUserDefaults *stratosUserDefaults;
 @end

@@ -5,6 +5,7 @@
 #import "SwitcherTrayCardView.h"
 #import "IdentifierDaemon.h"
 #import "TouchHighjacker.h"
+#import "CDTSPreferences.h"
 
 
 // helpers
@@ -17,6 +18,14 @@
 #define IS_OS_8_OR_LATER [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
 #define IS_OS_7_OR_UNDER [[[UIDevice currentDevice] systemVersion] floatValue] <= 7.0
 
+#define syncPrefs CFPreferencesAppSynchronize((CFStringRef)kCDTSPreferencesDomain)
+#define boolPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+        (var) = obj ? [obj boolValue] : [kCDTSPreferencesDefaults[key] boolValue]; } while (0)
+#define floatPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+        (var) = obj ? [obj floatValue] : [kCDTSPreferencesDefaults[key] floatValue]; } while (0)
+#define integerPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+        (var) = obj ? [obj intValue] : [kCDTSPreferencesDefaults[key] intValue]; } while (0)
+//#define getPreference(key) CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain)
 
 // layout
 #define kScreenHeight 			[[UIScreen mainScreen] bounds].size.height
@@ -24,8 +33,8 @@
 
 #define kiPhoneSmall 			[[UIScreen mainScreen] bounds].size.height < 568
 
-#define kSwitcherHeight 		[[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] floatForKey:kCDTSPreferencesSwitcherHeight]//kScreenHeight / 3.3 //172
-#define kSwitcherMaxY 			kScreenHeight - kSwitcherHeight
+//#define kSwitcherHeight 		[[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] floatForKey:kCDTSPreferencesSwitcherHeight]//kScreenHeight / 3.3 //172
+#define kSwitcherMaxY 			kScreenHeight - prefs.switcherHeight
 #define kSwitcherCardWidth 		kScreenWidth / 4.5714 //70
 #define kSwitcherCardHeight 	        kScreenHeight / 4.36 //130
 #define kSwitcherCardSpacing	        ceil((kScreenWidth - (kSwitcherCardWidth * 4)) / 5) //8
@@ -37,6 +46,11 @@
 #define kQuickLaunchTouchOffset 90
 
 #define kStratosUserDefaults [(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] 
+
+#define kMediaControlsKey @3
+#define kSwitcherCardsKey @1
+#define kControlCenterKey @2
+
 
 //settings
 static NSString *const kCDTSPreferencesDomain = @"com.cortexdevteam.stratos";
@@ -65,10 +79,10 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesInvokeControlCenter : @YES,
                                                                 kCDTSPreferencesActiveMediaEnabled  : @NO,
                                                                 kCDTSPreferencesShowRunningApp      : @NO,
-                                                                kCDTSPreferencesDefaultPage         : @1,
+                                                                kCDTSPreferencesDefaultPage         : kSwitcherCardsKey,
                                                                 kCDTSPreferencesEnableHomescreen    : @NO,
                                                                 kCDTSPreferencesActivateByDoubleHome: @NO,
-                                                                kCDTSPreferencesPageOrder           : @[ @"controlCenter", @"mediaControls", @"switcherCards" ], //in order from left to right
+                                                                kCDTSPreferencesPageOrder           : @[ kControlCenterKey, kMediaControlsKey, kSwitcherCardsKey ], //in order from left to right
                                                                 kCDTSPreferencesNumberOfPages       : @6, //number of pages for multitasking card view
                                                                 kCDTSPreferencesThirdSplit          : @NO
                                                         };
@@ -93,10 +107,9 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)stopRestoringIconList;
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
-- (NSUserDefaults *)stratosUserDefaults;
+//+ (NSUserDefaults *)stratosUserDefaults;
 - (UIImage *)homeScreenImage;
 @end
-
 
 @interface SBAppSliderSnapshotView : UIView
 - (void)_loadSnapshotSync;
@@ -295,12 +308,6 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 
 @property(readonly, retain, nonatomic) SBWindowContextHostManager *contextHostManager;
 - (id)contextHostManager;
-
-@end
-
-@interface NSUserDefaults (Private)
-
-- (instancetype)_initWithSuiteName:(NSString *)suiteName container:(NSURL *)container;
 
 @end
 

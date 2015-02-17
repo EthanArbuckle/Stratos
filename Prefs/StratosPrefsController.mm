@@ -11,13 +11,12 @@
 @implementation StratosPrefsController
 @synthesize backImageView = _backImageView;
 @synthesize iconImageView = _iconImageView;
-@synthesize stratosUserDefaults;
 -(id)init {
     if (self = [super init]) {
         //initialize NSUserDefaults
-        self.stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-        [self.stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
-        [self.stratosUserDefaults synchronize];
+        //self.preferences = [[HBPreferences alloc] initWithIdentifier:kCDTSPreferencesDomain];
+        //[self.preferences registerDefaults:kCDTSPreferencesDefaults];
+        //[self.preferences synchronize];
     }
     return self;
 }
@@ -271,7 +270,9 @@
         [hiddenSpecs addObject:spec];
         */
         //if we're enabled, show all of the "hidden" specifiers
-        if ([self.stratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
+        BOOL enabled;
+        boolPreference(kCDTSPreferencesEnabledKey, enabled);
+        if (enabled) {
             for (PSSpecifier *spec in hiddenSpecs) {
                 [specifiers addObject:spec];
             }
@@ -307,22 +308,24 @@
 
 -(NSArray *)defaultPageTitles {
     //reorder the default page cells to match the user-defined order
-    NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
-    NSDictionary *names = @{
-            @"controlCenter" : localized(@"CONTROL_CENTER", @"Control Center"),
-            @"mediaControls" : localized(@"MEDIA_CONTROLS", @"Media Controls"),
-            @"switcherCards" : localized(@"SWITCHER_CARDS", @"Switcher Cards")
-        };
+    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSArray *names = @[
+        localized(@"SWITCHER_CARDS", @"Switcher Cards"),
+        localized(@"CONTROL_CENTER", @"Control Center"),
+        localized(@"MEDIA_CONTROLS", @"Media Controls"),
+    ];
     NSMutableArray *pageTitles = [NSMutableArray new];
-    for (NSString *pageIdent in pageOrder) {
-        [pageTitles addObject:names[pageIdent]];
+    for (NSNumber *pageIdent in pageOrder) {
+        [pageTitles addObject:names[[pageIdent intValue]-1]];
     }
+    DebugLog(@"Done.");
     return pageTitles;
 }
 
 -(NSArray *)defaultPageValues {
     //same thing, reorder the cells
-    NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
+    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    /*
     NSDictionary *values = @{
             @"controlCenter" : @2,
             @"mediaControls" : @3,
@@ -333,6 +336,8 @@
       [pageValues addObject:values[pageIdent]];
     }
     return pageValues;
+    */
+    return pageOrder;
 }
 
 -(NSArray *)backgroundStyleTitles {
@@ -345,17 +350,30 @@
 
 -(id) readPreferenceValue:(PSSpecifier*)specifier
 {
-    return [self.stratosUserDefaults objectForKey:specifier.properties[@"key"]];
+    syncPrefs;
+    NSString *key = specifier.properties[@"key"];
+    id obj = (id)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)key, (CFStringRef)kCDTSPreferencesDomain));
+    return obj ?: kCDTSPreferencesDefaults[key];
+    //return [self.preferences objectForKey:specifier.properties[@"key"]];
 }
 
--(void) setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier
+-(void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier
 {
     //set the setting in NSUserDefaults
     NSDictionary *properties = specifier.properties;
     NSString *key = properties[@"key"];
-    [self.stratosUserDefaults setObject:value forKey:key];
-    [self.stratosUserDefaults synchronize];
-	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.cortexdevteam.stratos.prefs-changed"), NULL, NULL, YES);
+    CFPreferencesSetAppValue((CFStringRef)key, (CFPropertyListRef)value, (CFStringRef)kCDTSPreferencesDomain);
+    //[self.preferences setObject:value forKey:key];
+    //[self.preferences synchronize];
+    //DebugLogC(@"Darwin Notification: %@", [kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"]);
+    syncPrefs;
+	CFNotificationCenterPostNotification(
+        CFNotificationCenterGetDarwinNotifyCenter(),
+        (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
+        NULL,
+        NULL,
+        YES
+    );
 
     //if it's the enabled
     if ([key isEqualToString:@"isEnabled"]) {
@@ -439,18 +457,22 @@
     phoneView.frame = CGRectMake((width/2)-160, 560, phoneImage.size.width, phoneImage.size.height);
 
     //blur view
-    if ([self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+    int backgroundStyle;
+    integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
+    if (backgroundStyle == 9999) {
 
         switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
         [(SBWallpaperEffectView *)switcherView setStyle:11];
     }
     else {
 
-        switcherView = [[_UIBackdropView alloc] initWithStyle:[self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+        switcherView = [[_UIBackdropView alloc] initWithStyle:backgroundStyle];
     }
     [phoneView addSubview:switcherView];
         //SUMS: Y = 265
-    [self setNewHeight:[stratosUserDefaults floatForKey:@"switcherHeight"]];
+    CGFloat height;
+    floatPreference(kCDTSPreferencesSwitcherHeight, height);
+    [self setNewHeight:height];
 
     //Grabber view
     CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
@@ -461,11 +483,15 @@
     [grabber setUserInteractionEnabled:NO];
     [grabberView addSubview:grabber];
     [grabber setFrame:CGRectMake(98.5, 5, 20, 4)];
-    if ([stratosUserDefaults boolForKey:@"showGrabber"])
+    BOOL showGrabber;
+    boolPreference(kCDTSPreferencesShowGrabber, showGrabber);
+    if (showGrabber)
         [switcherView addSubview:grabberView];
 
     //show/hide it based on if the tweak is enabled
-    if ([stratosUserDefaults boolForKey:@"isEnabled"])
+    BOOL enabled;
+    boolPreference(kCDTSPreferencesEnabledKey, enabled);
+    if (enabled)
       [phoneView setAlpha:1];
     else
       [phoneView setAlpha:0];
@@ -474,17 +500,20 @@
 
 -(void)reloadBlurView {
     [switcherView removeFromSuperview];
-    if ([self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+    int backgroundStyle;
+    integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
+    if (backgroundStyle == 9999) {
 
         switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
         [(SBWallpaperEffectView *)switcherView setStyle:11];
     }
     else {
-
-        switcherView = [[_UIBackdropView alloc] initWithStyle:[self.stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+        switcherView = [[_UIBackdropView alloc] initWithStyle:backgroundStyle];
     }
     [phoneView addSubview:switcherView];
-    [self setNewHeight:[stratosUserDefaults floatForKey:@"switcherHeight"]];
+    CGFloat height;
+    floatPreference(kCDTSPreferencesSwitcherHeight, height);
+    [self setNewHeight:height];
     [switcherView addSubview:grabberView];
     //[switcherView setFrame:CGRectMake(10, 195, 130, 70)];
 }
@@ -519,13 +548,6 @@
     [self presentViewController:composeController
                        animated:YES
                      completion:nil];
-}
-
-//REMOVE THIS. IT IS FOR TESTING
--(void)resetPreferences {
-    for (NSString *key in kCDTSPreferencesDefaults) {
-        [self.stratosUserDefaults removeObjectForKey:key];
-    }
 }
 
 //easter egg

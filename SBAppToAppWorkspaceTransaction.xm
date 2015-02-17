@@ -4,11 +4,13 @@
 // This is for the app switching animations. All apps will animate side to side opening, instead of the weird
 // springboard zooming effect.
 //
+static CDTSPreferences *prefs;
+
 %hook SBAppToAppWorkspaceTransaction
 
 - (id)_setupAnimationFrom:(SBApplication *)senderApp to:(SBApplication *)dest {
 
-	if (![kStratosUserDefaults boolForKey:kCDTSPreferencesEnabledKey]) {
+	if (!prefs.isEnabled) {
 		return %orig;
 	}
 	
@@ -41,3 +43,7 @@
 }
 
 %end
+
+%ctor {
+	prefs = [CDTSPreferences sharedInstance];
+}

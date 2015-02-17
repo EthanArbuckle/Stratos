@@ -1,5 +1,7 @@
 #import "IdentifierDaemon.h"
 
+static CDTSPreferences *prefs;
+
 @implementation IdentifierDaemon
 
 + (id)sharedInstance {
@@ -16,7 +18,7 @@
 - (id)init {
 
 	if (self = [super init]) {
-
+		prefs = [CDTSPreferences sharedInstance];
 		//init the arrays
 		_appIdentifiers = [[NSMutableArray alloc] init];
 		_appSnapshots = [[NSMutableArray alloc] init];
@@ -24,7 +26,6 @@
 		//app card holder
 		_appCards = [[NSMutableDictionary alloc] init];
 
-		//reload apps
 		[self reloadApps];
 
 	}
@@ -178,7 +179,7 @@
 	}
 
 	//if we need to remove the topmost app
-	if (![[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesShowRunningApp]) {
+	if (!prefs.showRunningApp) {
 
 		//if an app is open
 		if ([(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
@@ -252,12 +253,7 @@
 - (BOOL)shouldShowHomescreenCard {
 
 	//only show homescreen card if its enable AND we're not on the homescreen
-	if ([[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] boolForKey:kCDTSPreferencesEnableHomescreen] && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
-
-		return YES;
-	}
-
-	return NO;
+	return (prefs.enableHomescreen && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
 }
 
 @end

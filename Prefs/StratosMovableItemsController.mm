@@ -6,16 +6,12 @@
     self = [super init];
     if (self)
     {
-        stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-        [stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
-        [stratosUserDefaults synchronize];
 
-
-        names = @{
-            @"controlCenter" : localized(@"CONTROL_CENTER", @"Control Center"),
-            @"mediaControls" : localized(@"MEDIA_CONTROLS", @"Media Controls"),
-            @"switcherCards" : localized(@"SWITCHER_CARDS", @"Switcher Cards")
-        };
+        names = @[
+            localized(@"SWITCHER_CARDS", @"Switcher Cards"),
+            localized(@"CONTROL_CENTER", @"Control Center"),
+            localized(@"MEDIA_CONTROLS", @"Media Controls"),
+        ];
         
         self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height) style:UITableViewStyleGrouped];
         
@@ -47,9 +43,9 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     NSInteger index = indexPath.row;
     DebugLogC(@"Cell Index: %ld", (long)index);
-    NSArray *pageOrder = [stratosUserDefaults stringArrayForKey:@"pageOrder"];
+    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
     
-    cell.textLabel.text = [names objectForKey:pageOrder[index]];
+    cell.textLabel.text = [names objectAtIndex:([pageOrder[index] intValue]-1)];
     
     return cell;
 }
@@ -73,7 +69,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSMutableArray *pageOrder = [[stratosUserDefaults stringArrayForKey:@"pageOrder"] mutableCopy];
+    NSArray *pageOrderPreference = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSMutableArray *pageOrder = [pageOrderPreference mutableCopy];
     NSInteger sourceIndex = sourceIndexPath.row;
     NSInteger destIndex = destinationIndexPath.row;
     if (sourceIndex>destIndex) {
@@ -89,10 +86,16 @@
         }
         [pageOrder replaceObjectAtIndex:destIndex withObject:cellToMove];
     }
-    
-    [stratosUserDefaults setObject:pageOrder forKey:@"pageOrder"];
-    [stratosUserDefaults synchronize];
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.cortexdevteam.stratos.prefs-changed"), NULL, NULL, YES);
+    CFPreferencesSetAppValue(CFSTR("pageOrder"), (CFArrayRef)pageOrder, (CFStringRef)kCDTSPreferencesDomain);
+    //[preferences setObject:pageOrder forKey:@"pageOrder"];
+    //[preferences synchronize];
+    CFNotificationCenterPostNotification(
+        CFNotificationCenterGetDarwinNotifyCenter(),
+        (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
+        NULL,
+        NULL,
+        YES
+    );
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView*)tableView editingStyleForRowAtIndexPath:(NSIndexPath*)indexPath {

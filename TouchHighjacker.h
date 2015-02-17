@@ -3,7 +3,8 @@
 
 #import "Stratos.h"
 
-@interface TouchHighjacker : UIView
+@interface TouchHighjacker : UIView {
+}
 
 - (id)initWithFrame:(CGRect)frame;
 

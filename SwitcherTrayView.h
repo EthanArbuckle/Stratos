@@ -1,6 +1,6 @@
 #import "Stratos.h"
 
-@interface SwitcherTrayView : UIView
+@interface SwitcherTrayView : UIView 
 
 @property (nonatomic, retain) UIWindow *parentWindow;
 @property (nonatomic, retain) UIScrollView *trayScrollView;
@@ -9,7 +9,6 @@
 @property (nonatomic, retain) UIView *gestureView;
 @property (nonatomic, retain) UIView *grabber;
 @property (nonatomic, retain) UIView *blurView;
-@property (nonatomic, retain) NSUserDefaults *stratosUserDefaults;
 @property (nonatomic) BOOL isOpen;
 
 //these are for checking if certain settings have been changes

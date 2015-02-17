@@ -7,8 +7,8 @@ SBCCBrightnessSectionController *brightness;
 SBCCSettingsSectionController *settings;
 MPUSystemMediaControlsViewController *mediaView;
 
-//this is subject to change
-NSUserDefaults *_stratosUserDefaults;
+static CDTSPreferences *prefs;
+
 
 @implementation SwitcherTrayView
 
@@ -17,7 +17,7 @@ NSUserDefaults *_stratosUserDefaults;
 	__strong static id _sharedObject = nil;
 	 
 	dispatch_once(&p, ^{
-		_sharedObject = [[self alloc] initWithFrame:CGRectMake(0, kScreenHeight - kSwitcherHeight, kScreenWidth, kScreenHeight /*just to be safe and ensure its never short */)];
+		_sharedObject = [[self alloc] initWithFrame:CGRectMake(0, kScreenHeight - prefs.switcherHeight, kScreenWidth, kScreenHeight /*just to be safe and ensure its never short */)];
 	});
 
 	return _sharedObject;
@@ -28,6 +28,8 @@ NSUserDefaults *_stratosUserDefaults;
 	self = [super initWithFrame:frame];
 	
 	if (self) {
+
+		prefs = [CDTSPreferences sharedInstance];
  
 		UILongPressGestureRecognizer* killAllRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(killAllApps)];
 		[killAllRec setMinimumPressDuration:.3];
@@ -37,21 +39,24 @@ NSUserDefaults *_stratosUserDefaults;
 		[self setUserInteractionEnabled:YES];
 
 		//create settings
-		_stratosUserDefaults = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
-        
-        [_stratosUserDefaults registerDefaults:kCDTSPreferencesDefaults];
+		//_stratosPrefs = [[NSUserDefaults alloc] _initWithSuiteName:kCDTSPreferencesDomain container:[NSURL URLWithString:@"/var/mobile"]];
+		//[_stratosPrefs registerDefaults:kCDTSPreferencesDefaults];
+        //[_stratosPrefs registerInteger:&backgroundStyle default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesTrayBackgroundStyle] intValue] forKey:kCDTSPreferencesTrayBackgroundStyle];
+        //[_stratosPrefs registerInteger:&numberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue] forKey:kCDTSPreferencesNumberOfPages];
+        //[_stratosPrefs registerBool:&showGrabber default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesShowGrabber] boolValue] forKey:kCDTSPreferencesShowGrabber];
+        //[_stratosPrefs registerFloat:&switcherHeight default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesSwitcherHeight] floatValue] forKey:kCDTSPreferencesSwitcherHeight];
 
 		//create the blur view
-	    if ([_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+	    if (prefs.switcherBackgroundStyle == 9999) {
 
 			_blurView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
 			[(SBWallpaperEffectView *)_blurView setStyle:11];
 		}
 		else {
 
-			_blurView = [[_UIBackdropView alloc] initWithStyle:[_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+			_blurView = [[_UIBackdropView alloc] initWithStyle:prefs.switcherBackgroundStyle];
 		}	
-		[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+		[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, prefs.switcherHeight)];
 		[self addSubview:_blurView];
 
 		//create small view that will hold the pan gesture recognizer. This is placed at the top of the tray
@@ -72,17 +77,17 @@ NSUserDefaults *_stratosUserDefaults;
 		_switcherCards = [[NSMutableArray alloc] init];
 
 		//create the scroll view that will hold everything
-		_trayScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, (kSwitcherHeight / 2) - (kSwitcherCardHeight / 2), kScreenWidth, kSwitcherHeight - 20)]; //create 40px buffer above and below it
+		_trayScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, (prefs.switcherHeight / 2) - (kSwitcherCardHeight / 2), kScreenWidth, prefs.switcherHeight - 20)]; //create 40px buffer above and below it
 		[_trayScrollView setScrollEnabled:YES];
 		[_trayScrollView setPagingEnabled:YES];
 		[_trayScrollView setShowsHorizontalScrollIndicator:NO];
 		[self addSubview:_trayScrollView];        
 
 		//save local copy of numberofpages to render so we can compare it later to know if settings have been changed
-		_localPageCount = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
+		_localPageCount = prefs.numberOfPages; //[_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
 
 		//same idea for enabling parallax
-		_enableParallax = [_stratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax];
+		_enableParallax = prefs.enableParallax;// = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
 
 		//add the media controls
 		[self addMediaControls];
@@ -109,9 +114,9 @@ NSUserDefaults *_stratosUserDefaults;
 	int numberOfPagesForCards = ceil(runningAppsCount / 4);
 
 	//user can decide how many pages to show, 6 means all
-	if (numberOfPagesForCards > [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] && [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] != 6) {
+	if (numberOfPagesForCards > prefs.numberOfPages && prefs.numberOfPages != 6) {
 
-		numberOfPagesForCards = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
+		numberOfPagesForCards = prefs.numberOfPages;
 	}
 
 	//the number of "pages" in the tray
@@ -121,7 +126,7 @@ NSUserDefaults *_stratosUserDefaults;
 	int totalContentSize = (numberOfPagesNotCards + numberOfPagesForCards) * kScreenWidth;
 
 	//set scroll view content size to that number
-	[_trayScrollView setContentSize:CGSizeMake(totalContentSize, kSwitcherHeight - 80)];
+	[_trayScrollView setContentSize:CGSizeMake(totalContentSize, prefs.switcherHeight - 80)];
 
 }
 
@@ -129,7 +134,7 @@ NSUserDefaults *_stratosUserDefaults;
 
 	//create a media controls controller
 	mediaView = [(MPUSystemMediaControlsViewController *)[NSClassFromString(@"MPUSystemMediaControlsViewController") alloc] initWithStyle:1];
-	[[mediaView view] setFrame:CGRectMake([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] * kScreenWidth, 0, kScreenWidth, kSwitcherHeight - 25)];
+	[[mediaView view] setFrame:CGRectMake([prefs.pageOrder indexOfObject:kMediaControlsKey] * kScreenWidth, 0, kScreenWidth, prefs.switcherHeight - 25)];
 	[_trayScrollView addSubview:[mediaView view]];
 
 	//add tap gesture to media controls to open now playing app
@@ -157,17 +162,18 @@ NSUserDefaults *_stratosUserDefaults;
 
 	//create the settings buttons
 	settings = [[NSClassFromString(@"SBCCSettingsSectionController") alloc] init];
-	[[settings view] setFrame:CGRectMake(([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] * kScreenWidth) + 10, 10, kScreenWidth - 20, 50)];
+	int ccIndex = [prefs.pageOrder indexOfObject:kControlCenterKey];
+	[[settings view] setFrame:CGRectMake((ccIndex * kScreenWidth) + 10, 10, kScreenWidth - 20, 50)];
 	[_trayScrollView addSubview:[settings view]];
 
 	//create the brightness slider
 	brightness = [[NSClassFromString(@"SBCCBrightnessSectionController") alloc] init];
-	[[brightness view] setFrame:CGRectMake([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] * kScreenWidth, 60, kScreenWidth, 50)];
+	[[brightness view] setFrame:CGRectMake(ccIndex * kScreenWidth, 60, kScreenWidth, 50)];
 	[_trayScrollView addSubview:[brightness view]];
 
 	//create the quicklaunch buttons
 	quicklaunch = [[NSClassFromString(@"SBCCQuickLaunchSectionController") alloc] init];
-	[[quicklaunch view] setFrame:CGRectMake(([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] * kScreenWidth) + 10, 115, kScreenWidth - 20, 50)];
+	[[quicklaunch view] setFrame:CGRectMake((ccIndex * kScreenWidth) + 10, 115, kScreenWidth - 20, 50)];
 	[_trayScrollView addSubview:[quicklaunch view]];
 
 }
@@ -228,17 +234,17 @@ NSUserDefaults *_stratosUserDefaults;
 	if (defaultPage == 1) {
 
 		//open to cards
-		[_trayScrollView setContentOffset:CGPointMake([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] * kScreenWidth, 0) animated:NO];
+		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kSwitcherCardsKey] * kScreenWidth, 0) animated:NO];
 	}
 	else if (defaultPage == 2) {
 
 		//open to quicklaunch
-		[_trayScrollView setContentOffset:CGPointMake([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] * kScreenWidth, 0) animated:NO];
+		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kControlCenterKey] * kScreenWidth, 0) animated:NO];
 	}
 	else {
 
 		//open to media controls
-		[_trayScrollView setContentOffset:CGPointMake([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] * kScreenWidth, 0) animated:NO];
+		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kMediaControlsKey] * kScreenWidth, 0) animated:NO];
 	}
 
 }
@@ -292,7 +298,7 @@ NSLog(@"reloading");
 
 		//the X origin for each view will step up for each app, so keep track of it
 		//start at gapspacing + starting page 
-		int xOrigin = ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] * kScreenWidth) + kSwitcherCardSpacing;
+		int xOrigin = ([prefs.pageOrder indexOfObject:kSwitcherCardsKey] * kScreenWidth) + kSwitcherCardSpacing;
 
 		//every 4 cards, we are going to double the gap spacing since the apps are starting on a new page. this lets us keep a count
 		int appIndex = 1;
@@ -313,7 +319,7 @@ NSLog(@"reloading");
 			if ((appIndex % 4) == 0) {
 
 				//xOrigin += kSwitcherCardSpacing;
-				xOrigin = (((appIndex / 4) + [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"]) * kScreenWidth) + kSwitcherCardSpacing;
+				xOrigin = (((appIndex / 4) + [prefs.pageOrder indexOfObject:kSwitcherCardsKey]) * kScreenWidth) + kSwitcherCardSpacing;
 
 			}
 
@@ -321,7 +327,7 @@ NSLog(@"reloading");
 			appIndex++;
 
 			//only generate the amount the user wants to
-			if (appIndex-1 >= [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages]*4 && [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] != 6) {
+			if (appIndex-1 >= prefs.numberOfPages*4 && prefs.numberOfPages != 6) {
 				break;
 			}
 
@@ -343,8 +349,8 @@ NSLog(@"reloading");
 	[self updateTrayContentSize];
 
 	//update setting stuff
-	_localPageCount = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
-	_enableParallax = [_stratosUserDefaults boolForKey:kCDTSPreferencesEnableParallax];
+	_localPageCount = prefs.numberOfPages; //= [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
+	_enableParallax = prefs.enableParallax; //= [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
 	
 }
 
@@ -379,7 +385,7 @@ NSLog(@"reloading");
 
 		//dont open the tray too far
 		if (point.y >= kSwitcherMaxY) {
-			[self setFrame:CGRectMake(0, point.y, kScreenWidth, kSwitcherHeight)];
+			[self setFrame:CGRectMake(0, point.y, kScreenWidth, prefs.switcherHeight)];
 		}
 
 	}
@@ -406,7 +412,7 @@ NSLog(@"reloading");
 - (void)closeTray {
 
 	[UIView animateWithDuration:0.4f animations:^{
-		[self setFrame:CGRectMake(0, kScreenHeight + kSwitcherHeight, kScreenWidth, kSwitcherHeight)];
+		[self setFrame:CGRectMake(0, kScreenHeight + prefs.switcherHeight, kScreenWidth, prefs.switcherHeight)];
 	} completion:^(BOOL finished) {
 
 		//remove everything from tray window
@@ -428,7 +434,7 @@ NSLog(@"reloading");
 	//init all the window stuff by faking a gesture starting
 	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(0, 0)];
 
-	[self animateObject:self toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, kSwitcherHeight)];
+	[self animateObject:self toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, prefs.switcherHeight)];
 	_isOpen = YES;
 }
 
@@ -500,9 +506,9 @@ NSLog(@"reloading");
 
 		//if user has limited amount of pages to show, lets grab the next app
 		//that would normally be showing and add it, since we're going to be 1 short
-		if ([_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] != 6) {
+		if (prefs.numberOfPages != 6) {
 
-			int pagesToShow = [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages];
+			int pagesToShow = prefs.numberOfPages;
 
 			//make sure there is even another app to show
 			if ([[[IdentifierDaemon sharedInstance] identifiers] count] > (pagesToShow * 4)) {
@@ -513,7 +519,7 @@ NSLog(@"reloading");
 				SwitcherTrayCardView *newApp = (SwitcherTrayCardView *)[[IdentifierDaemon sharedInstance] switcherCardForIdentifier:identifier];
 
 				//calculate x origin for it
-				int xOrigin = [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] * kScreenWidth;
+				int xOrigin = [prefs.pageOrder indexOfObject:kSwitcherCardsKey] * kScreenWidth;
 				xOrigin += ((pagesToShow * 3) * kSwitcherCardWidth) + ((pagesToShow * 4) * kSwitcherCardSpacing);
 
 				//set the new apps frame
@@ -533,17 +539,17 @@ NSLog(@"reloading");
 - (void)reloadBlurView {
 	[_blurView removeFromSuperview];
 
-	if ([_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle] == 9999) {
+	if (prefs.switcherBackgroundStyle == 9999) {
 
 		_blurView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
 		[(SBWallpaperEffectView *)_blurView setStyle:11];
 	}
 	else {
 
-		_blurView = [[_UIBackdropView alloc] initWithStyle:[_stratosUserDefaults integerForKey:kCDTSPreferencesTrayBackgroundStyle]];
+		_blurView = [[_UIBackdropView alloc] initWithStyle:prefs.switcherBackgroundStyle];
 	}
 
-	[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, kSwitcherHeight)];
+	[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, prefs.switcherHeight)];
 	[self insertSubview:_blurView atIndex:0];
 
 	[_switcherCards makeObjectsPerformSelector:@selector(cardNeedsUpdating)];
@@ -554,7 +560,7 @@ NSLog(@"reloading");
 	
 	[_grabber removeFromSuperview];
 
-	if ([_stratosUserDefaults boolForKey:kCDTSPreferencesShowGrabber]) {
+	if (prefs.showGrabber) {
 		[_gestureView addSubview:_grabber];
 	}
 
@@ -565,18 +571,18 @@ NSLog(@"reloading");
 	[self reloadShouldForce:YES];
 	
 	//update placement of cards
-	[_trayScrollView setFrame:CGRectMake(0, ((kSwitcherHeight / 2) - (kSwitcherCardHeight / 2)) - 5, kScreenWidth, kSwitcherHeight - 20)];
+	[_trayScrollView setFrame:CGRectMake(0, ((prefs.switcherHeight / 2) - (kSwitcherCardHeight / 2)) - 5, kScreenWidth, prefs.switcherHeight - 20)];
 
 	//update order of pages (reset the frames)
-	int mediaControlXOrigin = [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] * kScreenWidth;
-	int controlCenterXOrigin = [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] * kScreenWidth;
+	int mediaControlXOrigin = [prefs.pageOrder indexOfObject:kMediaControlsKey] * kScreenWidth;
+	int controlCenterXOrigin = [prefs.pageOrder indexOfObject:kControlCenterKey] * kScreenWidth;
 	
 	//if switcher cards are before this, we need to factor in the pages for the cards
-	if ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] < [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"]) {
-		mediaControlXOrigin = ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] + [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages]) * kScreenWidth;
+	if ([prefs.pageOrder indexOfObject:kSwitcherCardsKey] < [prefs.pageOrder indexOfObject:kMediaControlsKey]) {
+		mediaControlXOrigin = ([prefs.pageOrder indexOfObject:kMediaControlsKey] + prefs.numberOfPages) * kScreenWidth;
 
 		//if all pages is enabled, we need to get total pages for running apps
-		if ([_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] == 6) {
+		if (prefs.numberOfPages == 6) {
 
 			//get total number of running apps
 			float runningAppsCount = [[[IdentifierDaemon sharedInstance] identifiers] count];
@@ -585,18 +591,18 @@ NSLog(@"reloading");
 			int numberOfPagesForCards = ceil(runningAppsCount / 4);
 
 			//add it all up
-			mediaControlXOrigin = ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"mediaControls"] + numberOfPagesForCards) * kScreenWidth;
+			mediaControlXOrigin = ([prefs.pageOrder indexOfObject:kMediaControlsKey] + numberOfPagesForCards) * kScreenWidth;
 		}
 
 		//I dont know why this needs to be here, but fuck it it works
 		mediaControlXOrigin -= kScreenWidth;
 	}
 
-	if ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"switcherCards"] < [[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"]) {
-		controlCenterXOrigin = ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] + [_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages]) * kScreenWidth;
+	if ([prefs.pageOrder indexOfObject:kSwitcherCardsKey] < [prefs.pageOrder indexOfObject:kControlCenterKey]) {
+		controlCenterXOrigin = ([prefs.pageOrder indexOfObject:kControlCenterKey] + prefs.numberOfPages) * kScreenWidth;
 
 		//if all pages is enabled, we need to get total pages for running apps
-		if ([_stratosUserDefaults integerForKey:kCDTSPreferencesNumberOfPages] == 6) {
+		if (prefs.numberOfPages == 6) {
 
 			//get total number of running apps
 			float runningAppsCount = [[[IdentifierDaemon sharedInstance] identifiers] count];
@@ -605,7 +611,7 @@ NSLog(@"reloading");
 			int numberOfPagesForCards = ceil(runningAppsCount / 4);
 
 			//add it all up
-			controlCenterXOrigin = ([[_stratosUserDefaults arrayForKey:kCDTSPreferencesPageOrder] indexOfObject:@"controlCenter"] + numberOfPagesForCards) * kScreenWidth;
+			controlCenterXOrigin = ([prefs.pageOrder indexOfObject:kControlCenterKey] + numberOfPagesForCards) * kScreenWidth;
 		}
 
 		//I dont know why this needs to be here, but fuck it it works
@@ -619,7 +625,6 @@ NSLog(@"reloading");
 	[[settings view] setFrame:CGRectMake(controlCenterXOrigin + 10, 0, kScreenWidth - 20, (switcherScrollviewHeight / 3))];
 	[[brightness view] setFrame:CGRectMake(controlCenterXOrigin, ([settings view].frame.origin.y + switcherScrollviewHeight / 3), kScreenWidth, switcherScrollviewHeight / 4)];
 	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 1, kScreenWidth - 20, 60)];
-
 } 
 
 @end
