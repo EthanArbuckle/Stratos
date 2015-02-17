@@ -384,7 +384,8 @@ static void loadPrefs() {
 	loadPrefs();
 	[[IdentifierDaemon sharedInstance] reloadApps];
 	[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
-	[self _showControlCenterGestureBeganWithLocation:CGPointMake(0,0)];
+	if (prefs.isEnabled)
+		[self _showControlCenterGestureBeganWithLocation:CGPointMake(0,0)];
 	[trayWindow setUserInteractionEnabled:NO];
 	[touchView removeFromSuperview];
 
