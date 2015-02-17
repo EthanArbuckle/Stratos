@@ -2,6 +2,7 @@
 @interface CDTSPreferences : NSObject
 
 +(id)sharedInstance;
+-(void)loadPrefs:(BOOL)fromNotification;
 
 @property(nonatomic) BOOL isEnabled;
 @property(nonatomic) BOOL showGrabber;

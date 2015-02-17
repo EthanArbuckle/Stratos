@@ -99,18 +99,12 @@ CDTSPreferences *prefs;
 }
 
 @end
-
+/*
 static void loadPrefs() {
 	[prefs loadPrefs:YES];
 }
 
 __attribute__((constructor)) static void init() {
-	prefs = [CDTSPreferences sharedInstance];
-	//loadPrefs();
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-										NULL,
-										(CFNotificationCallback)loadPrefs,
-										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
-										NULL,
-										YES);
+	
 }
+*/

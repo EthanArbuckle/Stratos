@@ -10,6 +10,9 @@ static UIImage *homeScreenImage;
 
 //preferences
 static CDTSPreferences *prefs;
+static void loadPrefs() {
+	[prefs loadPrefs:YES];
+}
 //
 // This is where the magic happens
 //
@@ -372,6 +375,13 @@ static CDTSPreferences *prefs;
 
 	//springboard has finished launching, load all the initial stuff
 	//so there is no lag on the first pullup
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+										NULL,
+										(CFNotificationCallback)loadPrefs,
+										(CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],
+										NULL,
+										YES);
+	loadPrefs();
 	[[IdentifierDaemon sharedInstance] reloadApps];
 	[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
 	[self _showControlCenterGestureBeganWithLocation:CGPointMake(0,0)];
@@ -389,26 +399,7 @@ static CDTSPreferences *prefs;
 }
 
 %end
-/*
-static void loadPrefs() {
-	syncPrefs;
-	boolPreference(kCDTSPreferencesEnabledKey, isEnabled);
-	//isEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnabledKey];
-	boolPreference(kCDTSPreferencesThirdSplit, shouldSplitInThirds);
-	//shouldSplitInThirds = [stratosPrefs boolForKey:kCDTSPreferencesThirdSplit];
-	integerPreference(kCDTSPreferencesDefaultPage, defaultPage);
-	//defaultPage = [stratosPrefs integerForKey:kCDTSPreferencesDefaultPage];
-	boolPreference(kCDTSPreferencesActiveMediaEnabled, openToMediaWhenPlaying);
-	//openToMediaWhenPlaying = [stratosPrefs boolForKey:kCDTSPreferencesActiveMediaEnabled];
-	boolPreference(kCDTSPreferencesEnableQuickLaunch, quickLaunchEnabled);
-	//quickLaunchEnabled = [stratosPrefs boolForKey:kCDTSPreferencesEnableQuickLaunch];
-	boolPreference(kCDTSPreferencesActivateByDoubleHome, activateByDoubleHome);
-	//activateByDoubleHome = [stratosPrefs boolForKey:kCDTSPreferencesActivateByDoubleHome];
-	floatPreference(kCDTSPreferencesSwitcherHeight, switcherHeight);
-	//switcherHeight = [stratosPrefs floatForKey:kCDTSPreferencesSwitcherHeight];
-	pageOrder = (__bridge NSArray *)getPreference(kCDTSPreferencesPageOrder);
-}
-*/
+
 %ctor {
 	prefs = [CDTSPreferences sharedInstance];
 }
