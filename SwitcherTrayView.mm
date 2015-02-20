@@ -618,7 +618,7 @@ NSLog(@"reloading");
 
 	[[settings view] setFrame:CGRectMake(controlCenterXOrigin + 10, 0, kScreenWidth - 20, (switcherScrollviewHeight / 3))];
 	[[brightness view] setFrame:CGRectMake(controlCenterXOrigin, ([settings view].frame.origin.y + switcherScrollviewHeight / 3), kScreenWidth, switcherScrollviewHeight / 4)];
-	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 1, kScreenWidth - 20, 60)];
+	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 6, kScreenWidth - 20, 60)];
 
 } 
 

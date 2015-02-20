@@ -24,3 +24,16 @@
 }
 
 %end
+/*
+%hook UIVisualEffectView
+
+- (id)contentView {
+	id ori = %orig;
+
+	if ([[self superview] isKindOfClass:NSClassFromString(@"SBControlCenterButton")])
+		[self removeFromSuperview];
+	NSLog(@"hhh\n\n%@", [self valueForKey:@"_effect"]);
+	return ori;
+}
+
+%end */

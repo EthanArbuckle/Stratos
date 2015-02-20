@@ -142,6 +142,8 @@
 	}
 
 	//open the app
+	NSLog(@"current frame: %@", NSStringFromCGRect([self frame]));
+	NSLog(@"frame in superwindow: %@", NSStringFromCGPoint([_superSwitcher convertPoint:self.frame.origin toView:[_superSwitcher superview]]));
 	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier]];
 }
 
