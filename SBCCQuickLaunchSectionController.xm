@@ -30,3 +30,4 @@ static CDTSPreferences *prefs;
 %ctor {
 	prefs = [CDTSPreferences sharedInstance];
 }
+
