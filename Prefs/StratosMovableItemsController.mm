@@ -53,7 +53,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSLog(@"hi");
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -86,9 +85,8 @@
         }
         [pageOrder replaceObjectAtIndex:destIndex withObject:cellToMove];
     }
-    CFPreferencesSetAppValue(CFSTR("pageOrder"), (CFArrayRef)pageOrder, (CFStringRef)kCDTSPreferencesDomain);
-    //[preferences setObject:pageOrder forKey:@"pageOrder"];
-    //[preferences synchronize];
+    CFPreferencesSetAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFArrayRef)pageOrder, (CFStringRef)kCDTSPreferencesDomain);
+    syncPrefs;
     CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
         (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],

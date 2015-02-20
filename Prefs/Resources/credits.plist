@@ -153,6 +153,42 @@
 			<string>StratosSocialCell</string>
 		</dict>
 		
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSG</string>
+			<key>cellClass</key>
+			<string>StratosDevCell</string>
+			<key>height</key>
+			<string>100</string>
+			<key>devName</key>
+			<string>Cyril Zakka</string>
+			<key>jobTitle</key>
+			<string>CYRIL_TITLE</string>
+			<key>subtitle</key>
+			<string>CYRIL_SUBTITLE</string>
+			<key>jobTitleEnglish</key>
+			<string>Co-developer</string>
+			<key>subtitleEnglish</key>
+			<string>Also known as Cereal</string>
+			<key>imageName</key>
+			<string>cyril</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+ 			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Twitter</string>
+			<key>action</key>
+			<string>openTwitter:</string>
+			<key>handle</key>
+			<string>@4urum</string>
+			<key>cellClass</key>
+			<string>StratosSocialCell</string>
+		</dict>
 		
 		<dict>
 			<key>cell</key>

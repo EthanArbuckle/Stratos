@@ -363,9 +363,6 @@
     NSDictionary *properties = specifier.properties;
     NSString *key = properties[@"key"];
     CFPreferencesSetAppValue((CFStringRef)key, (CFPropertyListRef)value, (CFStringRef)kCDTSPreferencesDomain);
-    //[self.preferences setObject:value forKey:key];
-    //[self.preferences synchronize];
-    //DebugLogC(@"Darwin Notification: %@", [kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"]);
     syncPrefs;
 	CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
@@ -461,28 +458,28 @@
     integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
     if (backgroundStyle == 9999) {
 
-        switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
-        [(SBWallpaperEffectView *)switcherView setStyle:11];
+        switcherView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/dark_blur.png"]];
+        grabberView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/grabber.png"]];
+        grabberView.frame = CGRectMake(100, 5, 20, 4);
     }
     else {
-
         switcherView = [[_UIBackdropView alloc] initWithStyle:backgroundStyle];
+
+        //This is really weird stuff, but I couldn't just add the UIImageView to switcherView, so I created an "intermediary" UIView :/
+        CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
+        grabberView = [[UIView alloc] initWithFrame:frame];
+        UIImageView *grabber = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/grabber.png"]];
+        [grabber setUserInteractionEnabled:NO];
+        [grabberView addSubview:grabber];
+        [grabber setFrame:CGRectMake(98.5, 5, 20, 4)];
     }
     [phoneView addSubview:switcherView];
-        //SUMS: Y = 265
+
     CGFloat height;
     floatPreference(kCDTSPreferencesSwitcherHeight, height);
     [self setNewHeight:height];
 
-    //Grabber view
-    CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
 
-    //This is really weird stuff, but I couldn't just add the UIImageView to switcherView, so I created an "intermediary" UIView :/
-    grabberView = [[UIView alloc] initWithFrame:frame];
-    UIImageView *grabber = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/grabber.png"]];
-    [grabber setUserInteractionEnabled:NO];
-    [grabberView addSubview:grabber];
-    [grabber setFrame:CGRectMake(98.5, 5, 20, 4)];
     BOOL showGrabber;
     boolPreference(kCDTSPreferencesShowGrabber, showGrabber);
     if (showGrabber)
@@ -500,22 +497,37 @@
 
 -(void)reloadBlurView {
     [switcherView removeFromSuperview];
+    int width = [[UIScreen mainScreen] bounds].size.width;
     int backgroundStyle;
     integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
     if (backgroundStyle == 9999) {
 
-        switcherView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
-        [(SBWallpaperEffectView *)switcherView setStyle:11];
+        switcherView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/dark_blur.png"]];
+        grabberView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/grabber.png"]];
+        grabberView.frame = CGRectMake(100, 5, 20, 4);
     }
     else {
         switcherView = [[_UIBackdropView alloc] initWithStyle:backgroundStyle];
+
+        //This is really weird stuff, but I couldn't just add the UIImageView to switcherView, so I created an "intermediary" UIView :/
+        CGRect frame = CGRectMake((width/2)-2.5, 1, 10, 10);
+        grabberView = [[UIView alloc] initWithFrame:frame];
+        UIImageView *grabber = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/grabber.png"]];
+        [grabber setUserInteractionEnabled:NO];
+        [grabberView addSubview:grabber];
+        [grabber setFrame:CGRectMake(98.5, 5, 20, 4)];
     }
     [phoneView addSubview:switcherView];
+
     CGFloat height;
     floatPreference(kCDTSPreferencesSwitcherHeight, height);
     [self setNewHeight:height];
-    [switcherView addSubview:grabberView];
-    //[switcherView setFrame:CGRectMake(10, 195, 130, 70)];
+
+
+    BOOL showGrabber;
+    boolPreference(kCDTSPreferencesShowGrabber, showGrabber);
+    if (showGrabber)
+        [switcherView addSubview:grabberView];
 }
 
 - (void)sliderMoved:(UISlider *)slider {
