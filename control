@@ -1,6 +1,6 @@
-Package: com.cortexdevteam.internal.nighthawk
-Name: nighthawke
-Depends: mobilesubstrate
+Package: com.cortexdevteam.Stratos
+Name: Stratos
+Depends: Stratos is a multitasking manager for iOS that reworks the existing Control Center, converting it into a small and unobtrusive tray that can be accessed via a swipe up from the bottom of the screen
 Version: 0.0.1
 Architecture: iphoneos-arm
 Description: An awesome MobileSubstrate tweak!

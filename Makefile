@@ -3,10 +3,10 @@ TARGET = iphone:clang:latest:7.0
 
 THEOS_BUILD_DIR = Packages
 
-TWEAK_NAME = nighthawke
-nighthawke_CFLAGS = -fobjc-arc
-nighthawke_FILES = $(wildcard *.xm) $(wildcard *.mm)
-nighthawke_FRAMEWORKS = UIKit QuartzCore CoreGraphics
+TWEAK_NAME = Stratos
+Stratos_CFLAGS = -fobjc-arc
+Stratos_FILES = $(wildcard *.xm) $(wildcard *.mm)
+Stratos_FRAMEWORKS = UIKit QuartzCore CoreGraphics
 
 SUBPROJECTS += Prefs
 
