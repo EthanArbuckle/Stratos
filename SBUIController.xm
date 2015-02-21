@@ -1,7 +1,7 @@
 #import "Stratos.h"
 
 //static HBPreferences *stratosPrefs;
-static SBControlCenterController *controlCenter;
+//static SBControlCenterController *controlCenter;
 static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
@@ -150,7 +150,7 @@ static void loadPrefs() {
 	else if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
 
 		//only continue if we have at least 4 cards in the switcher
-		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
+		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 0) {
 
 			/*if (location.x >= kScreenWidth - 4) {
 				int currentPage = [[[SwitcherTrayView sharedInstance] trayScrollView] contentOffset] / kScreenWidth;
@@ -169,9 +169,18 @@ static void loadPrefs() {
 				selectedIndex = 3;
 			}
 
+			//make sure it isnt out of bounds
+			if (selectedIndex > [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1) {
+				selectedIndex = [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1;
+			}
+
 			//get hot cards
 			hotCards = [[NSMutableArray alloc] initWithCapacity:4];
-			for (int index = 0; index <= 3; index++)
+
+			int maxIndex = [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1;
+			if (maxIndex > 3) maxIndex = 3;
+
+			for (int index = 0; index <= maxIndex; index++)
 				[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:index]];
 
 			//lift the current card and reset all others
@@ -234,7 +243,7 @@ static void loadPrefs() {
 }
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
-
+NSLog(@"\n\nENDED\n\n");
 	//fuck landscape
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
 		%orig;
@@ -349,11 +358,17 @@ static void loadPrefs() {
 
 	if (prefs.isEnabled) {
 
-		//get homescreen snapshot
-		SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
-		[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
-			homeScreenImage = snapshot;
-		}];
+		double delayInSeconds = 2.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+
+			//get homescreen snapshot
+			SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
+			[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
+				homeScreenImage = snapshot;
+			}];
+
+		});
 
 		//lock button pressed, dismiss the tray
 		[[SwitcherTrayView sharedInstance] closeTray];

@@ -1,6 +1,6 @@
 #import "Stratos.h"
 
-@interface SwitcherTrayView : UIView 
+@interface SwitcherTrayView : UIView <UIAlertViewDelegate>
 
 @property (nonatomic, retain) UIWindow *parentWindow;
 @property (nonatomic, retain) UIScrollView *trayScrollView;
@@ -20,7 +20,7 @@
 - (void)addMediaControls;
 - (void)mediaTapped;
 - (void)addSettingControls;
-- (void)killAllApps;
+- (void)killAllApps:(UILongPressGestureRecognizer *)gesture;
 - (void)prepareToOpenWithDefaultPage:(int)defaultPage;
 - (void)reloadShouldForce:(BOOL)force;
 - (void)createCardForIdentifier:(NSString *)ident atXOrigin:(int)xOrigin;
@@ -32,5 +32,6 @@
 - (void)reloadBlurView;
 - (void)refreshGrabber;
 - (void)trayHeightDidChange;
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex;
 
 @end

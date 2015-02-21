@@ -31,7 +31,7 @@ static CDTSPreferences *prefs;
 
 		prefs = [CDTSPreferences sharedInstance];
  
-		UILongPressGestureRecognizer* killAllRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(killAllApps)];
+		UILongPressGestureRecognizer* killAllRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(killAllApps:)];
 		[killAllRec setMinimumPressDuration:.3];
 		[self addGestureRecognizer:killAllRec];
 		
@@ -178,39 +178,16 @@ static CDTSPreferences *prefs;
 
 }
 
-- (void)killAllApps {
+- (void)killAllApps:(UILongPressGestureRecognizer *)gesture {
 
 	//only clear if we are on the cards page
-	if ([_trayScrollView contentOffset].x >= kScreenWidth * 2) {
+	if ([_trayScrollView contentOffset].x >= kScreenWidth * 2 && [gesture state] == UIGestureRecognizerStateBegan) {
 
-		//remove all cards from array
-		[_switcherCards removeAllObjects];
+		[self closeTray];
 
-		//get sbsynccontroller and kill all apps
-		[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
-
-		//remove the identifiers from sbappswitchermodel
-		if (IS_OS_7_OR_UNDER) {
-			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] removeAllObjects];
-		}
-		else { //iOS 8
-			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] removeAllObjects];
-		}
-
-		for (UIView *card in [_trayScrollView subviews]) {
-
-			//only the cards
-			if ([card isKindOfClass:[SwitcherTrayCardView class]]) {
-
-				[card removeFromSuperview];
-			}
-		}
-
-		//reset content sizes
-		[self updateTrayContentSize];
-
-		//move to quicklaunch
-		[_trayScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+		UIAlertView *killAll = [[UIAlertView alloc] initWithTitle:@"Kill All Apps" message:@"Would you like to end all running applications?" delegate:self
+																 cancelButtonTitle:@"No" otherButtonTitles:@"End All", nil];
+		[killAll show];
 			  
 	}
 
@@ -626,5 +603,47 @@ NSLog(@"reloading");
 	[[brightness view] setFrame:CGRectMake(controlCenterXOrigin, ([settings view].frame.origin.y + switcherScrollviewHeight / 3), kScreenWidth, switcherScrollviewHeight / 4)];
 	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 6, kScreenWidth - 20, 60)];
 } 
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex {
+
+	if (buttonIndex == 0) {
+
+		[self openTray];
+	}
+	
+	else if (buttonIndex == 1) {
+
+		//move to quicklaunch
+		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kControlCenterKey] * kScreenWidth, 0) animated:NO];
+
+		//remove all cards from array
+		[_switcherCards removeAllObjects];
+
+		//get sbsynccontroller and kill all apps
+		[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
+
+		//remove the identifiers from sbappswitchermodel
+		if (IS_OS_7_OR_UNDER) {
+			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] removeAllObjects];
+		}
+		else { //iOS 8
+			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] removeAllObjects];
+		}
+
+		for (UIView *card in [_trayScrollView subviews]) {
+
+			//only the cards
+			if ([card isKindOfClass:[SwitcherTrayCardView class]]) {
+
+				[card removeFromSuperview];
+			}
+		}
+
+		//reset content sizes
+		[self updateTrayContentSize];
+
+	}
+
+}
 
 @end
