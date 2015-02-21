@@ -349,11 +349,17 @@ static void loadPrefs() {
 
 	if (prefs.isEnabled) {
 
-		//get homescreen snapshot
-		SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
-		[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
-			homeScreenImage = snapshot;
-		}];
+		double delayInSeconds = 2.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+
+			//get homescreen snapshot
+			SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
+			[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
+				homeScreenImage = snapshot;
+			}];
+
+		});
 
 		//lock button pressed, dismiss the tray
 		[[SwitcherTrayView sharedInstance] closeTray];
