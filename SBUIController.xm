@@ -150,7 +150,7 @@ static void loadPrefs() {
 	else if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
 
 		//only continue if we have at least 4 cards in the switcher
-		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 3) {
+		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 0) {
 
 			/*if (location.x >= kScreenWidth - 4) {
 				int currentPage = [[[SwitcherTrayView sharedInstance] trayScrollView] contentOffset] / kScreenWidth;
@@ -169,9 +169,16 @@ static void loadPrefs() {
 				selectedIndex = 3;
 			}
 
+			//make sure it isnt out of bounds
+			if (selectedIndex > [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1) {
+				selectedIndex = [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1;
+			}
+
 			//get hot cards
 			hotCards = [[NSMutableArray alloc] initWithCapacity:4];
-			for (int index = 0; index <= 3; index++)
+			int maxIndex = [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1;
+			if (maxIndex > 3) maxIndex = 3;
+			for (int index = 0; index <= maxIndex; index++)
 				[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:index]];
 
 			//lift the current card and reset all others
