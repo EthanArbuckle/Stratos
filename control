@@ -1,9 +1,9 @@
-Package: com.cortexdevteam.Stratos
+Package: com.cortexdevteam.stratos
 Name: Stratos
-Depends: Stratos is a multitasking manager for iOS that reworks the existing Control Center, converting it into a small and unobtrusive tray that can be accessed via a swipe up from the bottom of the screen
+Description: A multitasking manager for iOS that reworks the existing Control Center
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Depends: mobilesubstrate, preferenceloader
 Maintainer: CortexDevTeam
 Author: CortexDevTeam
 Section: Tweaks
