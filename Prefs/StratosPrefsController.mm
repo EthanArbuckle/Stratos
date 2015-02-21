@@ -124,7 +124,7 @@
 
         //Functionality group cell
         spec = [PSSpecifier groupSpecifierWithName:localized(@"FUNCTIONALITY_HEADER", @"Functionality")];
-        [spec setProperty:localized(@"THIRD_SPLIT_FOOTER", @"Invoke a different page based on where you swipe! Each third of the screen will open a different page. The first thrid will invoke the first page in your page ordering, and so on.") forKey:@"footerText"];
+        [spec setProperty:localized(@"THIRD_SPLIT_FOOTER", @"Invoke a different page based on where you swipe! Each third of the screen will open a different page. The first third will invoke the first page in your page ordering, and so on.") forKey:@"footerText"];
         [hiddenSpecs addObject:spec];
 
         //Show currently running applications

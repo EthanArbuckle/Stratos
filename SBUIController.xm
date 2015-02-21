@@ -1,7 +1,7 @@
 #import "Stratos.h"
 
 //static HBPreferences *stratosPrefs;
-static SBControlCenterController *controlCenter;
+//static SBControlCenterController *controlCenter;
 static UIWindow *trayWindow;
 static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
@@ -176,8 +176,10 @@ static void loadPrefs() {
 
 			//get hot cards
 			hotCards = [[NSMutableArray alloc] initWithCapacity:4];
+
 			int maxIndex = [[[SwitcherTrayView sharedInstance] switcherCards] count] - 1;
 			if (maxIndex > 3) maxIndex = 3;
+
 			for (int index = 0; index <= maxIndex; index++)
 				[hotCards addObject:[[[SwitcherTrayView sharedInstance] switcherCards] objectAtIndex:index]];
 
@@ -241,7 +243,7 @@ static void loadPrefs() {
 }
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
-
+NSLog(@"\n\nENDED\n\n");
 	//fuck landscape
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
 		%orig;
