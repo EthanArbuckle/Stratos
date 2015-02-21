@@ -308,7 +308,7 @@
 
 -(NSArray *)defaultPageTitles {
     //reorder the default page cells to match the user-defined order
-    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSArray *pageOrder = ((NSArray *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:kCDTSPreferencesPageOrder]) ?: ((NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder]);
     NSArray *names = @[
         localized(@"SWITCHER_CARDS", @"Switcher Cards"),
         localized(@"CONTROL_CENTER", @"Control Center"),
@@ -324,7 +324,7 @@
 
 -(NSArray *)defaultPageValues {
     //same thing, reorder the cells
-    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSArray *pageOrder = ((NSArray *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:kCDTSPreferencesPageOrder]) ?: ((NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder]);
     /*
     NSDictionary *values = @{
             @"controlCenter" : @2,
@@ -350,9 +350,8 @@
 
 -(id) readPreferenceValue:(PSSpecifier*)specifier
 {
-    syncPrefs;
     NSString *key = specifier.properties[@"key"];
-    id obj = (id)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)key, (CFStringRef)kCDTSPreferencesDomain));
+    id obj = [[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:key];
     return obj ?: kCDTSPreferencesDefaults[key];
     //return [self.preferences objectForKey:specifier.properties[@"key"]];
 }
@@ -362,8 +361,10 @@
     //set the setting in NSUserDefaults
     NSDictionary *properties = specifier.properties;
     NSString *key = properties[@"key"];
-    CFPreferencesSetAppValue((CFStringRef)key, (CFPropertyListRef)value, (CFStringRef)kCDTSPreferencesDomain);
-    syncPrefs;
+    NSMutableDictionary *prefsDict = [NSMutableDictionary dictionary];
+    [prefsDict addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH]];
+    [prefsDict setObject:value forKey:key];
+    [prefsDict writeToFile:PLIST_PATH atomically:YES];
 	CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
         (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],

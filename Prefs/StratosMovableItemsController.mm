@@ -43,7 +43,7 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     NSInteger index = indexPath.row;
     DebugLogC(@"Cell Index: %ld", (long)index);
-    NSArray *pageOrder = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSArray *pageOrder = ((NSArray *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:kCDTSPreferencesPageOrder]) ?: ((NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder]);
     
     cell.textLabel.text = [names objectAtIndex:([pageOrder[index] intValue]-1)];
     
@@ -68,7 +68,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSArray *pageOrderPreference = ((NSArray *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFStringRef)kCDTSPreferencesDomain))) ?: (NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder];
+    NSArray *pageOrderPreference = ((NSArray *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:kCDTSPreferencesPageOrder]) ?: ((NSArray *)kCDTSPreferencesDefaults[kCDTSPreferencesPageOrder]);
     NSMutableArray *pageOrder = [pageOrderPreference mutableCopy];
     NSInteger sourceIndex = sourceIndexPath.row;
     NSInteger destIndex = destinationIndexPath.row;
@@ -85,8 +85,10 @@
         }
         [pageOrder replaceObjectAtIndex:destIndex withObject:cellToMove];
     }
-    CFPreferencesSetAppValue((CFStringRef)kCDTSPreferencesPageOrder, (CFArrayRef)pageOrder, (CFStringRef)kCDTSPreferencesDomain);
-    syncPrefs;
+    NSMutableDictionary *prefsDict = [NSMutableDictionary dictionary];
+    [prefsDict addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH]];
+    [prefsDict setObject:pageOrder forKey:kCDTSPreferencesPageOrder];
+    [prefsDict writeToFile:PLIST_PATH atomically:YES];
     CFNotificationCenterPostNotification(
         CFNotificationCenterGetDarwinNotifyCenter(),
         (CFStringRef)[kCDTSPreferencesDomain stringByAppendingPathComponent:@"ReloadPrefs"],

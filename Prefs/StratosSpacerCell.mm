@@ -3,10 +3,10 @@
 @implementation StratosSpacerCell
 
 
-- (id)initWithSpecifier:(id)specifier {
+- (id)initWithSpecifier:(PSSpecifier *)specifier {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell" specifier:specifier];
     if (self) {
-        height = [[specifier propertyForKey:@"spacerHeight"] floatValue];
+        height = [specifier.properties[@"spacerHeight"] floatValue];
     }
     
     return self;

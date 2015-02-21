@@ -14,16 +14,18 @@
 #define DEBUG_PREFIX 			@"😈 [Stratos]"
 #import "DebugLog.h"
 
+#define PLIST_PATH [[[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences"] stringByAppendingPathComponent:kCDTSPreferencesDomain] stringByAppendingPathExtension:@"plist"]
+
 #define YES_OR_NO				@"Yes":@"No"
 #define IS_OS_8_OR_LATER [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
 #define IS_OS_7_OR_UNDER [[[UIDevice currentDevice] systemVersion] floatValue] <= 7.0
 
-#define syncPrefs CFPreferencesAppSynchronize((CFStringRef)kCDTSPreferencesDomain)
-#define boolPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+#define syncPrefs
+#define boolPreference(key, var) do { NSNumber *obj = (NSNumber *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:(key)]; \
         (var) = obj ? [obj boolValue] : [kCDTSPreferencesDefaults[key] boolValue]; } while (0)
-#define floatPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+#define floatPreference(key, var) do { NSNumber *obj = (NSNumber *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:(key)]; \
         (var) = obj ? [obj floatValue] : [kCDTSPreferencesDefaults[key] floatValue]; } while (0)
-#define integerPreference(key, var) do { NSNumber *obj = (__bridge NSNumber *)CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain); \
+#define integerPreference(key, var) do { NSNumber *obj = (NSNumber *)[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] objectForKey:(key)]; \
         (var) = obj ? [obj intValue] : [kCDTSPreferencesDefaults[key] intValue]; } while (0)
 //#define getPreference(key) CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain)
 

@@ -9,7 +9,7 @@ StratosPrefs_FILES = $(wildcard *.mm)
 StratosPrefs_INSTALL_PATH = /Library/PreferenceBundles
 StratosPrefs_FRAMEWORKS = UIKit CoreGraphics Social AVFoundation
 StratosPrefs_PRIVATE_FRAMEWORKS = Preferences
-StratosPrefs_LIBRARIES = MobileGestalt cephei
+StratosPrefs_LIBRARIES = MobileGestalt
 
 include theos/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/bundle.mk

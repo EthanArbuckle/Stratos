@@ -1,5 +1,5 @@
 #import "CDTSPreferences.h"
-CDTSPreferences *prefs;
+//CDTSPreferences *prefs;
 @implementation CDTSPreferences
 
 +(id)sharedInstance {
@@ -21,59 +21,59 @@ CDTSPreferences *prefs;
 	return self;
 }
 
--(BOOL)getBoolForKey:(NSString *)key {
-	NSNumber *tempVal = (NSNumber *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain));
+-(BOOL)getBoolForKey:(NSString *)key dictionary:(NSDictionary *)dictionary {
+	NSNumber *tempVal = (NSNumber *)[dictionary objectForKey:key];
 	return tempVal ? [tempVal boolValue] : [kCDTSPreferencesDefaults[key] boolValue];
 }
 
--(NSInteger)getIntegerForKey:(NSString *)key {
-	NSNumber *tempVal = (NSNumber *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain));
+-(NSInteger)getIntegerForKey:(NSString *)key dictionary:(NSDictionary *)dictionary {
+	NSNumber *tempVal = (NSNumber *)[dictionary objectForKey:key];
 	return tempVal ? [tempVal intValue] : [kCDTSPreferencesDefaults[key] intValue];
 }
 
--(CGFloat)getFloatForKey:(NSString *)key {
-	NSNumber *tempVal = (NSNumber *)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain));
+-(CGFloat)getFloatForKey:(NSString *)key dictionary:(NSDictionary *)dictionary {
+	NSNumber *tempVal = (NSNumber *)[dictionary objectForKey:key];
 	return tempVal ? [tempVal floatValue] : [kCDTSPreferencesDefaults[key] floatValue];	
 }
 
--(id)getObjectForKey:(NSString *)key {
-	id obj = (id)CFBridgingRelease(CFPreferencesCopyAppValue((CFStringRef)(key), (CFStringRef)kCDTSPreferencesDomain));
+-(id)getObjectForKey:(NSString *)key dictionary:(NSDictionary *)dictionary {
+	id obj = [dictionary objectForKey:key];
 	return obj ?: kCDTSPreferencesDefaults[key];
 }
 
 -(void)loadPrefs:(BOOL)fromNotification {
 
-	CFPreferencesAppSynchronize((CFStringRef)kCDTSPreferencesDomain);
+	NSDictionary *prefsDict = [NSDictionary dictionaryWithContentsOfFile:PLIST_PATH];
 
-	self.isEnabled = [self getBoolForKey:kCDTSPreferencesEnabledKey];
+	self.isEnabled = [self getBoolForKey:kCDTSPreferencesEnabledKey dictionary:prefsDict];
 
-	self.showGrabber = [self getBoolForKey:kCDTSPreferencesShowGrabber];
+	self.showGrabber = [self getBoolForKey:kCDTSPreferencesShowGrabber dictionary:prefsDict];
 
-	self.shouldInvokeCC = [self getBoolForKey:kCDTSPreferencesInvokeControlCenter];
+	self.shouldInvokeCC = [self getBoolForKey:kCDTSPreferencesInvokeControlCenter dictionary:prefsDict];
 
-	self.showRunningApp = [self getBoolForKey:kCDTSPreferencesShowRunningApp];
+	self.showRunningApp = [self getBoolForKey:kCDTSPreferencesShowRunningApp dictionary:prefsDict];
 	
-	self.activateViaHome = [self getBoolForKey:kCDTSPreferencesActivateByDoubleHome];
+	self.activateViaHome = [self getBoolForKey:kCDTSPreferencesActivateByDoubleHome dictionary:prefsDict];
 
-	self.activeMediaEnabled = [self getBoolForKey:kCDTSPreferencesActiveMediaEnabled];
+	self.activeMediaEnabled = [self getBoolForKey:kCDTSPreferencesActiveMediaEnabled dictionary:prefsDict];
 
-	self.thirdSplit = [self getBoolForKey:kCDTSPreferencesThirdSplit];
+	self.thirdSplit = [self getBoolForKey:kCDTSPreferencesThirdSplit dictionary:prefsDict];
 
-	self.enableQuickLaunch = [self getBoolForKey:kCDTSPreferencesEnableQuickLaunch];
+	self.enableQuickLaunch = [self getBoolForKey:kCDTSPreferencesEnableQuickLaunch dictionary:prefsDict];
 
-	self.enableHomescreen = [self getBoolForKey:kCDTSPreferencesEnableHomescreen];
+	self.enableHomescreen = [self getBoolForKey:kCDTSPreferencesEnableHomescreen dictionary:prefsDict];
 
-	self.enableParallax = [self getBoolForKey:kCDTSPreferencesEnableParallax];
+	self.enableParallax = [self getBoolForKey:kCDTSPreferencesEnableParallax dictionary:prefsDict];
 
-	self.switcherBackgroundStyle = [self getIntegerForKey:kCDTSPreferencesTrayBackgroundStyle];
+	self.switcherBackgroundStyle = [self getIntegerForKey:kCDTSPreferencesTrayBackgroundStyle dictionary:prefsDict];
 
-	self.defaultPage = [self getIntegerForKey:kCDTSPreferencesDefaultPage];
+	self.defaultPage = [self getIntegerForKey:kCDTSPreferencesDefaultPage dictionary:prefsDict];
 
-	self.numberOfPages = [self getIntegerForKey:kCDTSPreferencesNumberOfPages];
+	self.numberOfPages = [self getIntegerForKey:kCDTSPreferencesNumberOfPages dictionary:prefsDict];
 
-	self.switcherHeight = [self getFloatForKey:kCDTSPreferencesSwitcherHeight];
+	self.switcherHeight = [self getFloatForKey:kCDTSPreferencesSwitcherHeight dictionary:prefsDict];
 
-	self.pageOrder = (NSArray *)[self getObjectForKey:kCDTSPreferencesPageOrder];
+	self.pageOrder = (NSArray *)[self getObjectForKey:kCDTSPreferencesPageOrder dictionary:prefsDict];
 	
 	if (fromNotification) {
 		[self reloadStuff];
