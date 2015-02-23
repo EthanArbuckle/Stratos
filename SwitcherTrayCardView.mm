@@ -131,21 +131,47 @@ static CDTSPreferences *prefs;
 		return;
 	}
 
-	//close the switcher
-	if (_superSwitcher) {
-
-		[(SwitcherTrayView *)_superSwitcher closeTray];
-		
-	}
-
 	//sim home button press if this is the homescreen card
 	if ([_identifier isEqualToString:@"com.apple.SpringBoard"]) {
 
 		[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] clickedMenuButton];
+		[(SwitcherTrayView *)_superSwitcher closeTray];
+
+		//dont need to do fancy animations
+		return;
 	}
 
-	//open the app
-	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:[[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier]];
+	//calculate x origin
+	int index = [[(SwitcherTrayView *)_superSwitcher switcherCards] indexOfObject:self] % 4;
+	float x = kSwitcherCardSpacing;
+	x += (kSwitcherCardWidth * index) + (kSwitcherCardSpacing * index); 
+
+	//calculate y origin
+	float y = [_superSwitcher convertPoint:[(SwitcherTrayView *)_superSwitcher trayScrollView].frame.origin toView:[(SwitcherTrayView *)_superSwitcher parentWindow]].y;
+
+	UIImageView *appOpenAnimation = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, kSwitcherCardWidth, kSwitcherCardHeight)];
+	[appOpenAnimation setImage:[_snapshotHolder image]];
+	[_superSwitcher.superview addSubview:appOpenAnimation];
+	SBApplication *app = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier];
+	[UIView animateWithDuration:0.2f animations:^{
+
+		[appOpenAnimation setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+		[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:app];
+
+	} completion:^(BOOL completed){
+
+		//close the switcher
+		if (_superSwitcher) {
+
+			[(SwitcherTrayView *)_superSwitcher closeTray];
+			[appOpenAnimation removeFromSuperview];
+		
+		}
+
+	}];	
+
+	
+
 }
 
 - (void)panning:(UIPanGestureRecognizer *)pan {
