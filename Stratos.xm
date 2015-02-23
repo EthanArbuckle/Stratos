@@ -25,13 +25,13 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer,
 	//update tray position (cards)
 	[[SwitcherTrayView sharedInstance] trayHeightDidChange];
 
-	int newNumPages;
-	BOOL newParallax;
-	syncPrefs;
-	integerPreference(kCDTSPreferencesNumberOfPages, newNumPages);
-	boolPreference(kCDTSPreferencesEnableParallax, newParallax);
-	if ([[SwitcherTrayView sharedInstance] localPageCount] != newNumPages || 
-		[[SwitcherTrayView sharedInstance] enableParallax] != newParallax) {
+//	int newNumPages;
+//	BOOL newParallax;
+//	syncPrefs;
+//	integerPreference(kCDTSPreferencesNumberOfPages, newNumPages);
+//	boolPreference(kCDTSPreferencesEnableParallax, newParallax);
+//	if ([[SwitcherTrayView sharedInstance] localPageCount] != newNumPages || 
+	//	[[SwitcherTrayView sharedInstance] enableParallax] != newParallax) {
 		[[IdentifierDaemon sharedInstance] purgeCardCache];
 		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
 //	}
