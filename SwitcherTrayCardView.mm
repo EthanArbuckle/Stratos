@@ -29,7 +29,12 @@ static CDTSPreferences *prefs;
 
 		//lets not deadlock if created on gcd thread
 		dispatch_async(dispatch_get_main_queue(), ^{
-			icon = [[NSClassFromString(@"SBApplicationIcon") alloc] initWithApplication:_application];
+			if ([_identifier isEqualToString:@"com.apple.mobilecal"]) {
+				icon = [[NSClassFromString(@"SBCalendarApplicationIcon") alloc] initWithApplication:_application];
+			}
+			else {
+				icon = [[NSClassFromString(@"SBApplicationIcon") alloc] initWithApplication:_application];
+			}
 		});
 
 		//add shadow to the view
