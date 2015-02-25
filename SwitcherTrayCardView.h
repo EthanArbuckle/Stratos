@@ -8,6 +8,7 @@
 @property (nonatomic, retain) id application;
 @property (nonatomic, retain) UIImageView *snapshotHolder;
 @property (nonatomic, retain) UILabel *appName;
+@property (nonatomic) CGFloat offset;
 
 - (id)initWithIdentifier:(NSString *)identifier;
 - (void)openApp;

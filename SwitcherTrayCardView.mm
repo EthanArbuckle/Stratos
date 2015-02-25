@@ -190,9 +190,8 @@ static CDTSPreferences *prefs;
 
 	//get location of touch in switcher tray
 	CGPoint point = [pan locationInView:_superSwitcher];
-
 	if ([pan state] == UIGestureRecognizerStateBegan) {
-
+	 	_offset = point.y - [self center].y;
 		//disable scrolling of tray so gestures dont get mixed up
 		[[(SwitcherTrayView *)_superSwitcher trayScrollView].panGestureRecognizer setEnabled:NO];
 	}
@@ -201,11 +200,11 @@ static CDTSPreferences *prefs;
 		
 		//make sure we arent just trying to scroll
 		CGPoint velocity = [pan velocityInView:_superSwitcher];
-		CGPoint offset = [self center].y - [pan locationInView:self].y;
+		
 		if (velocity.y > 20 || velocity.y < -20) {
 
 			//move this card with the touches. Using center point makes it flow with the finger better
-			[self setCenter:CGPointMake([self center].x, point.y)];
+			[self setCenter:CGPointMake([self center].x, point.y - _offset)];
 		}
 	}
 
