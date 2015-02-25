@@ -152,7 +152,7 @@ static CDTSPreferences *prefs;
 		//dont need to do fancy animations
 		return;
 	}
-
+/*
 	//calculate x origin
 	int index = [[(SwitcherTrayView *)_superSwitcher switcherCards] indexOfObject:self] % 4;
 	float x = kSwitcherCardSpacing;
@@ -181,8 +181,16 @@ static CDTSPreferences *prefs;
 		}
 
 	}];	
+*/
+	SBApplication *app = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier];
+	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:app];
 
-	
+	//close the switcher
+	if (_superSwitcher) {
+
+		[(SwitcherTrayView *)_superSwitcher closeTray];
+		
+	}
 
 }
 
