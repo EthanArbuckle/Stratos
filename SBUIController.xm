@@ -44,10 +44,11 @@ static void loadPrefs() {
 	//this is the 'base'. The UIWindow is able to add itself to anything on the screen, SpringBoard or app
 	if (!trayWindow) {
 		trayWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-		[trayWindow setWindowLevel:9999];
+		[trayWindow setWindowLevel:1057]; //notification center + 1, so alerts will be seen
 	}
 
-	[trayWindow makeKeyAndVisible];
+	//[trayWindow makeKeyAndVisible];
+	[trayWindow setHidden:NO];
 
 	//create the background view. This is what everything will be added to
 	[SwitcherTrayView sharedInstance];
