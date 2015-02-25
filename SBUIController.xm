@@ -393,6 +393,13 @@ NSLog(@"\n\nENDED\n\n");
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 
+			//stop if tray is open, to prevent cards from flashing over
+			//also check if its origin is above 'closed' point, since if touches are still happening isOpen will be NO
+			if ([[SwitcherTrayView sharedInstance] isOpen] || [[SwitcherTrayView sharedInstance] frame].origin.y < kScreenHeight) {
+
+				return;
+			}
+
 			//an app was opened, closed, or killed. tell the identifier daemon to reload.
 			[[IdentifierDaemon sharedInstance] reloadApps];
 
