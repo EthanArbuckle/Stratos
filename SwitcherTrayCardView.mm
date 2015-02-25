@@ -201,6 +201,7 @@ static CDTSPreferences *prefs;
 		
 		//make sure we arent just trying to scroll
 		CGPoint velocity = [pan velocityInView:_superSwitcher];
+		CGPoint offset = [self center].y - [pan locationInView:self].y;
 		if (velocity.y > 20 || velocity.y < -20) {
 
 			//move this card with the touches. Using center point makes it flow with the finger better

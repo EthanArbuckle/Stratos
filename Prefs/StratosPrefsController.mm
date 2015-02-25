@@ -436,7 +436,13 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    int width = [[UIScreen mainScreen] bounds].size.width;
+    int width;
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        width = [[self rootController] rootListController].view.frame.size.width;
+    }
+    else {
+        width = [self rootController].view.frame.size.width;
+    }
     //header
     UIImage* headerImage = [[UIImage alloc] initWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/Header.png"];
     NSLog(@"headerImage size: %@", NSStringFromCGSize(headerImage.size));
@@ -498,7 +504,13 @@
 
 -(void)reloadBlurView {
     [switcherView removeFromSuperview];
-    int width = [[UIScreen mainScreen] bounds].size.width;
+    int width;
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        width = [[self rootController] rootListController].view.frame.size.width;
+    }
+    else {
+        width = [self rootController].view.frame.size.width;
+    }
     int backgroundStyle;
     integerPreference(kCDTSPreferencesTrayBackgroundStyle, backgroundStyle);
     if (backgroundStyle == 9999) {

@@ -148,7 +148,8 @@ static void loadPrefs() {
 
 	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
 	else if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
-
+		//[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, prefs.switcherHeight)];
+		//[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 		//only continue if we have at least 4 cards in the switcher
 		if ([[[SwitcherTrayView sharedInstance] switcherCards] count] > 0) {
 
@@ -236,8 +237,9 @@ static void loadPrefs() {
 	}
 	*/
 	else {
-
+		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, prefs.switcherHeight)];
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
+		//[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 	}
 
 }
