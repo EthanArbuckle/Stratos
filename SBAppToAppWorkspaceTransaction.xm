@@ -25,7 +25,7 @@ static CDTSPreferences *prefs;
 		int index = [runningApps indexOfObject:toApp];
 		
 		//make sure its not the first app
-		if (index > 0) {
+		if (index > 0 && [runningApps count] >= index + 2) {
 			//get ident of app right before it
 			NSString *beforeApp = [runningApps objectAtIndex:index + 1];
 
