@@ -445,10 +445,12 @@ NSLog(@"reloading");
 		//remove the identifier from sbappswitchermodel. This doesnt close the app, just removes it from the tray and appswitcher
 		//iOS 7 uses _recentDisplayIdentifiers, which doesnt exist on iOS 8. 
 		if (IS_OS_7_OR_UNDER) {
-			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] removeObjectAtIndex:cardIndex];
+			if ([[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] count] >= cardIndex+1 )
+				[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] removeObjectAtIndex:cardIndex];
 		}
 		else { //iOS 8
-			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] removeObjectAtIndex:cardIndex];
+			if ([[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] count] >= cardIndex+1 )
+				[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] removeObjectAtIndex:cardIndex];
 		}
 
 		//cycle through other cards and move them over
