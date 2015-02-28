@@ -259,6 +259,11 @@ static CDTSPreferences *prefs;
 					[respring show];
 				}
 
+				//bring elements back to original spot
+				[_snapshotHolder setFrame:CGRectMake(0, 0, kSwitcherCardWidth, kSwitcherCardHeight)];
+				[_appName setFrame:CGRectMake(0, kSwitcherCardHeight + 8, kSwitcherCardWidth, 20)];
+				[_iconHolder setFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 30, 40, 40)];
+
 			}];
 
 		}
