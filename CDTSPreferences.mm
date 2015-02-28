@@ -91,11 +91,13 @@
 	//update tray position (cards)
 	[[SwitcherTrayView sharedInstance] trayHeightDidChange];
 
-	if ([[SwitcherTrayView sharedInstance] localPageCount] != self.numberOfPages || 
-	[[SwitcherTrayView sharedInstance] enableParallax] != self.enableParallax) {
+	//if ([[SwitcherTrayView sharedInstance] localPageCount] != self.numberOfPages || 
+	//[[SwitcherTrayView sharedInstance] enableParallax] != self.enableParallax) {
 		[[IdentifierDaemon sharedInstance] purgeCardCache];
 		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
-	}
+//	}
+	//update homescreen card
+	[[NSClassFromString(@"SBUIController") sharedInstance] updateHomescreenImage];
 }
 
 @end

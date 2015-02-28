@@ -246,7 +246,7 @@ static void loadPrefs() {
 }
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
-NSLog(@"\n\nENDED\n\n");
+
 	//fuck landscape
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
 		%orig;
@@ -431,6 +431,17 @@ NSLog(@"\n\nENDED\n\n");
 		[self _showControlCenterGestureBeganWithLocation:CGPointMake(0,0)];
 	[trayWindow setUserInteractionEnabled:NO];
 	[touchView removeFromSuperview];
+
+}
+
+%new
+- (void)updateHomescreenImage {
+	
+	//get homescreen snapshot
+	SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
+	[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
+		homeScreenImage = snapshot;
+	}];	
 
 }
 

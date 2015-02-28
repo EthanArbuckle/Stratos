@@ -110,6 +110,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
 //+ (NSUserDefaults *)stratosUserDefaults;
+- (void)updateHomescreenImage;
 - (UIImage *)homeScreenImage;
 @end
 
