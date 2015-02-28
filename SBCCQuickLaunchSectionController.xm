@@ -9,7 +9,7 @@ static CDTSPreferences *prefs;
 %hook SBCCQuickLaunchSectionController
 
 - (void)buttonTapped:(id)tapped {
-	
+
 	%orig;
 
 	if (prefs.isEnabled) {

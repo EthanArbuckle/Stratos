@@ -67,6 +67,7 @@ static CDTSPreferences *prefs;
 		[_gestureView addGestureRecognizer:tapGes];
 		[self addSubview:_gestureView];
 
+
 		//create grabber view
 		_grabber = [[NSClassFromString(@"SBControlCenterGrabberView") alloc] initWithFrame:CGRectMake(0, 0, 50, 22)];
 		[_grabber setCenter:CGPointMake(kScreenWidth / 2, 8)];
@@ -173,7 +174,7 @@ static CDTSPreferences *prefs;
 
 	//create the quicklaunch buttons
 	quicklaunch = [[NSClassFromString(@"SBCCQuickLaunchSectionController") alloc] init];
-	[[quicklaunch view] setFrame:CGRectMake((ccIndex * kScreenWidth) + 10, 115, kScreenWidth - 20, 50)];
+	[[quicklaunch view] setFrame:CGRectMake((ccIndex * kScreenWidth) + 10, 115, kScreenWidth - 20, 70)];
 	[_trayScrollView addSubview:[quicklaunch view]];
 
 }
@@ -363,6 +364,12 @@ NSLog(@"reloading");
 		//dont open the tray too far
 		if (point.y >= kSwitcherMaxY) {
 			[self setFrame:CGRectMake(0, point.y, kScreenWidth, prefs.switcherHeight)];
+		}
+		else if (point.y <= kSwitcherMaxY - 20) {
+
+			//open control center
+			[self closeTray];
+			[[NSClassFromString(@"SBControlCenterController") _sharedInstanceCreatingIfNeeded:YES] presentAnimated:YES];
 		}
 
 	}
@@ -603,7 +610,7 @@ NSLog(@"reloading");
 
 	[[settings view] setFrame:CGRectMake(controlCenterXOrigin + 10, 0, kScreenWidth - 20, (switcherScrollviewHeight / 3))];
 	[[brightness view] setFrame:CGRectMake(controlCenterXOrigin, ([settings view].frame.origin.y + switcherScrollviewHeight / 3), kScreenWidth, switcherScrollviewHeight / 4)];
-	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 6, kScreenWidth - 20, 60)];
+	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 6, kScreenWidth - 20, 63)];
 } 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex {
