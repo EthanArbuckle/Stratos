@@ -76,7 +76,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesTrayBackgroundStyle : @9999,
                                                                 kCDTSPreferencesSwitcherHeight      : @(kScreenHeight / 3.3),
                                                                 kCDTSPreferencesShowGrabber         : @YES,
-                                                                kCDTSPreferencesEnableParallax      : @YES,
+                                                                kCDTSPreferencesEnableParallax      : @NO,
                                                                 kCDTSPreferencesEnableQuickLaunch   : @YES,
                                                                 kCDTSPreferencesInvokeControlCenter : @YES,
                                                                 kCDTSPreferencesActiveMediaEnabled  : @NO,
