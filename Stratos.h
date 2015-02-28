@@ -339,3 +339,9 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 + (void)cleanupPreview;
 + (id)preview;
 @end
+
+@interface SBCCAirStuffSectionController : UIViewController
+
+- (void)controlCenterWillPresent;
+
+@end

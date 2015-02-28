@@ -17,7 +17,7 @@ static CDTSPreferences *prefs;
 		[_snapshotHolder setContentMode:UIViewContentModeScaleAspectFit];
 
 		//create imageview that will hold the apps icon
-		UIImageView *iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 30, 40, 40)];
+		_iconHolder = [[UIImageView alloc] initWithFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 30, 40, 40)];
 		
 		[self addSubview:_snapshotHolder];
 
@@ -45,22 +45,22 @@ static CDTSPreferences *prefs;
 		});
 
 		//add shadow to the view
-		[[iconHolder layer] setShadowColor:[UIColor blackColor].CGColor];
-		[[iconHolder layer] setShadowOffset:CGSizeMake(0, 2)];
-		[[iconHolder layer] setShadowOpacity:.2];
-		[[iconHolder layer] setShadowRadius:8.0];
-		[[iconHolder layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:iconHolder.bounds cornerRadius:4.0] CGPath]];
-		[iconHolder setClipsToBounds:NO];
+		[[_iconHolder layer] setShadowColor:[UIColor blackColor].CGColor];
+		[[_iconHolder layer] setShadowOffset:CGSizeMake(0, 2)];
+		[[_iconHolder layer] setShadowOpacity:.2];
+		[[_iconHolder layer] setShadowRadius:8.0];
+		[[_iconHolder layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:_iconHolder.bounds cornerRadius:4.0] CGPath]];
+		[_iconHolder setClipsToBounds:NO];
 
 		//let touches pass through to the card
-		[iconHolder setUserInteractionEnabled:NO];
+		[_iconHolder setUserInteractionEnabled:NO];
 
 		//add it to the card
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self addSubview:iconHolder];
+			[self addSubview:_iconHolder];
 
 			//set iconholders image to the image from the sbapplicationicon class
-			[iconHolder setImage:[icon generateIconImage:2]];
+			[_iconHolder setImage:[icon generateIconImage:2]];
 
 		});
 
@@ -70,7 +70,7 @@ static CDTSPreferences *prefs;
 			if ([identifier isEqualToString:@"com.apple.SpringBoard"]) {
 
 				[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] homeScreenImage]];
-				[iconHolder removeFromSuperview];
+				[_iconHolder removeFromSuperview];
 				[_appName removeFromSuperview];
 			}
 
@@ -199,7 +199,7 @@ static CDTSPreferences *prefs;
 	//get location of touch in switcher tray
 	CGPoint point = [pan locationInView:_superSwitcher];
 	if ([pan state] == UIGestureRecognizerStateBegan) {
-	 	_offset = point.y - [self center].y;
+	 	_offset = point.y - [_snapshotHolder center].y;
 		//disable scrolling of tray so gestures dont get mixed up
 		[[(SwitcherTrayView *)_superSwitcher trayScrollView].panGestureRecognizer setEnabled:NO];
 	}
@@ -212,7 +212,16 @@ static CDTSPreferences *prefs;
 		if (velocity.y > 20 || velocity.y < -20) {
 
 			//move this card with the touches. Using center point makes it flow with the finger better
-			[self setCenter:CGPointMake([self center].x, point.y - _offset)];
+			[_snapshotHolder setCenter:CGPointMake([_snapshotHolder center].x, point.y - _offset)];
+
+			//if its moving up, lets move the label and icon down
+			if (point.y <= 20) {
+
+				[_appName setFrame:CGRectMake(0, ((kSwitcherCardHeight + 8) - (point.y / 2) >= (kSwitcherCardHeight + 8)) ? (kSwitcherCardHeight + 8) - (point.y / 2) : (kSwitcherCardHeight + 8), kSwitcherCardWidth, 20)];
+				[_iconHolder setFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, ((kSwitcherCardHeight - 30) - (point.y / 2) >= (kSwitcherCardHeight - 30)) ? (kSwitcherCardHeight - 30) - (point.y / 2) : (kSwitcherCardHeight - 30), 40, 40)];
+			
+			}
+
 		}
 	}
 
@@ -227,9 +236,12 @@ static CDTSPreferences *prefs;
 			[UIView animateWithDuration:0.4f animations:^{
 
 				//animate this card out
-				CGRect frame = [self frame];
+				CGRect frame = [_snapshotHolder frame];
 				frame.origin.y = -500;
-				[self setFrame:frame];
+				[_snapshotHolder setFrame:frame];
+
+				[_appName setFrame:CGRectMake(0, 500, kScreenWidth, 20)];
+				[_iconHolder setFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, 500, 40, 40)];
 
 			} completion:^(BOOL completed) {
 
@@ -271,10 +283,13 @@ static CDTSPreferences *prefs;
 			//animate this card back to the normal spot
 			[UIView animateWithDuration:.08f animations:^{
 
-				//animate this card out
-				CGRect frame = [self frame];
+				//animate this card to original spot
+				CGRect frame = [_snapshotHolder frame];
 				frame.origin.y = 0;
-				[self setFrame:frame];
+				[_snapshotHolder setFrame:frame];
+
+				[_appName setFrame:CGRectMake(0, kSwitcherCardHeight + 8, kSwitcherCardWidth, 20)];
+				[_iconHolder setFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, kSwitcherCardHeight - 30, 40, 40)];
 
 			}];
 
