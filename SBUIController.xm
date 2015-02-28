@@ -350,7 +350,7 @@ NSLog(@"\n\nENDED\n\n");
 
 		[[SwitcherTrayView sharedInstance] openTray];
 
-		return NO;
+		return YES;
 	}
 
 	return %orig;
