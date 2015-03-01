@@ -29,7 +29,7 @@ static void loadPrefs() {
 	}
 
 	//if tweak is disabled, run original method
-	if (!prefs.isEnabled) {
+	if (![prefs isEnabled]) {
 		%orig;
 		return;
 	}
@@ -54,7 +54,7 @@ static void loadPrefs() {
 	[SwitcherTrayView sharedInstance];
 
 	//Dismiss the tray when tapped outside of it
-	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - prefs.switcherHeight)];
+	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - [prefs switcherHeight])];
 	[trayWindow addSubview:touchView];
 
 	//this method will check to see if the current running apps have changed, and update if need be
@@ -66,7 +66,7 @@ static void loadPrefs() {
 	//this makes everything under the traywindow not recieve our touches, but enables interaction with the switcher view.
 	[trayWindow setUserInteractionEnabled:YES];
 
-	if (prefs.thirdSplit) {
+	if ([prefs thirdSplit]) {
 		int pageIndex;
 
 		//get the index of the page order array we want to acceess, based on which third of the screen they access
@@ -77,13 +77,13 @@ static void loadPrefs() {
 		} else { //2/3 - 3/3
 			pageIndex = 2;
 		}
-		pageToOpen = [[prefs.pageOrder objectAtIndex:pageIndex] intValue];
+		pageToOpen = [[[prefs pageOrder] objectAtIndex:pageIndex] intValue];
 
 	} else {
-		pageToOpen = prefs.defaultPage;
+		pageToOpen = [prefs defaultPage];
 	}
 
-	if (prefs.activeMediaEnabled) {
+	if ([prefs activeMediaEnabled]) {
 
 		//see if music is playing
 		if (((SBMediaController *)[NSClassFromString(@"SBMediaController") sharedInstance]).nowPlayingApplication) {
@@ -109,7 +109,7 @@ static void loadPrefs() {
 	}
 
 	//if tweak is disabled, run original method
-	if (!prefs.isEnabled) {
+	if (![prefs isEnabled]) {
 
 		%orig;
 		return;
@@ -129,7 +129,7 @@ static void loadPrefs() {
 
 		//animate it
 		[UIView animateWithDuration:0.1f animations:^{
-			[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, prefs.switcherHeight)];
+			[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, [prefs switcherHeight])];
 		}];
 
 		//cancel gesture
@@ -143,12 +143,12 @@ static void loadPrefs() {
 	//limit how high the switcher can be pulled up
 	if (location.y >= kSwitcherMaxY) {
 
-		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, prefs.switcherHeight)];
+		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, location.y, kScreenWidth, [prefs switcherHeight])];
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 	}
 
 	//in the 'panning' zone, user can swipe left/right to quicklaunch an app
-	else if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
+	else if (location.y <= (kScreenHeight - [prefs switcherHeight]) - kQuickLaunchTouchOffset && pageToOpen == 1 && [prefs enableQuickLaunch]) {
 		//[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, prefs.switcherHeight)];
 		//[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 		//only continue if we have at least 4 cards in the switcher
@@ -238,7 +238,7 @@ static void loadPrefs() {
 	}
 	*/
 	else {
-		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, prefs.switcherHeight)];
+		[[SwitcherTrayView sharedInstance] setFrame:CGRectMake(0, kSwitcherMaxY, kScreenWidth, [prefs switcherHeight])];
 		[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 		//[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 	}
@@ -254,7 +254,7 @@ static void loadPrefs() {
 	}
 	
 	//if tweak is disabled, run original method
-	if (!prefs.isEnabled) {
+	if (![prefs isEnabled]) {
 
 		%orig;
 		return;
@@ -267,7 +267,7 @@ static void loadPrefs() {
 	}
 
 	//see if we need to open a hot card
-	if (location.y <= (kScreenHeight - prefs.switcherHeight) - kQuickLaunchTouchOffset && pageToOpen == 1 && prefs.enableQuickLaunch) {
+	if (location.y <= (kScreenHeight - [prefs switcherHeight]) - kQuickLaunchTouchOffset && pageToOpen == 1 && [prefs enableQuickLaunch]) {
 
 		//make sure we have cards
 		if ([hotCards count] > 0) {
@@ -296,15 +296,15 @@ static void loadPrefs() {
 	[hotCards makeObjectsPerformSelector:@selector(zeroOutYOrigin)];
 
 	//use velocity and height to decide whether to open it or not
-	if (location.y <= kScreenHeight - (prefs.switcherHeight / 3) || velocity.y < 0) { //opening switcher
+	if (location.y <= kScreenHeight - ([prefs switcherHeight] / 3) || velocity.y < 0) { //opening switcher
 
-		CGFloat animationDuration = ((prefs.switcherHeight - location.y)/velocity.y < 0.4f) ? (prefs.switcherHeight - location.y)/velocity.y : 0.4f;
+		CGFloat animationDuration = (([prefs switcherHeight] - location.y)/velocity.y < 0.4f) ? ([prefs switcherHeight] - location.y)/velocity.y : 0.4f;
 		DebugLog(@"Velocity: %f, time to animate: %f", velocity.y, animationDuration);
 		
 		//set grabber view to down arrow now that tray is open
 		[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, prefs.switcherHeight) withDuration:animationDuration];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, [prefs switcherHeight]) withDuration:animationDuration];
 		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
 
 	}
@@ -317,7 +317,7 @@ static void loadPrefs() {
 	*/
 	else {
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + prefs.switcherHeight, kScreenWidth, prefs.switcherHeight) withDuration:0.4f];
+		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + [prefs switcherHeight], kScreenWidth, [prefs switcherHeight]) withDuration:0.4f];
 		[[SwitcherTrayView sharedInstance] setIsOpen:NO];
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
@@ -335,7 +335,7 @@ static void loadPrefs() {
 - (BOOL)clickedMenuButton {
 	DebugLog0;
 	
-	if (prefs.isEnabled && [[SwitcherTrayView sharedInstance] isOpen]) {
+	if ([prefs isEnabled] && [[SwitcherTrayView sharedInstance] isOpen]) {
 		//home button pressed, dismiss the tray if open
 		DebugLog(@"closing switcher tray");
 		[[SwitcherTrayView sharedInstance] closeTray];
@@ -346,7 +346,7 @@ static void loadPrefs() {
 - (BOOL)handleMenuDoubleTap {
 	DebugLog0;
 
-	if (prefs.activateViaHome && ![[SwitcherTrayView sharedInstance] isOpen]) {
+	if ([prefs activateViaHome] && ![[SwitcherTrayView sharedInstance] isOpen]) {
 
 		[[SwitcherTrayView sharedInstance] openTray];
 
@@ -359,7 +359,7 @@ static void loadPrefs() {
 - (void)_deviceLockStateChanged:(id)changed {
 	DebugLog0;
 
-	if (prefs.isEnabled) {
+	if ([prefs isEnabled]) {
 
 		double delayInSeconds = 2.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -388,7 +388,7 @@ static void loadPrefs() {
 
 - (void)_applicationActivationStateDidChange:(id)_applicationActivationState {
 	%orig;
-	if (prefs.isEnabled) {	
+	if ([prefs isEnabled]) {	
 
 		double delayInSeconds = 1.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -427,7 +427,7 @@ static void loadPrefs() {
 	loadPrefs();
 	[[IdentifierDaemon sharedInstance] reloadApps];
 	[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
-	if (prefs.isEnabled)
+	if ([prefs isEnabled])
 		[self _showControlCenterGestureBeganWithLocation:CGPointMake(0,0)];
 	[trayWindow setUserInteractionEnabled:NO];
 	[touchView removeFromSuperview];

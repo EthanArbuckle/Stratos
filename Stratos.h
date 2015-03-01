@@ -36,7 +36,7 @@
 #define kiPhoneSmall 			[[UIScreen mainScreen] bounds].size.height < 568
 
 //#define kSwitcherHeight 		[[(SBUIController *)NSClassFromString(@"SBUIController") stratosUserDefaults] floatForKey:kCDTSPreferencesSwitcherHeight]//kScreenHeight / 3.3 //172
-#define kSwitcherMaxY 			kScreenHeight - prefs.switcherHeight
+#define kSwitcherMaxY 			kScreenHeight - [prefs switcherHeight]
 #define kSwitcherCardWidth 		kScreenWidth / 4.5714 //70
 #define kSwitcherCardHeight 	        kScreenHeight / 4.36 //130
 #define kSwitcherCardSpacing	        ceil((kScreenWidth - (kSwitcherCardWidth * 4)) / 5) //8

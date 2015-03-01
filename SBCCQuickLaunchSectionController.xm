@@ -12,7 +12,7 @@ static CDTSPreferences *prefs;
 
 	%orig;
 
-	if (prefs.isEnabled) {
+	if ([prefs isEnabled]) {
 
 		//if its x origin isnt 0, its not the flashlight and we need to close the switcher
 		if ([(UIButton *)tapped frame].origin.x != 0) {

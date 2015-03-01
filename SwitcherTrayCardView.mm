@@ -89,7 +89,7 @@ static CDTSPreferences *prefs;
 			[_appName setText:[(SBApplication *)_application displayName]];
 			[_appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
 			[_appName setTextAlignment:NSTextAlignmentCenter];
-			if (prefs.switcherBackgroundStyle == 2060 || prefs.switcherBackgroundStyle == 2010) {
+			if ([prefs switcherBackgroundStyle] == 2060 || [prefs switcherBackgroundStyle] == 2010) {
 				[_appName setTextColor:[UIColor darkGrayColor]];
 			} else {
 				[_appName setTextColor:[UIColor whiteColor]];
@@ -110,7 +110,7 @@ static CDTSPreferences *prefs;
 
 
 		//add parallax effect to card
-		if (prefs.enableParallax) {
+		if ([prefs enableParallax]) {
 
 			UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
 			verticalMotionEffect.minimumRelativeValue = @(-15);

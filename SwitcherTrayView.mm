@@ -17,7 +17,7 @@ static CDTSPreferences *prefs;
 	__strong static id _sharedObject = nil;
 	 
 	dispatch_once(&p, ^{
-		_sharedObject = [[self alloc] initWithFrame:CGRectMake(0, kScreenHeight - prefs.switcherHeight, kScreenWidth, kScreenHeight /*just to be safe and ensure its never short */)];
+		_sharedObject = [[self alloc] initWithFrame:CGRectMake(0, kScreenHeight - [prefs switcherHeight], kScreenWidth, kScreenHeight /*just to be safe and ensure its never short */)];
 	});
 
 	return _sharedObject;
@@ -47,16 +47,16 @@ static CDTSPreferences *prefs;
         //[_stratosPrefs registerFloat:&switcherHeight default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesSwitcherHeight] floatValue] forKey:kCDTSPreferencesSwitcherHeight];
 
 		//create the blur view
-	    if (prefs.switcherBackgroundStyle == 9999) {
+	    if ([prefs switcherBackgroundStyle] == 9999) {
 
 			_blurView = [[NSClassFromString(@"SBWallpaperEffectView") alloc] initWithWallpaperVariant:1];
 			[(SBWallpaperEffectView *)_blurView setStyle:11];
 		}
 		else {
 
-			_blurView = [[_UIBackdropView alloc] initWithStyle:prefs.switcherBackgroundStyle];
+			_blurView = [[_UIBackdropView alloc] initWithStyle:[prefs switcherBackgroundStyle]];
 		}	
-		[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, prefs.switcherHeight)];
+		[_blurView setFrame:CGRectMake(0, 0, kScreenWidth, [prefs switcherHeight])];
 		[self addSubview:_blurView];
 
 		//create small view that will hold the pan gesture recognizer. This is placed at the top of the tray
@@ -78,17 +78,17 @@ static CDTSPreferences *prefs;
 		_switcherCards = [[NSMutableArray alloc] init];
 
 		//create the scroll view that will hold everything
-		_trayScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, (prefs.switcherHeight / 2) - (kSwitcherCardHeight / 2), kScreenWidth, prefs.switcherHeight - 20)]; //create 40px buffer above and below it
+		_trayScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, ([prefs switcherHeight] / 2) - (kSwitcherCardHeight / 2), kScreenWidth, [prefs switcherHeight] - 20)]; //create 40px buffer above and below it
 		[_trayScrollView setScrollEnabled:YES];
 		[_trayScrollView setPagingEnabled:YES];
 		[_trayScrollView setShowsHorizontalScrollIndicator:NO];
 		[self addSubview:_trayScrollView];        
 
 		//save local copy of numberofpages to render so we can compare it later to know if settings have been changed
-		_localPageCount = prefs.numberOfPages; //[_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
+		_localPageCount = [prefs numberOfPages]; //[_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
 
 		//same idea for enabling parallax
-		_enableParallax = prefs.enableParallax;// = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
+		_enableParallax = [prefs enableParallax];// = [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
 
 		//add the media controls
 		[self addMediaControls];
@@ -115,9 +115,9 @@ static CDTSPreferences *prefs;
 	int numberOfPagesForCards = ceil(runningAppsCount / 4);
 
 	//user can decide how many pages to show, 6 means all
-	if (numberOfPagesForCards > prefs.numberOfPages && prefs.numberOfPages != 6) {
+	if (numberOfPagesForCards > [prefs numberOfPages] && [prefs numberOfPages] != 6) {
 
-		numberOfPagesForCards = prefs.numberOfPages;
+		numberOfPagesForCards = [prefs numberOfPages];
 	}
 
 	//the number of "pages" in the tray
@@ -127,7 +127,7 @@ static CDTSPreferences *prefs;
 	int totalContentSize = (numberOfPagesNotCards + numberOfPagesForCards) * kScreenWidth;
 
 	//set scroll view content size to that number
-	[_trayScrollView setContentSize:CGSizeMake(totalContentSize, prefs.switcherHeight - 80)];
+	[_trayScrollView setContentSize:CGSizeMake(totalContentSize, [prefs switcherHeight] - 80)];
 
 }
 
@@ -135,7 +135,7 @@ static CDTSPreferences *prefs;
 
 	//create a media controls controller
 	mediaView = [(MPUSystemMediaControlsViewController *)[NSClassFromString(@"MPUSystemMediaControlsViewController") alloc] initWithStyle:1];
-	[[mediaView view] setFrame:CGRectMake([prefs.pageOrder indexOfObject:kMediaControlsKey] * kScreenWidth, 0, kScreenWidth, prefs.switcherHeight - 25)];
+	[[mediaView view] setFrame:CGRectMake([[prefs pageOrder] indexOfObject:kMediaControlsKey] * kScreenWidth, 0, kScreenWidth, [prefs switcherHeight] - 25)];
 	[_trayScrollView addSubview:[mediaView view]];
 
 	//add tap gesture to media controls to open now playing app
@@ -163,7 +163,7 @@ static CDTSPreferences *prefs;
 
 	//create the settings buttons
 	settings = [[NSClassFromString(@"SBCCSettingsSectionController") alloc] init];
-	int ccIndex = [prefs.pageOrder indexOfObject:kControlCenterKey];
+	int ccIndex = [[prefs pageOrder] indexOfObject:kControlCenterKey];
 	[[settings view] setFrame:CGRectMake((ccIndex * kScreenWidth) + 10, 10, kScreenWidth - 20, 50)];
 	[_trayScrollView addSubview:[settings view]];
 
@@ -212,17 +212,17 @@ static CDTSPreferences *prefs;
 	if (defaultPage == 1) {
 
 		//open to cards
-		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kSwitcherCardsKey] * kScreenWidth, 0) animated:NO];
+		[_trayScrollView setContentOffset:CGPointMake([[prefs pageOrder] indexOfObject:kSwitcherCardsKey] * kScreenWidth, 0) animated:NO];
 	}
 	else if (defaultPage == 2) {
 
 		//open to quicklaunch
-		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kControlCenterKey] * kScreenWidth, 0) animated:NO];
+		[_trayScrollView setContentOffset:CGPointMake([[prefs pageOrder] indexOfObject:kControlCenterKey] * kScreenWidth, 0) animated:NO];
 	}
 	else {
 
 		//open to media controls
-		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kMediaControlsKey] * kScreenWidth, 0) animated:NO];
+		[_trayScrollView setContentOffset:CGPointMake([[prefs pageOrder] indexOfObject:kMediaControlsKey] * kScreenWidth, 0) animated:NO];
 	}
 
 }
@@ -276,7 +276,7 @@ NSLog(@"reloading");
 
 		//the X origin for each view will step up for each app, so keep track of it
 		//start at gapspacing + starting page 
-		int xOrigin = ([prefs.pageOrder indexOfObject:kSwitcherCardsKey] * kScreenWidth) + kSwitcherCardSpacing;
+		int xOrigin = ([[prefs pageOrder] indexOfObject:kSwitcherCardsKey] * kScreenWidth) + kSwitcherCardSpacing;
 
 		//every 4 cards, we are going to double the gap spacing since the apps are starting on a new page. this lets us keep a count
 		int appIndex = 1;
@@ -297,7 +297,7 @@ NSLog(@"reloading");
 			if ((appIndex % 4) == 0) {
 
 				//xOrigin += kSwitcherCardSpacing;
-				xOrigin = (((appIndex / 4) + [prefs.pageOrder indexOfObject:kSwitcherCardsKey]) * kScreenWidth) + kSwitcherCardSpacing;
+				xOrigin = (((appIndex / 4) + [[prefs pageOrder] indexOfObject:kSwitcherCardsKey]) * kScreenWidth) + kSwitcherCardSpacing;
 
 			}
 
@@ -305,7 +305,7 @@ NSLog(@"reloading");
 			appIndex++;
 
 			//only generate the amount the user wants to
-			if (appIndex-1 >= prefs.numberOfPages*4 && prefs.numberOfPages != 6) {
+			if (appIndex-1 >= [prefs numberOfPages]*4 && [prefs numberOfPages] != 6) {
 				break;
 			}
 
@@ -327,8 +327,8 @@ NSLog(@"reloading");
 	[self updateTrayContentSize];
 
 	//update setting stuff
-	_localPageCount = prefs.numberOfPages; //= [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
-	_enableParallax = prefs.enableParallax; //= [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
+	_localPageCount = [prefs numberOfPages]; //= [_stratosPrefs integerForKey:kCDTSPreferencesNumberOfPages default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesNumberOfPages] intValue]];
+	_enableParallax = [prefs enableParallax]; //= [_stratosPrefs boolForKey:kCDTSPreferencesEnableParallax default:[[kCDTSPreferencesDefaults objectForKey:kCDTSPreferencesEnableParallax] boolValue]];
 	
 }
 
@@ -363,7 +363,7 @@ NSLog(@"reloading");
 
 		//dont open the tray too far
 		if (point.y >= kSwitcherMaxY) {
-			[self setFrame:CGRectMake(0, point.y, kScreenWidth, prefs.switcherHeight)];
+			[self setFrame:CGRectMake(0, point.y, kScreenWidth, [prefs switcherHeight])];
 		}
 		else if (point.y <= kSwitcherMaxY - 20) {
 
@@ -396,7 +396,7 @@ NSLog(@"reloading");
 - (void)closeTray {
 
 	[UIView animateWithDuration:0.4f animations:^{
-		[self setFrame:CGRectMake(0, kScreenHeight + prefs.switcherHeight, kScreenWidth, prefs.switcherHeight)];
+		[self setFrame:CGRectMake(0, kScreenHeight + [prefs switcherHeight], kScreenWidth, [prefs switcherHeight])];
 	} completion:^(BOOL finished) {
 
 		//remove everything from tray window
@@ -416,10 +416,10 @@ NSLog(@"reloading");
 - (void)openTray {
 
 	//init all the window stuff by faking a gesture starting
-	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(((kScreenWidth/3)*prefs.defaultPage)-1, 0)];
+	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(((kScreenWidth/3)*[prefs defaultPage])-1, 0)];
 
 	[UIView animateWithDuration:0.4f animations:^{
-		[self setFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, prefs.switcherHeight)];
+		[self setFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, [prefs switcherHeight])];
 	} completion:^(BOOL completed){
 		_isOpen = YES;
 	}];
@@ -497,9 +497,9 @@ NSLog(@"reloading");
 
 		//if user has limited amount of pages to show, lets grab the next app
 		//that would normally be showing and add it, since we're going to be 1 short
-		if (prefs.numberOfPages != 6) {
+		if ([prefs numberOfPages] != 6) {
 
-			int pagesToShow = prefs.numberOfPages;
+			int pagesToShow = [prefs numberOfPages];
 
 			//make sure there is even another app to show
 			if ([[[IdentifierDaemon sharedInstance] identifiers] count] > (pagesToShow * 4)) {

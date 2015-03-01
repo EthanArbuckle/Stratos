@@ -25,7 +25,7 @@ static CDTSPreferences *prefs;
 
 - (id)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
-	if ([[SwitcherTrayView sharedInstance] isOpen] && point.y <= kScreenHeight - prefs.switcherHeight) {
+	if ([[SwitcherTrayView sharedInstance] isOpen] && point.y <= kScreenHeight - [prefs switcherHeight]) {
 		[[SwitcherTrayView sharedInstance] closeTray];
 		[self removeFromSuperview];
 	}

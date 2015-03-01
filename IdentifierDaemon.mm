@@ -179,7 +179,7 @@ static CDTSPreferences *prefs;
 	}
 
 	//if we need to remove the topmost app
-	if (!prefs.showRunningApp) {
+	if (![prefs showRunningApp]) {
 
 		//if an app is open
 		if ([(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
@@ -253,7 +253,7 @@ static CDTSPreferences *prefs;
 - (BOOL)shouldShowHomescreenCard {
 
 	//only show homescreen card if its enable AND we're not on the homescreen
-	return (prefs.enableHomescreen && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
+	return ([prefs enableHomescreen] && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
 }
 
 @end
