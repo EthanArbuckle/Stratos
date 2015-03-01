@@ -258,7 +258,7 @@ static CDTSPreferences *prefs;
 	}
 
 	if (needsReload) {
-NSLog(@"reloading");
+
 		//clear stored cards
 		[_switcherCards removeAllObjects];
 
@@ -369,6 +369,7 @@ NSLog(@"reloading");
 
 			//open control center
 			[self closeTray];
+			[_parentWindow removeFromSuperview];
 			[[NSClassFromString(@"SBControlCenterController") _sharedInstanceCreatingIfNeeded:YES] presentAnimated:YES];
 		}
 

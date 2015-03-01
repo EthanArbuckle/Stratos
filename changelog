@@ -1,0 +1,12 @@
+1.0.0-1
+===========
+ + Initial release
+
+ 1.0.1-1
+ ===========
+ + Fixed multiple crashes
+ + Fixed bouble tapping homebutton not opening tray
+ + Fixed homescreen card being blank sometimes
+ + Fixed settings preview being incorrectly placed 
+ + Added slide-down animations on icons when closing an application card
+ + Added ability to swipe up on top of tray to open stock control center
