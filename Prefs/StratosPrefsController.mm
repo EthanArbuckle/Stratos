@@ -438,7 +438,7 @@
     [super viewDidLoad];
     int width;
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        width = [[self rootController] rootListController].view.frame.size.width;
+        width = [[UIScreen mainScreen] bounds].size.width;//[[self rootController] rootListController].view.frame.size.width;
     }
     else {
         width = [self rootController].view.frame.size.width;
@@ -506,7 +506,7 @@
     [switcherView removeFromSuperview];
     int width;
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        width = [[self rootController] rootListController].view.frame.size.width;
+        width = [[UIScreen mainScreen] bounds].size.width;//[[self rootController] rootListController].view.frame.size.width;
     }
     else {
         width = [self rootController].view.frame.size.width;
