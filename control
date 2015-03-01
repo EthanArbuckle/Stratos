@@ -1,7 +1,7 @@
 Package: com.cortexdevteam.stratos
 Name: Stratos
 Description: A multitasking manager for iOS that reworks the existing Control Center
-Version: 1.0.0
+Version: 1.0.1
 Architecture: iphoneos-arm
 Depends: mobilesubstrate, preferenceloader
 Maintainer: CortexDevTeam
