@@ -346,3 +346,6 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)controlCenterWillPresent;
 
 @end
+
+@interface SBUIControlCenterButton : UIView
+@end
