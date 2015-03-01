@@ -4,8 +4,9 @@
 
  1.0.1-1
  ===========
+ + Parallax is now disabled by default
  + Fixed multiple crashes
- + Fixed bouble tapping homebutton not opening tray
+ + Fixed double tapping homebutton not opening tray
  + Fixed homescreen card being blank sometimes
  + Fixed settings preview being incorrectly placed 
  + Added slide-down animations on icons when closing an application card
