@@ -1,6 +1,7 @@
 #import "Stratos.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface SwitcherTrayView : UIView <UIAlertViewDelegate>
+@interface SwitcherTrayView : UIView
 
 @property (nonatomic, retain) UIWindow *parentWindow;
 @property (nonatomic, retain) UIScrollView *trayScrollView;
@@ -9,6 +10,7 @@
 @property (nonatomic, retain) UIView *gestureView;
 @property (nonatomic, retain) UIView *grabber;
 @property (nonatomic, retain) UIView *blurView;
+@property (nonatomic, retain) UIView *killAllContainer;
 @property (nonatomic) BOOL isOpen;
 
 //these are for checking if certain settings have been changes
@@ -32,6 +34,7 @@
 - (void)reloadBlurView;
 - (void)refreshGrabber;
 - (void)trayHeightDidChange;
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex;
+- (void)cancelKillAll:(UIButton *)sender;
+- (void)quitAllApps:(UIButton *)sender;
 
 @end

@@ -184,11 +184,54 @@ static CDTSPreferences *prefs;
 	//only clear if we are on the cards page
 	if ([_trayScrollView contentOffset].x >= kScreenWidth * 2 && [gesture state] == UIGestureRecognizerStateBegan) {
 
-		[self closeTray];
 
-		UIAlertView *killAll = [[UIAlertView alloc] initWithTitle:@"Kill All Apps" message:@"Would you like to end all running applications?" delegate:self
-																 cancelButtonTitle:@"No" otherButtonTitles:@"End All", nil];
-		[killAll show];
+		//make container view for kill all stuff
+		_killAllContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, prefs.switcherHeight)];
+		[_killAllContainer setBackgroundColor:[UIColor clearColor]];
+		[_killAllContainer setAlpha:0];
+		[self addSubview:_killAllContainer];
+
+		//create kill all label
+		UILabel *killLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, kScreenWidth, 20)];
+		[killLabel setText:@"Are you sure you want to quit all applications?"];
+		[killLabel setTextColor:[UIColor whiteColor]];
+		[killLabel setTextAlignment:NSTextAlignmentCenter];
+		[_killAllContainer addSubview:killLabel];
+
+		//create quit button
+		UIButton *quitButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 100, 140, 40)];
+		[quitButton setTitle:@"Quit All" forState:UIControlStateNormal];
+		[quitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		[quitButton setBackgroundColor:[UIColor clearColor]];
+		[quitButton setClipsToBounds:YES];
+		[[quitButton layer] setBorderWidth:1];
+		[[quitButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+		[[quitButton layer] setCornerRadius:7];
+		[quitButton addTarget:self action:@selector(quitAllApps:) forControlEvents:UIControlEventTouchUpInside];
+		[_killAllContainer addSubview:quitButton];
+
+		//create cancel button
+		UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 160, 100, 140, 40)];
+		[cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+		[cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		[cancelButton setBackgroundColor:[UIColor clearColor]];
+		[cancelButton setClipsToBounds:YES];
+		[[cancelButton layer] setBorderWidth:1];
+		[[cancelButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+		[[cancelButton layer] setCornerRadius:7];
+		[cancelButton addTarget:self action:@selector(cancelKillAll:) forControlEvents:UIControlEventTouchUpInside];
+		[_killAllContainer addSubview:cancelButton];
+
+		[UIView animateWithDuration:0.3 animations:^{
+
+			//animate all tray contents out
+			[_trayScrollView setAlpha:0];
+			[_trayScrollView setUserInteractionEnabled:NO];
+
+			//animate kill all apps view elements in
+			[_killAllContainer setAlpha:1];
+
+		}];
 			  
 	}
 
@@ -619,45 +662,53 @@ static CDTSPreferences *prefs;
 	[[quicklaunch view] setFrame:CGRectMake(controlCenterXOrigin + 10, ([brightness view].frame.origin.y + switcherScrollviewHeight / 4) + 6, kScreenWidth - 20, 63)];
 } 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)buttonIndex {
+- (void)cancelKillAll:(UIButton *)sender {
 
-	if (buttonIndex == 0) {
+	[UIView animateWithDuration:.2 animations:^{
 
-		[self openTray];
+		//remove kill all objects
+		[_killAllContainer setAlpha:0];
+
+		//restore tray scroll view
+		[_trayScrollView setAlpha:1];
+		[_trayScrollView setUserInteractionEnabled:YES];
+
+	}];
+}
+
+- (void)quitAllApps:(UIButton *)sender {
+
+	//move to quicklaunch
+	[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kControlCenterKey] * kScreenWidth, 0) animated:NO];
+
+	//remove all cards from array
+	[_switcherCards removeAllObjects];
+
+	//get sbsynccontroller and kill all apps
+	[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
+
+	//remove the identifiers from sbappswitchermodel
+	if (IS_OS_7_OR_UNDER) {
+		[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] removeAllObjects];
 	}
-	
-	else if (buttonIndex == 1) {
-
-		//move to quicklaunch
-		[_trayScrollView setContentOffset:CGPointMake([prefs.pageOrder indexOfObject:kControlCenterKey] * kScreenWidth, 0) animated:NO];
-
-		//remove all cards from array
-		[_switcherCards removeAllObjects];
-
-		//get sbsynccontroller and kill all apps
-		[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
-
-		//remove the identifiers from sbappswitchermodel
-		if (IS_OS_7_OR_UNDER) {
-			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayIdentifiers"] removeAllObjects];
-		}
-		else { //iOS 8
-			[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] removeAllObjects];
-		}
-
-		for (UIView *card in [_trayScrollView subviews]) {
-
-			//only the cards
-			if ([card isKindOfClass:[SwitcherTrayCardView class]]) {
-
-				[card removeFromSuperview];
-			}
-		}
-
-		//reset content sizes
-		[self updateTrayContentSize];
-
+	else { //iOS 8
+		[[[NSClassFromString(@"SBAppSwitcherModel") sharedInstance] valueForKey:@"_recentDisplayLayouts"] removeAllObjects];
 	}
+
+	for (UIView *card in [_trayScrollView subviews]) {
+
+		//only the cards
+		if ([card isKindOfClass:[SwitcherTrayCardView class]]) {
+
+			[card removeFromSuperview];
+		}
+	}
+
+	//reset content sizes
+	[self updateTrayContentSize];
+
+	//now that apps are killed, animate it back in. just use cancel method, it does the same thing
+	[self cancelKillAll:nil];
 
 }
 

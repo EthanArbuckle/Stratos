@@ -70,13 +70,14 @@ static CDTSPreferences *prefs;
 			if ([identifier isEqualToString:@"com.apple.SpringBoard"]) {
 
 				[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] homeScreenImage]];
-				[_iconHolder removeFromSuperview];
-				[_appName removeFromSuperview];
+				[_iconHolder setImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/home_icon.png"]];
+				[_appName setText:@"Home"];
 			}
 
 			else {
 
 				[_snapshotHolder setImage:[[IdentifierDaemon sharedInstance] appSnapshotForIdentifier:_identifier]];
+				[_appName setText:[(SBApplication *)_application displayName]];
 			}
 
 		});
@@ -86,7 +87,7 @@ static CDTSPreferences *prefs;
 
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[_appName setText:[(SBApplication *)_application displayName]];
+			
 			[_appName setFont:[UIFont fontWithName:@"HelveticaNeue" size:12]];
 			[_appName setTextAlignment:NSTextAlignmentCenter];
 			if ([prefs switcherBackgroundStyle] == 2060 || [prefs switcherBackgroundStyle] == 2010) {
