@@ -96,6 +96,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)_suspendGestureBegan;
 - (void)_suspendGestureChanged:(CGFloat)arg1;
 - (void)_suspendGestureCancelled;
+- (BOOL)_ignoringEvents;
 - (void)animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration;
 - (void)activateApplicationAnimated:(id)application;
 - (void)getRidOfAppSwitcher;

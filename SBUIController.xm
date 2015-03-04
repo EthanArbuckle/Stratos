@@ -40,7 +40,7 @@ static void loadPrefs() {
 		%orig;
 		return;
 	}
-	
+
 	//this is the 'base'. The UIWindow is able to add itself to anything on the screen, SpringBoard or app
 	if (!trayWindow) {
 		trayWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
@@ -58,7 +58,9 @@ static void loadPrefs() {
 	[trayWindow addSubview:touchView];
 
 	//this method will check to see if the current running apps have changed, and update if need be
-	[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
+	//if ([[SwitcherTrayView sharedInstance] frame].origin.y >= kScreenHeight) {
+		[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
+	//}
 
 	[[SwitcherTrayView sharedInstance] setParentWindow:trayWindow];
 	[trayWindow addSubview:[SwitcherTrayView sharedInstance]];
@@ -306,6 +308,7 @@ static void loadPrefs() {
 
 		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, [prefs switcherHeight]) withDuration:animationDuration];
 		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
+		[self _ignoringEvents];
 
 	}
 	/*
