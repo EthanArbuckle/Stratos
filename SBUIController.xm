@@ -168,6 +168,11 @@ static void loadPrefs() {
 
 			} */
 
+
+			//we want the card to rise above the tray
+			[[SwitcherTrayView sharedInstance] setClipsToBounds:NO];
+			[[[SwitcherTrayView sharedInstance] trayScrollView] setClipsToBounds:NO];
+
 			//the card our finger is over
 			int selectedIndex = ceil(location.x / (kSwitcherCardWidth + kSwitcherCardSpacing)) - 1;
 
@@ -271,6 +276,7 @@ static void loadPrefs() {
 		return;
 	}
 
+
 	//see if we need to open a hot card
 	if (location.y <= (kScreenHeight - [prefs switcherHeight]) - kQuickLaunchTouchOffset && pageToOpen == 1 && [prefs enableQuickLaunch]) {
 
@@ -328,6 +334,10 @@ static void loadPrefs() {
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
 	}
+
+	//no more quicklaunching, cards dont need to be above tray
+	[[[SwitcherTrayView sharedInstance] trayScrollView] setClipsToBounds:YES];
+	
 }
 
 %new
