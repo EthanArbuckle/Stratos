@@ -53,6 +53,9 @@ static void loadPrefs() {
 	//create the background view. This is what everything will be added to
 	[SwitcherTrayView sharedInstance];
 
+	//just in case
+	[[SwitcherTrayView sharedInstance] cancelKillAll:nil];
+
 	//Dismiss the tray when tapped outside of it
 	touchView = [[TouchHighjacker alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - [prefs switcherHeight])];
 	[trayWindow addSubview:touchView];
