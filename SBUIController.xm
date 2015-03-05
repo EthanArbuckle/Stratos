@@ -8,6 +8,7 @@ static TouchHighjacker *touchView;
 static int pageToOpen;
 static UIImage *homeScreenImage;
 static UIView *wrapperView;
+static BOOL isPanningWrapperView = NO;
 
 //preferences
 static CDTSPreferences *prefs;
@@ -25,6 +26,8 @@ static void loadPrefs() {
 
 	//if swiping from bottom left, and an app is open
 	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
+
+		isPanningWrapperView = YES;
 
 		//get top app
 		SBApplication *topApp = [[UIApplication sharedApplication] _accessibilityFrontMostApplication];
@@ -128,7 +131,7 @@ static void loadPrefs() {
 - (void)_showControlCenterGestureChangedWithLocation:(CGPoint)location velocity:(CGPoint)velocity duration:(double)duration {
 
 	//if swiping from bottom left, and an app is open, and wrapper view is set
-	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView) {
+	if ([[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView && isPanningWrapperView) {
 
 		//move wrapperviews frame with touches
 		CGRect wrapperFrame = [wrapperView frame];
@@ -288,8 +291,10 @@ static void loadPrefs() {
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
 
-	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView) {
+	if ([[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView && isPanningWrapperView) {
 
+		isPanningWrapperView = NO;
+		
 		if (location.y >= (kScreenHeight / 3) * 2) {
 
 			//restore app
@@ -320,6 +325,8 @@ static void loadPrefs() {
 		    	}];
 
 		    	[(FBWorkspaceEventQueue *)[NSClassFromString(@"FBWorkspaceEventQueue") sharedInstance] executeOrAppendEvent:event];
+
+		    	wrapperView = nil;
 
 			}];
 
