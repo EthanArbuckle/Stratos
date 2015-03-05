@@ -290,10 +290,12 @@ static void loadPrefs() {
 
 	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView) {
 
-		if (location.y >= (kScreenHeight / 3) * 2) {
+		if (velocity.y >= 0) {
 
 			//restore app
-			[UIView animateWithDuration:0.3 animations:^{
+			CGFloat timeToAnimate = (((kScreenHeight - location.y)/velocity.y) > 0.3) ? 0.3 : ((kScreenHeight - location.y)/velocity.y);
+			DebugLog(@"timeToAnimate: %f", timeToAnimate);
+			[UIView animateWithDuration:timeToAnimate animations:^{
 
 				[wrapperView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
 			}];
@@ -301,8 +303,14 @@ static void loadPrefs() {
 		}
 		else {
 
+			CGFloat timeToAnimate = ((location.y - kScreenHeight)/velocity.y);
+			if (timeToAnimate > 0.3)
+				timeToAnimate = 0.3;
+			else if (timeToAnimate < 0.15)
+				timeToAnimate = 0.15;
+
 			//close app
-			[UIView animateWithDuration:0.3 animations:^{
+			[UIView animateWithDuration:timeToAnimate delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 
 				[wrapperView setFrame:CGRectMake(0, -kScreenHeight, kScreenWidth, kScreenHeight)];
 			
