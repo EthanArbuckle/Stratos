@@ -294,16 +294,16 @@ static void loadPrefs() {
 	if ([[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView && isPanningWrapperView) {
 
 		isPanningWrapperView = NO;
-		
+
 		if (velocity.y >= 0) {
 
 			//restore app
 			CGFloat timeToAnimate = (((kScreenHeight - location.y)/velocity.y) > 0.3) ? 0.3 : ((kScreenHeight - location.y)/velocity.y);
 			DebugLog(@"timeToAnimate: %f", timeToAnimate);
-			[UIView animateWithDuration:timeToAnimate animations:^{
+			[UIView animateWithDuration:timeToAnimate delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 
 				[wrapperView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-			}];
+			} completion:NULL];
 			
 		}
 		else {
