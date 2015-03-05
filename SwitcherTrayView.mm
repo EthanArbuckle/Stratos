@@ -695,6 +695,16 @@ static CDTSPreferences *prefs;
 			//remove all cards from array
 		[_switcherCards removeAllObjects];
 
+		//if topmost app, close it first
+		if ([[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
+
+			//SBApplication *topApp = [[UIApplication sharedApplication] _accessibilityFrontMostApplication];
+
+			//create transactions and close app
+			//SBAppToAppWorkspaceTransaction *transaction = [[SBAppToAppWorkspaceTransaction alloc] initWithAlertManager:nil toApplication:topApp withResult:nil];
+			//[transaction begin];
+		}
+
 		//get sbsynccontroller and kill all apps
 		[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
 

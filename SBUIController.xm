@@ -7,6 +7,7 @@ static NSMutableArray *hotCards;
 static TouchHighjacker *touchView;
 static int pageToOpen;
 static UIImage *homeScreenImage;
+static UIView *wrapperView;
 
 //preferences
 static CDTSPreferences *prefs;
@@ -21,6 +22,25 @@ static void loadPrefs() {
 - (void)_showControlCenterGestureBeganWithLocation:(CGPoint)location {
 
 	DebugLog(@"swipe up gesture started at %f : %f", location.x, location.y);
+
+	//if swiping from bottom left, and an app is open
+	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
+
+		//get top app
+		SBApplication *topApp = [[UIApplication sharedApplication] _accessibilityFrontMostApplication];
+
+		//get its wrapper view (what we move)
+		wrapperView = [(UIView *)[[(FBScene *)[topApp mainScene] contextHostManager] valueForKey:@"_hostView"] superview];
+
+		//make wallpaper show up
+		[[NSClassFromString(@"SBWallpaperController") sharedInstance] beginRequiringWithReason:@"Stratos"];
+
+		//show springboard shit
+		[[NSClassFromString(@"SBUIController") sharedInstance] restoreContentAndUnscatterIconsAnimated:NO];
+
+		//dont do other stuff
+		return;
+	}
 
 	//fuck landscape
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
@@ -106,6 +126,17 @@ static void loadPrefs() {
 }
 
 - (void)_showControlCenterGestureChangedWithLocation:(CGPoint)location velocity:(CGPoint)velocity duration:(double)duration {
+
+	//if swiping from bottom left, and an app is open, and wrapper view is set
+	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView) {
+
+		//move wrapperviews frame with touches
+		CGRect wrapperFrame = [wrapperView frame];
+		wrapperFrame.origin.y = location.y - kScreenHeight;
+		[wrapperView setFrame:wrapperFrame];
+
+		return;
+	}
 
 	//fuck landscape
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
@@ -256,6 +287,48 @@ static void loadPrefs() {
 }
 
 - (void)_showControlCenterGestureEndedWithLocation:(CGPoint)location velocity:(CGPoint)velocity {
+
+	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication] && wrapperView) {
+
+		if (location.y >= (kScreenHeight / 3) * 2) {
+
+			//restore app
+			[UIView animateWithDuration:0.3 animations:^{
+
+				[wrapperView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+			}];
+			
+		}
+		else {
+
+			//close app
+			[UIView animateWithDuration:0.3 animations:^{
+
+				[wrapperView setFrame:CGRectMake(0, -kScreenHeight, kScreenWidth, kScreenHeight)];
+			
+			} completion:^(BOOL finished){
+
+				FBWorkspaceEvent *event = [NSClassFromString(@"FBWorkspaceEvent") eventWithName:@"ActivateSpringBoard" handler:^{
+		        SBApplication *frontApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
+		        SBDeactivationSettings *deactiveSets = [[NSClassFromString(@"SBDeactivationSettings") alloc] init];
+		        [deactiveSets setFlag:YES forDeactivationSetting:20];
+		        [deactiveSets setFlag:NO forDeactivationSetting:2];
+		        [frontApp _setDeactivationSettings:deactiveSets];
+		        SBAppToAppWorkspaceTransaction *transaction = [[NSClassFromString(@"SBAppToAppWorkspaceTransaction") alloc] initWithAlertManager:nil exitedApp:frontApp];
+		        [transaction begin];
+
+		    	}];
+
+		    	[(FBWorkspaceEventQueue *)[NSClassFromString(@"FBWorkspaceEventQueue") sharedInstance] executeOrAppendEvent:event];
+
+			}];
+
+		}
+
+		//stop everything else
+		return;
+
+	}
 
 	//fuck landscape
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
