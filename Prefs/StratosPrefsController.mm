@@ -254,21 +254,17 @@
         [spec setProperty:@NO forKey:@"default"];
         [spec setProperty:NSClassFromString(@"StratosTintedSwitchCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        /*
-        //empty group cell
-        [hiddenSpecs addObject:[PSSpecifier emptyGroupSpecifier]];
-        
-        //REMOVE THIS. THIS IS FOR TESTING
-        spec = [PSSpecifier preferenceSpecifierNamed:@"Reset All Prefs"
-                                              target:self
-                                                 set:NULL
-                                                 get:NULL
-                                              detail:Nil
-                                                cell:PSButtonCell
-                                                edit:Nil];
-        spec->action = @selector(resetPreferences);
+
+        spec = [PSSpecifier preferenceSpecifierNamed:localized(@"SWIPE_TO_CLOSE", @"Swipe To Close")
+                                                                 target:self
+                                                                    set:NULL
+                                                                    get:NULL
+                                                                 detail:objc_getClass("StratosCloseListController")
+                                                                   cell:PSLinkCell
+                                                                   edit:Nil];
+        [spec setProperty:NSClassFromString(@"StratosTintedCell") forKey:@"cellClass"];
         [hiddenSpecs addObject:spec];
-        */
+
         //if we're enabled, show all of the "hidden" specifiers
         BOOL enabled;
         boolPreference(kCDTSPreferencesEnabledKey, enabled);
@@ -436,13 +432,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    int width;
-    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        width = [[UIScreen mainScreen] bounds].size.width;//[[self rootController] rootListController].view.frame.size.width;
-    }
-    else {
-        width = [self rootController].view.frame.size.width;
-    }
+    int width = [self rootController].view.frame.size.width;
     //header
     UIImage* headerImage = [[UIImage alloc] initWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/Header.png"];
     NSLog(@"headerImage size: %@", NSStringFromCGSize(headerImage.size));

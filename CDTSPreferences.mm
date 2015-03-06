@@ -65,6 +65,12 @@
 
 	self.enableParallax = [self getBoolForKey:kCDTSPreferencesEnableParallax dictionary:prefsDict];
 
+	self.swipeToClose = [self getBoolForKey:kCDTSPreferencesSwipeToClose dictionary:prefsDict];
+
+	self.closeRegionIsLeft = [self getBoolForKey:kCDTSPreferencesSwipeToCloseLeft dictionary:prefsDict];
+
+	self.closeRegionIndex = [self getIntegerForKey:kCDTSPreferencesCloseRegionIndex dictionary:prefsDict];
+
 	self.switcherBackgroundStyle = [self getIntegerForKey:kCDTSPreferencesTrayBackgroundStyle dictionary:prefsDict];
 
 	self.defaultPage = [self getIntegerForKey:kCDTSPreferencesDefaultPage dictionary:prefsDict];

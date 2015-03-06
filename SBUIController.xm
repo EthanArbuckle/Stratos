@@ -500,16 +500,13 @@ static void loadPrefs() {
 
 			//stop if tray is open, to prevent cards from flashing over
 			//also check if its origin is above 'closed' point, since if touches are still happening isOpen will be NO
-			if ([[SwitcherTrayView sharedInstance] isOpen] || [[SwitcherTrayView sharedInstance] frame].origin.y < kScreenHeight) {
+			if (![[SwitcherTrayView sharedInstance] isOpen] && !([[SwitcherTrayView sharedInstance] frame].origin.y < kScreenHeight)) {
+				//an app was opened, closed, or killed. tell the identifier daemon to reload.
+				[[IdentifierDaemon sharedInstance] reloadApps];
 
-				return;
+				//also reload them in the switcher tray
+				[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
 			}
-
-			//an app was opened, closed, or killed. tell the identifier daemon to reload.
-			[[IdentifierDaemon sharedInstance] reloadApps];
-
-			//also reload them in the switcher tray
-			[[SwitcherTrayView sharedInstance] reloadShouldForce:NO];
 
 		});
 		

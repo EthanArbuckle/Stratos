@@ -71,6 +71,9 @@ static NSString *const kCDTSPreferencesActiveMediaEnabled = @"activeMediaEnabled
 static NSString *const kCDTSPreferencesThirdSplit = @"thirdSplit";
 static NSString *const kCDTSPreferencesEnableQuickLaunch = @"enableQuickLaunch";
 static NSString *const kCDTSPreferencesEnableHomescreen = @"enableHomescreen";
+static NSString *const kCDTSPreferencesSwipeToClose = @"swipeToClose";
+static NSString *const kCDTSPreferencesSwipeToCloseLeft = @"closeRegionIsLeft";
+static NSString *const kCDTSPreferencesCloseRegionIndex = @"closeRegionIndex";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesEnabledKey          : @NO,
                                                                 kCDTSPreferencesTrayBackgroundStyle : @9999,

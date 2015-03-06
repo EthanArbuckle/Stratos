@@ -454,7 +454,7 @@ static CDTSPreferences *prefs;
 	[self cancelKillAll:nil];
 
 	//init all the window stuff by faking a gesture starting
-	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(((kScreenWidth/3)*[prefs defaultPage])-1, 0)];
+	[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] _showControlCenterGestureBeganWithLocation:CGPointMake(( (kScreenWidth/3) * ([prefs.pageOrder indexOfObject:@(prefs.defaultPage)] + 1) ) - 1, 0)];
 
 	[UIView animateWithDuration:0.4f animations:^{
 		[self setFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, [prefs switcherHeight])];

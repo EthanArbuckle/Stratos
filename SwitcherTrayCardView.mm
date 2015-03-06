@@ -200,6 +200,7 @@ static CDTSPreferences *prefs;
 	//get location of touch in switcher tray
 	CGPoint point = [pan locationInView:_superSwitcher];
 	if ([pan state] == UIGestureRecognizerStateBegan) {
+		//get the offset so that it tracks the finger perfectly
 	 	_offset = point.y - [_snapshotHolder center].y;
 		//disable scrolling of tray so gestures dont get mixed up
 		[[(SwitcherTrayView *)_superSwitcher trayScrollView].panGestureRecognizer setEnabled:NO];
@@ -212,15 +213,22 @@ static CDTSPreferences *prefs;
 
 		if (velocity.y > 20 || velocity.y < -20) {
 
-			//move this card with the touches. Using center point makes it flow with the finger better
-			[_snapshotHolder setCenter:CGPointMake([_snapshotHolder center].x, point.y - _offset)];
+			//get the distance they have pulled up/down
+			CGFloat distancePulled = ((point.y - _offset) - kSwitcherCardHeight/2);
+			//if it's pulled down
+			if (distancePulled > 0) {
 
-			//if its moving up, lets move the label and icon down
-			if (point.y <= 20) {
+				//add distancePulled to the power of .75, so that it doesn't move as far, and resists you more when you pull it further
+				[_snapshotHolder setCenter:CGPointMake([_snapshotHolder center].x, pow(distancePulled, .75)+(kSwitcherCardHeight/2))];
+			} 
+			//if it's moving up
+			else {
 
-				[_appName setFrame:CGRectMake(0, ((kSwitcherCardHeight + 8) - (point.y / 2) >= (kSwitcherCardHeight + 8)) ? (kSwitcherCardHeight + 8) - (point.y / 2) : (kSwitcherCardHeight + 8), kSwitcherCardWidth, 20)];
-				[_iconHolder setFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, ((kSwitcherCardHeight - 30) - (point.y / 2) >= (kSwitcherCardHeight - 30)) ? (kSwitcherCardHeight - 30) - (point.y / 2) : (kSwitcherCardHeight - 30), 40, 40)];
-			
+				//move the card up
+				[_snapshotHolder setCenter:CGPointMake([_snapshotHolder center].x, point.y - _offset)];
+				//move the icon and label down
+				[_appName setFrame:CGRectMake(0, (kSwitcherCardHeight + 8) - distancePulled, kSwitcherCardWidth, 20)];
+				[_iconHolder setFrame:CGRectMake((kSwitcherCardWidth / 2) - 20, (kSwitcherCardHeight - 30) - distancePulled, 40, 40)];
 			}
 
 		}
