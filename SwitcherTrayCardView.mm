@@ -153,8 +153,11 @@ static CDTSPreferences *prefs;
 		//dont need to do fancy animations
 		return;
 	}
-/*
-	//calculate x origin
+
+	//get hostview for app
+	/*UIView *hostView = [[IdentifierDaemon sharedInstance] enableHostingAndReturnViewForID:_identifier];
+
+ 	//calculate x origin
 	int index = [[(SwitcherTrayView *)_superSwitcher switcherCards] indexOfObject:self] % 4;
 	float x = kSwitcherCardSpacing;
 	x += (kSwitcherCardWidth * index) + (kSwitcherCardSpacing * index); 
@@ -162,34 +165,47 @@ static CDTSPreferences *prefs;
 	//calculate y origin
 	float y = [_superSwitcher convertPoint:[(SwitcherTrayView *)_superSwitcher trayScrollView].frame.origin toView:[(SwitcherTrayView *)_superSwitcher parentWindow]].y;
 
-	UIImageView *appOpenAnimation = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, kSwitcherCardWidth, kSwitcherCardHeight)];
-	[appOpenAnimation setImage:[_snapshotHolder image]];
-	[_superSwitcher.superview addSubview:appOpenAnimation];
-	SBApplication *app = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier];
-	[UIView animateWithDuration:0.2f animations:^{
+	//shrink it
+	[hostView setTransform:CGAffineTransformMakeScale(kScreenWidth / kSwitcherCardWidth, kScreenHeight / kSwitcherCardHeight)];
 
-		[appOpenAnimation setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-		[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:app];
+	[hostView setFrame:CGRectMake(x, y, kSwitcherCardWidth, kSwitcherCardHeight)];
 
-	} completion:^(BOOL completed){
+	//add it to view
+	[[[UIApplication sharedApplication] keyWindow] addSubview:hostView];
 
-		//close the switcher
-		if (_superSwitcher) {
+	(void)[[NSClassFromString(@"SBLaunchAppListener") alloc] initWithBundleIdentifier:_identifier handlerBlock:^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSLog(@"hit");
+			[[IdentifierDaemon sharedInstance] disableContextHostingForIdentifier:_identifier];
+			[hostView removeFromSuperview];
+		});
+	}];
 
-			[(SwitcherTrayView *)_superSwitcher closeTray];
-			[appOpenAnimation removeFromSuperview];
-		
-		}
+	//animate it opening
+	[UIView animateWithDuration:2 animations:^{
 
-	}];	
-*/
+		[hostView setTransform:CGAffineTransformIdentity];
+		[hostView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+
+	} completion:^(BOOL){
+
+ 		[[UIApplication sharedApplication] launchApplicationWithIdentifier:_identifier suspended:NO];
+ 		[(SwitcherTrayView *)_superSwitcher closeTray];
+
+	}]; 
+	*/
+
 	SBApplication *app = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier];
 	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:app];
+
+
+
+
 
 	//close the switcher
 	if (_superSwitcher) {
 
-		[(SwitcherTrayView *)_superSwitcher closeTray];
+		//[(SwitcherTrayView *)_superSwitcher closeTray];
 		
 	}
 

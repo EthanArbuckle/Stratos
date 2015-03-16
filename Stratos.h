@@ -248,6 +248,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 @interface UIApplication (Private)
 - (void)_relaunchSpringBoardNow;
 - (id)_accessibilityFrontMostApplication;
+- (void)launchApplicationWithIdentifier: (NSString*)identifier suspended: (BOOL)suspended;
 @end
 
 @interface SBGestureViewVendor : NSObject
@@ -299,7 +300,7 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)begin;
 - (id)initWithAlertManager:(id)alertManager exitedApp:(id)app;
 - (id)initWithAlertManager:(id)alertManager toApplication:(id)app withResult:(id)result;
-- (instancetype)initWithWorkspace:(id)workspace alertManager:(id)alertManager from:(SBApplication *)fromApp to:(SBApplication *)toApp activationHandler:(id)activationHandler;
+- (id)initWithAlertManager:(id)arg1 from:(id)arg2 to:(id)arg3 withResult:(id)arg4;
 @end
 
 
@@ -318,7 +319,8 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 
 @property(readonly, retain, nonatomic) SBWindowContextHostManager *contextHostManager;
 - (id)contextHostManager;
-
+- (id)mutableSettings;
+-(void)_applyMutableSettings:(id)arg1 withTransitionContext:(id)arg2 completion:(id)arg3;
 @end
 
 @interface VeloxNotficationController
@@ -355,4 +357,18 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 @end
 
 @interface SBUIControlCenterButton : UIView
+@end
+
+@interface FBWindowContextHostManager : NSObject
+- (void)enableHostingForRequester:(id)arg1 orderFront:(BOOL)arg2;
+- (id)hostViewForRequester:(id)arg1 enableAndOrderFront:(BOOL)arg2;
+- (void)disableHostingForRequester:(NSString *)requestor;
+@end
+
+@interface FBSMutableSceneSettings
+- (void)setBackgrounded:(bool)arg1;
+@end
+
+@interface SBLaunchAppListener
+- (id)initWithBundleIdentifier:(id)arg1 handlerBlock:(id)arg2;
 @end

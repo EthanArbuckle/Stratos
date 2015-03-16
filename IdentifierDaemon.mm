@@ -256,4 +256,53 @@ static CDTSPreferences *prefs;
 	return ([prefs enableHomescreen] && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]);
 }
 
+- (UIView *)enableHostingAndReturnViewForID:(NSString *)bundleID {
+
+	//create sbapplication
+	SBApplication *appToHost = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithBundleIdentifier:bundleID];
+
+	//make sure its running
+	[[UIApplication sharedApplication] launchApplicationWithIdentifier:bundleID suspended:YES];
+
+	//get context manager and app scene
+	FBScene *appScene = [appToHost mainScene];
+	FBWindowContextHostManager *appContextManager = [appScene contextHostManager];
+
+	//update local reference to springboard window
+	_sbWindow = [(UIView *)[appContextManager valueForKey:@"_hostView"] window];
+
+	//get scene settings
+	FBSMutableSceneSettings *sceneSettings = [[appScene mutableSettings] mutableCopy];
+
+	//force backgrounding to NO
+	[sceneSettings setBackgrounded:NO];
+
+	//reapply new settings to scene
+	[appScene _applyMutableSettings:sceneSettings withTransitionContext:nil completion:nil];
+
+	//allow hosting of our new hostview
+	[appContextManager enableHostingForRequester:bundleID orderFront:YES];
+
+	//get our fancy new hosting view
+	UIView *hostingView = [appContextManager hostViewForRequester:bundleID enableAndOrderFront:YES];
+
+	//return it
+	return hostingView;
+
+}
+
+- (void)disableContextHostingForIdentifier:(NSString *)bundleID {
+
+	//create sbapplication
+	SBApplication *appToHost = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithBundleIdentifier:bundleID];
+
+	//get context manager and app scene
+	FBScene *appScene = [appToHost mainScene];
+	FBWindowContextHostManager *appContextManager = [appScene contextHostManager];
+
+	//disable hosting
+	[appContextManager disableHostingForRequester:bundleID];
+
+}
+
 @end
