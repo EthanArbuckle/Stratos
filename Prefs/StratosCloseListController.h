@@ -5,6 +5,7 @@
 #import "StratosPrefs.h"
 @interface StratosCloseListController : PSListController {
 	UIImageView *phoneView;
+	UIImageView *glowyThingy;
 	UIWindow *settingsView;
 }
 @end

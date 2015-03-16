@@ -25,7 +25,7 @@ static void loadPrefs() {
 	DebugLog(@"swipe up gesture started at %f : %f", location.x, location.y);
 
 	//if swiping from bottom left, and an app is open
-	if (location.x <= 100 && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
+	if (prefs.swipeToClose && location.x <= prefs.swipeToCloseWidth && [[UIApplication sharedApplication] _accessibilityFrontMostApplication]) {
 
 		isPanningWrapperView = YES;
 
@@ -96,11 +96,20 @@ static void loadPrefs() {
 
 	if ([prefs thirdSplit]) {
 		int pageIndex;
-
+		CGFloat regionOne;
+		CGFloat regionTwo;
+		if (prefs.swipeToClose) {
+			CGFloat width = (kScreenWidth - prefs.swipeToCloseWidth)/3;
+			regionOne = prefs.swipeToCloseWidth + width;
+			regionTwo = regionOne + width;
+		} else {
+			regionOne = (kScreenWidth/3);
+			regionTwo = 2*regionOne;
+		}
 		//get the index of the page order array we want to acceess, based on which third of the screen they access
-		if (location.x < kScreenWidth/3) { // 0 - 1/3
+		if (location.x < regionOne) { // 0 - 1/3
 			pageIndex = 0;
-		} else if (location.x < (2*kScreenWidth)/3) { // 1/3 - 2/3
+		} else if (location.x < regionTwo) { // 1/3 - 2/3
 			pageIndex = 1;
 		} else { //2/3 - 3/3
 			pageIndex = 2;
