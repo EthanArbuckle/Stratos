@@ -701,12 +701,12 @@ static CDTSPreferences *prefs;
 			//SBApplication *topApp = [[UIApplication sharedApplication] _accessibilityFrontMostApplication];
 
 			//create transactions and close app
-			//SBAppToAppWorkspaceTransaction *transaction = [[SBAppToAppWorkspaceTransaction alloc] initWithAlertManager:nil toApplication:topApp withResult:nil];
+			//SBAppToAppWorkspaceTransaction *transaction = [[NSClassFromString(@"SBAppToAppWorkspaceTransaction") alloc] initWithAlertManager:nil from:topApp to:nil withResult:nil];
 			//[transaction begin];
 		}
 
 		//get sbsynccontroller and kill all apps
-		[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
+		//[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
 
 		//remove the identifiers from sbappswitchermodel
 		if (IS_OS_7_OR_UNDER) {
