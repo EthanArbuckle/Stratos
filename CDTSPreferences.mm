@@ -67,10 +67,6 @@
 
 	self.swipeToClose = [self getBoolForKey:kCDTSPreferencesSwipeToClose dictionary:prefsDict];
 
-	self.closeRegionIsLeft = [self getBoolForKey:kCDTSPreferencesSwipeToCloseLeft dictionary:prefsDict];
-
-	self.closeRegionIndex = [self getIntegerForKey:kCDTSPreferencesCloseRegionIndex dictionary:prefsDict];
-
 	self.switcherBackgroundStyle = [self getIntegerForKey:kCDTSPreferencesTrayBackgroundStyle dictionary:prefsDict];
 
 	self.defaultPage = [self getIntegerForKey:kCDTSPreferencesDefaultPage dictionary:prefsDict];
@@ -78,6 +74,8 @@
 	self.numberOfPages = [self getIntegerForKey:kCDTSPreferencesNumberOfPages dictionary:prefsDict];
 
 	self.switcherHeight = [self getFloatForKey:kCDTSPreferencesSwitcherHeight dictionary:prefsDict];
+
+	self.swipeToCloseWidth = [self getFloatForKey:kCDTSPreferencesSwipeToCloseWidth dictionary:prefsDict];
 
 	self.pageOrder = (NSArray *)[self getObjectForKey:kCDTSPreferencesPageOrder dictionary:prefsDict];
 	

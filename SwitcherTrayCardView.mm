@@ -289,7 +289,7 @@ static CDTSPreferences *prefs;
 
 					//FUCK YEAH! WOOT WOOT BITCH
 					[[objc_getClass("VeloxNotificationController") sharedController] displayStratosViewForBundleIdentifier:_identifier withFrame:[(SwitcherTrayView *)_superSwitcher frame]];
-
+					[(SwitcherTrayView *)_superSwitcher closeTray];
 				}
 				
 			}

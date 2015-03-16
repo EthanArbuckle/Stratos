@@ -15,11 +15,11 @@
 @property(nonatomic) BOOL enableHomescreen;
 @property(nonatomic) BOOL enableParallax;
 @property(nonatomic) BOOL swipeToClose;
-@property(nonatomic) BOOL closeRegionIsLeft;
 @property(nonatomic) NSInteger closeRegionIndex;
 @property(nonatomic) NSInteger switcherBackgroundStyle;
 @property(nonatomic) NSInteger defaultPage;
 @property(nonatomic) NSInteger numberOfPages;
 @property(nonatomic) CGFloat switcherHeight;
+@property(nonatomic) CGFloat swipeToCloseWidth;
 @property(nonatomic, retain) NSArray *pageOrder;
 @end

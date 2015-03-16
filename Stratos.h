@@ -72,8 +72,7 @@ static NSString *const kCDTSPreferencesThirdSplit = @"thirdSplit";
 static NSString *const kCDTSPreferencesEnableQuickLaunch = @"enableQuickLaunch";
 static NSString *const kCDTSPreferencesEnableHomescreen = @"enableHomescreen";
 static NSString *const kCDTSPreferencesSwipeToClose = @"swipeToClose";
-static NSString *const kCDTSPreferencesSwipeToCloseLeft = @"closeRegionIsLeft";
-static NSString *const kCDTSPreferencesCloseRegionIndex = @"closeRegionIndex";
+static NSString *const kCDTSPreferencesSwipeToCloseWidth = @"swipeToCloseWidth";
 static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesEnabledKey          : @NO,
                                                                 kCDTSPreferencesTrayBackgroundStyle : @9999,
@@ -89,7 +88,11 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
                                                                 kCDTSPreferencesActivateByDoubleHome: @NO,
                                                                 kCDTSPreferencesPageOrder           : @[ kControlCenterKey, kMediaControlsKey, kSwitcherCardsKey ], //in order from left to right
                                                                 kCDTSPreferencesNumberOfPages       : @6, //number of pages for multitasking card view
-                                                                kCDTSPreferencesThirdSplit          : @NO
+                                                                kCDTSPreferencesThirdSplit          : @NO,
+                                                                kCDTSPreferencesEnableQuickLaunch   : @NO,
+                                                                kCDTSPreferencesEnableHomescreen    : @NO,
+                                                                kCDTSPreferencesSwipeToClose        : @NO,
+                                                                kCDTSPreferencesSwipeToCloseWidth   : @(kScreenWidth/3)
                                                         };
 
 // private interfaces
