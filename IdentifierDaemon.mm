@@ -128,7 +128,7 @@ static CDTSPreferences *prefs;
 	else {
 
 		//couldnt get the preview, now we have to do a bunch of work to get the splashscreen -_-
-		id application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:ident];
+		id application = [[NSClassFromString(@"SBApplicationController") sharedInstance] stratos_applicationWithDisplayIdentifier:ident];
 		NSString *splashPath = [NSString stringWithFormat:@"%@/Default.png", [(SBApplication *)application path]];
 		UIImage *splashImage = [UIImage imageWithContentsOfFile:splashPath];
 
