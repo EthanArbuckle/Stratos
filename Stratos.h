@@ -103,7 +103,6 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)_suspendGestureChanged:(CGFloat)arg1;
 - (void)_suspendGestureCancelled;
 - (BOOL)_ignoringEvents;
-- (void)animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration;
 - (void)activateApplicationAnimated:(id)application;
 - (void)getRidOfAppSwitcher;
 - (BOOL)clickedMenuButton;
@@ -116,9 +115,13 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)stopRestoringIconList;
 - (void)tearDownIconListAndBar;
 - (void)notifyAppResumeActive:(id)app;
+@end
+
+@interface SBUIController (Stratos)
+- (void)stratos_animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration;
 //+ (NSUserDefaults *)stratosUserDefaults;
-- (void)updateHomescreenImage;
-- (UIImage *)homeScreenImage;
+- (void)stratos_updateHomescreenImage;
+- (UIImage *)stratos_homeScreenImage;
 @end
 
 @interface SBAppSliderSnapshotView : UIView
@@ -159,6 +162,10 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (id)applicationWithBundleIdentifier:(id)arg1;
 @end
 
+@interface SBApplicationController (Stratos)
+- (id)stratos_applicationWithDisplayIdentifier:(id)arg1;
+@end
+
 
 @interface SBApplicationIcon : NSObject
 - (id)initWithApplication:(id)arg1;
@@ -190,6 +197,10 @@ static NSDictionary *const kCDTSPreferencesDefaults = @{
 - (void)notifyResignActiveForReason:(int)reason;
 - (void)notifyResumeActiveForReason:(int)reason;
 - (void)activate;
+@end
+
+@interface SBApplication (Stratos)
+- (NSString *)stratos_displayIdentifier;
 @end
 
 

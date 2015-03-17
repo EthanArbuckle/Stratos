@@ -22,7 +22,7 @@ static CDTSPreferences *prefs;
 		[self addSubview:_snapshotHolder];
 
 		//get instance of the application
-		_application = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:identifier];
+		_application = [[NSClassFromString(@"SBApplicationController") sharedInstance] stratos_applicationWithDisplayIdentifier:identifier];
 
 		//create an icon for the application
 		__block SBApplicationIcon *icon;
@@ -69,7 +69,7 @@ static CDTSPreferences *prefs;
 			//get the image from our ident daemon
 			if ([identifier isEqualToString:@"com.apple.SpringBoard"]) {
 
-				[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] homeScreenImage]];
+				[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] stratos_homeScreenImage]];
 				[_iconHolder setImage:[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/StratosPrefs.bundle/home_icon.png"]];
 				[_appName setText:@"Home"];
 			}
@@ -195,7 +195,7 @@ static CDTSPreferences *prefs;
 	}]; 
 	*/
 
-	SBApplication *app = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:_identifier];
+	SBApplication *app = [[NSClassFromString(@"SBApplicationController") sharedInstance] stratos_applicationWithDisplayIdentifier:_identifier];
 	[[NSClassFromString(@"SBUIController") sharedInstance] activateApplicationAnimated:app];
 
 
@@ -352,7 +352,7 @@ static CDTSPreferences *prefs;
 	//get the image from our ident daemon
 	if ([_identifier isEqualToString:@"com.apple.SpringBoard"]) {
 
-		[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] homeScreenImage]];
+		[_snapshotHolder setImage:[(SBUIController *)[NSClassFromString(@"SBUIController") sharedInstance] stratos_homeScreenImage]];
 	}
 	else {
 
