@@ -101,7 +101,7 @@
 		[[SwitcherTrayView sharedInstance] reloadShouldForce:YES];
 //	}
 	//update homescreen card
-	[[NSClassFromString(@"SBUIController") sharedInstance] updateHomescreenImage];
+	[[NSClassFromString(@"SBUIController") sharedInstance] stratos_updateHomescreenImage];
 }
 
 @end

@@ -30,7 +30,7 @@ static CDTSPreferences *prefs;
 			NSString *beforeApp = [runningApps objectAtIndex:index + 1];
 
 			//get instance of sbapplication of before app
-			id beforeSBApp = [[NSClassFromString(@"SBApplicationController") sharedInstance] applicationWithDisplayIdentifier:beforeApp];
+			id beforeSBApp = [[NSClassFromString(@"SBApplicationController") sharedInstance] stratos_applicationWithDisplayIdentifier:beforeApp];
 			
 			//call original method with new args
 			DebugLog(@"Forcing side to side app transition animation");

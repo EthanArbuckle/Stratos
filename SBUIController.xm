@@ -259,7 +259,7 @@ static void loadPrefs() {
 				}
 
 				//set the new frame
-				[self animateObject:card toFrame:frame withDuration:0.2f];
+				[self stratos_animateObject:card toFrame:frame withDuration:0.2f];
 
 			}
 		}
@@ -412,7 +412,7 @@ static void loadPrefs() {
 		//set grabber view to down arrow now that tray is open
 		[(SBChevronView *)[(SBControlCenterGrabberView *)[[SwitcherTrayView sharedInstance] grabber] chevronView] setState:1 animated:YES];
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, [prefs switcherHeight]) withDuration:animationDuration];
+		[self stratos_animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kSwitcherMaxY + 1, kScreenWidth, [prefs switcherHeight]) withDuration:animationDuration];
 		[[SwitcherTrayView sharedInstance] setIsOpen:YES];
 		[self _ignoringEvents];
 
@@ -426,7 +426,7 @@ static void loadPrefs() {
 	*/
 	else {
 
-		[self animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + [prefs switcherHeight], kScreenWidth, [prefs switcherHeight]) withDuration:0.4f];
+		[self stratos_animateObject:[SwitcherTrayView sharedInstance] toFrame:CGRectMake(0, kScreenHeight + [prefs switcherHeight], kScreenWidth, [prefs switcherHeight]) withDuration:0.4f];
 		[[SwitcherTrayView sharedInstance] setIsOpen:NO];
 		[trayWindow setUserInteractionEnabled:NO];
 		[touchView removeFromSuperview];
@@ -438,7 +438,7 @@ static void loadPrefs() {
 }
 
 %new
-- (void)animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration {
+- (void)stratos_animateObject:(id)view toFrame:(CGRect)frame withDuration:(CGFloat)duration {
 
 	[UIView animateWithDuration:duration animations:^{
 		[view setFrame:frame];
@@ -545,8 +545,8 @@ static void loadPrefs() {
 }
 
 %new
-- (void)updateHomescreenImage {
-	
+- (void)stratos_updateHomescreenImage {
+
 	//get homescreen snapshot
 	SBViewSnapshotProvider *provider = [[NSClassFromString(@"SBViewSnapshotProvider") alloc] initWithView:[NSClassFromString(@"SBHomeScreenPreviewView") preview]];
 	[provider snapshotAsynchronously:YES withImageBlock:^void(id snapshot) {
@@ -556,7 +556,7 @@ static void loadPrefs() {
 }
 
 %new
-- (UIImage *)homeScreenImage {
+- (UIImage *)stratos_homeScreenImage {
 
 	if (homeScreenImage)
 		return homeScreenImage;
