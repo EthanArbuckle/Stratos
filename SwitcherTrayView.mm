@@ -706,7 +706,7 @@ static CDTSPreferences *prefs;
 		}
 
 		//get sbsynccontroller and kill all apps
-		//[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
+		[(SBSyncController *)[NSClassFromString(@"SBSyncController") sharedInstance] _killApplications];
 
 		//remove the identifiers from sbappswitchermodel
 		if (IS_OS_7_OR_UNDER) {
