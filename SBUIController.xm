@@ -45,7 +45,7 @@ static void loadPrefs() {
 		return;
 	}
 
-	//fuck landscape
+	//fuck landscape and carlos
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
 		%orig;
 		return;
@@ -150,7 +150,7 @@ static void loadPrefs() {
 		return;
 	}
 
-	//fuck landscape
+	//fuck landscape and carlos
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
 		%orig;
 		return;
@@ -354,7 +354,7 @@ static void loadPrefs() {
 
 	}
 
-	//fuck landscape
+	//fuck landscape and carlos
 	if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
 		%orig;
 		return;
