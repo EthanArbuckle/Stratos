@@ -1,9 +1,5 @@
 # Stratos
 
-Ethan Arbuckle and cortex
-
-dont compain about bad code, pull requests welcome
-
 # Description
 
 <p>
