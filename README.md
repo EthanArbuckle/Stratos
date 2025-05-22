@@ -1,5 +1,32 @@
 # Stratos
 
+> **Stratos** (2015) was a gesture-based multitasking switcher for jailbroken iOS 7–8 devices. It combined the app-switcher, Control Center, and Now-Playing pages into a single bottom-edge swipe.  
+
+---
+
+## Video reviews
+
+<details><summary>iDownloadBlog (Jeff Benjamin)</summary>
+
+<video src="./.repo/idownloadblog_stratos.mp4" controls width="480"></video>
+
+</details>
+
+<details><summary>iTwe4kz</summary>
+
+<video src="./.repo/itwe4ks_stratos.mp4" controls width="480"></video>
+
+</details>
+
+---
+
+| ![Switcher](./.repo/stratos_screenshot_1.png) | ![Control Center](./.repo/stratos_screenshot_2.jpg) | ![Now Playing](./.repo/stratos_screenshot_3.jpg)
+|---|---|---|
+
+
+---
+
+
 # Description
 
 <p>
